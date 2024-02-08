@@ -1,46 +1,11 @@
-import {useState} from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import {useQuery} from "react-query";
 import './App.css'
-import {helloWorld} from "../functions/backend_functions/user_backend_functions.js";
+import PixelGrid from "./components/pixel-grid/PixelGrid.jsx";
+
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [data, setData] = useState("");
-
-  const {data: data1, isLoading, isError} = useQuery('helloWorld', helloWorld);
-
-  const handleClick = () => {
-      setData(data1);
-  }
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-          <button onClick={()=> handleClick()}>click</button>
-          {data !== null ? <p>{data}</p> : null}
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return (
+        <PixelGrid width={1200} height={1200} color="#9f35a5"/>
+    )
 }
 
 export default App
