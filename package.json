@@ -21,7 +21,11 @@
   ],
   "scripts": {
     "start:client": "yarn workspace client start",
-    "start:api": "yarn workspace api start"
+    "start:api": "yarn workspace api start",
+    "mongo:build": "docker build -t mongo-pixelart .",
+    "mongo:run": "docker run -d -p 27017:27017 --name mongo-pixelart mongo-pixelart",
+    "mongo:stop": "docker stop mongo-pixelart",
+    "mongo:delete": "docker rmi mongo-pixelart"
   },
   "packageManager": "yarn@1.22.19",
   "engines": {
