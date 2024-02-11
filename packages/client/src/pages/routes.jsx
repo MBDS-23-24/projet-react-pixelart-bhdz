@@ -1,9 +1,9 @@
 import Home from "./Home/Home.jsx";
-import Login from "./Login/Login.jsx";
+import PixelGrid from "../components/pixel-grid/PixelGrid.jsx";
 
 const routes = [
     { name: 'Page D\'accueil',path: '/', element: <Home/> },
-    { name: 'Login', path: '/login', element: <Login/> }
+    {name: 'Temporary Pixel Board', path: '/pixel-board', element: <PixelGrid width={30} height={30} color="#9f35a5"/>},
 ];
 
 export default routes
