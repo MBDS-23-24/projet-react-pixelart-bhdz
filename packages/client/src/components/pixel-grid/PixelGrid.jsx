@@ -1,4 +1,4 @@
-import  { useRef, useState, useEffect } from 'react';
+import {useRef, useState, useEffect} from 'react';
 
 class Pixel {
     constructor(x, y, color) {
@@ -14,19 +14,21 @@ export default function PixelGrid(props) {
     const pixelSize = 10; // Taille d'un pixel
     const [pixels] = useState([]);
 
+    const {color, width, height} = props;
 
-    const { color, width, height } = props;
+    const realWidth = width * pixelSize;
+    const realHeight = height * pixelSize;
 
     useEffect(() => {
-        pixels.forEach((pixel)=>{
-            drawPixel(pixel.x, pixel.y, pixel.color)
+        pixels.forEach((pixel) => {
+            drawPixel(pixel)
         })
     }, [pixels]);
 
     useEffect(() => {
         // Initialisation du contexte 2D du canvas
         setCtx(canvasRef.current.getContext('2d'));
-    }, []);
+    }, [canvasRef]);
 
     useEffect(() => {
         if (ctx) {
@@ -42,18 +44,18 @@ export default function PixelGrid(props) {
         ctx.lineWidth = 0.1;
 
         // Dessin des lignes verticales
-        for (let x = 0; x <= width; x += pixelSize) {
+        for (let x = 0; x <= realWidth; x += pixelSize) {
             ctx.beginPath();
             ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
+            ctx.lineTo(x, realWidth);
             ctx.stroke();
         }
 
         // Dessin des lignes horizontales
-        for (let y = 0; y <= height; y += pixelSize) {
+        for (let y = 0; y <= realHeight; y += pixelSize) {
             ctx.beginPath();
             ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
+            ctx.lineTo(realHeight, y);
             ctx.stroke();
         }
     }
@@ -63,24 +65,40 @@ export default function PixelGrid(props) {
      * @param event
      */
     function handleMouseClick(event) {
-        const { offsetX, offsetY } = event.nativeEvent;
-        const x = Math.floor(offsetX / pixelSize) * pixelSize;
-        const y = Math.floor(offsetY / pixelSize) * pixelSize;
-        drawPixel(x, y, color);
+        const {offsetX, offsetY} = event.nativeEvent;
+        const realX = Math.floor(offsetX / pixelSize) * pixelSize;
+        const realy = Math.floor(offsetY / pixelSize) * pixelSize;
+        const pixel = new Pixel(getPixelX(realX), getPixelY(realy), color);
+        drawPixel(pixel);
     }
 
-    function drawPixel(x, y, color) {
-        const pixel = new Pixel(x, y, color);
+    function getRealX(pixelX) {
+        return pixelX * pixelSize;
+    }
+
+    function getRealY(pixelY) {
+        return pixelY * pixelSize;
+    }
+
+    function getPixelX(realX) {
+        return realX / pixelSize;
+    }
+
+    function getPixelY(realY) {
+        return realY / pixelSize;
+    }
+
+    function drawPixel(pixel) {
         pixels.push(pixel);
         ctx.fillStyle = pixel.color;
-        ctx.fillRect(pixel.x, pixel.y, pixelSize, pixelSize);
+        ctx.fillRect(getRealX(pixel.x), getRealX(pixel.y), pixelSize, pixelSize);
     }
 
     return (
         <canvas
             ref={canvasRef}
-            width={width}
-            height={height}
+            width={realWidth}
+            height={realHeight}
             onClick={handleMouseClick}
         ></canvas>
     );

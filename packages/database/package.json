@@ -1,0 +1,21 @@
+{
+  "name": "database",
+  "version": "0.0.1",
+  "description": "Database - BHDZ",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "mongodb": "^6.3.0"
+  },
+  "scripts": {
+    "mongo:delete": "docker rm -v -f mongo-pixelart",
+    "mongo:build": "docker build -t mongo-pixelart .",
+    "mongo:run": "docker run -d -p 27018:27017 --name mongo-pixelart mongo-pixelart",
+    "mongo:init": "yarn run mongo:delete && yarn run mongo:build && yarn run mongo:run &&  yarn run reset-mock",
+    "mongo:stop": "docker stop mongo-pixelart",
+    "start": "docker start mongo-pixelart",
+    "reset-mock": "node ./scripts/reset-data-mock-mongo.js"
+  }
+}

@@ -26,3 +26,4 @@ cdk.out
 .idea/
 /yarn.lock
 /package-lock.json
+/packages/api/package-lock.json

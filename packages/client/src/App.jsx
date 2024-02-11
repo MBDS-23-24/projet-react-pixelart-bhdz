@@ -1,11 +1,15 @@
 import './App.css'
-import PixelGrid from "./components/pixel-grid/PixelGrid.jsx";
-
+import {Route, Routes} from "react-router-dom";
+import routes from "./routes.jsx";
 
 function App() {
-    return (
-        <PixelGrid width={1200} height={1200} color="#9f35a5"/>
-    )
+  return (
+      <Routes>
+          {routes.map((route , index) => (
+              <Route key={index} path={route.path} element={route.element}/>
+          ))}
+      </Routes>
+  )
 }
 
 export default App

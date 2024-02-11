@@ -15,6 +15,7 @@ export const loginUser = async (user) => {
 
 export const helloWorld = async () => {
     return get(HELLO_WORLD).then(res => {
+        console.log(res.data)
         return res.data;
     }).catch((error) => {
         return {error: 'error', status: 401};
