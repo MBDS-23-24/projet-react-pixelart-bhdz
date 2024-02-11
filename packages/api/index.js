@@ -3,9 +3,11 @@ import cors from 'cors'
 import CookieParser from "cookie-parser";
 import {errorHandler} from "./error/error-handler.js";
 import UserRoute from './routes/user.route.js'
+import "../../config.js"
+
 
 const app = express()
-const port = 5000
+const port = process.env.EXPRESS_PORT
 
 const corsOptions = {
     origin: true,
