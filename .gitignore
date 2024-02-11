@@ -23,6 +23,7 @@ cdk.out
 
 *.private.md
 .vscode/
+.idea/
 /yarn.lock
 /package-lock.json
-/.idea/
+/packages/api/package-lock.json
