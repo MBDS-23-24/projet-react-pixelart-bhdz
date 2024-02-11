@@ -1,13 +1,13 @@
 import axios from "axios";
 import Cookies from 'universal-cookie';
-
-//apply base url for axios
-export const Api_functions = import.meta.env.VITE_API_URL;
+import dotenv from "dotenv";
+dotenv.config({path: './../../.env'});
 
 const cookies = new Cookies();
 
 export const axiosApi = axios.create({
-    baseURL: Api_functions,
+    // eslint-disable-next-line no-undef
+    baseURL: process.env.EXPRESS_URL,
     withCredentials: true,
     headers: {
         'Access-Control-Allow-Origin': '*',
