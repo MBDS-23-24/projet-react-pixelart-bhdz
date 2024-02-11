@@ -3,9 +3,8 @@ import cors from 'cors'
 import CookieParser from "cookie-parser";
 import {errorHandler} from "./error/error-handler.js";
 import UserRoute from './routes/user.route.js'
-import dotenv from "dotenv";
+import "../../config.js"
 
-dotenv.config({path: './../../.env'});
 
 const app = express()
 const port = process.env.EXPRESS_PORT

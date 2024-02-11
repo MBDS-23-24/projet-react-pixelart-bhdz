@@ -1,7 +1,7 @@
 import {MongoClient, ObjectId} from 'mongodb'
 import dotenv from 'dotenv';
 
-dotenv.config({path: './../../.env'});
+import "../../../config.js"
 
 // URL de connexion à la base de données
 const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT;

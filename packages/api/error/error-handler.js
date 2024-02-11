@@ -23,7 +23,7 @@ export function errorHandler (err, req, res, next) {
     }
 }
 
-export async function catcherError(myFunction, next) {
+export async function catchError(myFunction, next) {
     try {
         await myFunction();
     }catch (err) {
