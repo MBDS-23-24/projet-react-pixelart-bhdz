@@ -3,6 +3,12 @@ import {catchError} from "../error/error-handler.js";
 
 export const helloWorld = async (req, res, next) => {
     await catchError(async () => {
-        res.send('Hello World')
+        res.send(await prisma.user.findMany(
+            {
+                include: {
+                    role: true
+                }
+            }
+        ));
     }, next)
 }

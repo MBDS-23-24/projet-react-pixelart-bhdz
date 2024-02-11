@@ -10,7 +10,7 @@ const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT;
 const dbName = process.env.DB_NAME;
 
 // Créer un nouveau client MongoDB
-const client = new MongoClient(url, {useNewUrlParser: true, useUnifiedTopology: true});
+const client = new MongoClient(url);
 
 // Données à insérer dans les collections
 const data = () => {
@@ -104,8 +104,8 @@ const data = () => {
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "color": "#000000"},
-                {"position": 14, "color": "#b01a1a"},
+                {"position": 0, "hexa_color": "#000000", last_update: adjustDate(new Date(), 0, 0, -2)},
+                {"position": 14, "hexa_color": "#b01a1a", last_update: adjustDate(new Date(), 0, 0, -1)},
             ]
         },
         {
@@ -114,8 +114,8 @@ const data = () => {
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "color": "#67218f"},
-                {"position": 8, "color": "#38bb4f"},
+                {"position": 2, "hexa_color": "#67218f", last_update: adjustDate(new Date(), 0, 0, -2)},
+                {"position": 8, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -20, 0, 0)},
             ]
         },
         {
@@ -124,8 +124,8 @@ const data = () => {
             owner_id: users[1]["_id"],
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "color": "#b7632c"},
-                {"position": 10, "color": "#1f9f9d"},
+                {"position": 2, "hexa_color": "#b7632c", last_update: adjustDate(new Date(), -33, -2, 0)},
+                {"position": 10, "hexa_color": "#1f9f9d", last_update: adjustDate(new Date(), -22, -1, 0)},
             ]
         },
         {
@@ -134,8 +134,9 @@ const data = () => {
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "color": "#67218f"},
-                {"position": 8, "color": "#38bb4f"},
+                {"position": 2, "hexa_color": "#67218f", last_update: adjustDate(new Date(), -2, -2, 0)},
+                {"position": 8, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -1, -2, 0)},
+                {"position": 6, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -5, -2, 0)},
             ]
         }
 
