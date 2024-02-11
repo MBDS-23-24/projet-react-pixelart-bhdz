@@ -1,4 +1,4 @@
-import {axiosApi, del, get, post, put} from "../api_functions";
+import {axiosApi, get, post} from "../api_functions.js";
 import Cookies from "universal-cookie";
 import {HELLO_WORLD, LOGIN_USER} from "../url_functions.js";
 
@@ -33,7 +33,6 @@ axiosApi.interceptors.response.use((response) => {
 }, async (error) => {
     if(error.response.status === 403 || error.response.status === 401){
         const cookies = new Cookies();
-        cookies.remove('refreshToken');
         cookies.remove('accessToken');
         localStorage.removeItem('user_session');
         window.location.href = '/login';

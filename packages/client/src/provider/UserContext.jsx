@@ -18,11 +18,12 @@ export function logoutUser() {
 }
 
 export const UserContext = createContext({
-    user: null,
+    user : null,
     setUser: (user) => {}
 });
 
-export const UserProvider = (props) => {
+// eslint-disable-next-line react/prop-types
+export const UserProvider = ({children}) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -34,7 +35,7 @@ export const UserProvider = (props) => {
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
-            {props}
+            {children}
         </UserContext.Provider>
     );
 };
