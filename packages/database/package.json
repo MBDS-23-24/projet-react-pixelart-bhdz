@@ -12,7 +12,7 @@
   "scripts": {
     "mongo:delete": "docker rm -v -f mongo-pixelart",
     "mongo:build": "docker build -t mongo-pixelart .",
-    "mongo:run": "docker run -d -p 27017:27017 --name mongo-pixelart mongo-pixelart",
+    "mongo:run": "docker run -d -p 27018:27017 --name mongo-pixelart mongo-pixelart",
     "mongo:init": "yarn run mongo:delete && yarn run mongo:build && yarn run mongo:run",
     "mongo:stop": "docker stop mongo-pixelart",
     "start": "docker start mongo-pixelart",
