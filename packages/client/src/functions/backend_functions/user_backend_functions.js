@@ -1,23 +1,12 @@
 import {axiosApi, get, post} from "../api_functions.js";
 import Cookies from "universal-cookie";
-import {HELLO_WORLD, LOGIN_USER} from "../url_functions.js";
-
+import {LOGIN_USER} from "../url_functions.js";
 export const loginUser = async (user) => {
     return post(`${LOGIN_USER}`, user).then(res => {
         localStorage.setItem('user_session', JSON.stringify(res.data.user));
-        window.location.href = '/';
         return res.data.user;
     }).catch((error) => {
         console.log('auth error')
-        return {error: 'error', status: 401};
-    });
-}
-
-export const helloWorld = async () => {
-    return get(HELLO_WORLD).then(res => {
-        console.log(res.data)
-        return res.data;
-    }).catch((error) => {
         return {error: 'error', status: 401};
     });
 }

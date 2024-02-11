@@ -26,28 +26,28 @@ const data = () => {
             "_id": new ObjectId(1),
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
             "_id": new ObjectId(2),
             "email": "mouctar.diallo@pixelart.com",
             "username": "mouctardlo",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
             "_id": new ObjectId(3),
             "email": "yehoudi.vincent@pixelart.com",
             "username": "yehoudivct",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
             "_id": new ObjectId(4),
             "email": "dounia.zoubid@pixelart.com",
             "username": "douniazbd",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
             "role_id": "ROLE_USER"
         },
     ]
