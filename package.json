@@ -2,7 +2,7 @@
   "name": "2024-project-bhdz-pixelart",
   "version": "0.0.1",
   "description": "MBDS project 2024",
-  "type" : "module",
+  "type": "module",
   "main": "index.js",
   "repository": "https://github.com/MBDS-23-24/projet-react-pixelart-bhdz",
   "author": "BHDZ",
@@ -22,13 +22,16 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "yarn run start:database && yarn run start:api && yarn run start:client",
     "start:client": "yarn workspace client start",
     "start:api": "yarn workspace api start",
-    "start:database" : "yarn workspace database start"
+    "start:database": "yarn workspace database start"
   },
   "packageManager": "yarn@1.22.19",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "react-router": "^6.22.0",
+    "react-router-dom": "^6.22.0"
   }
 }
