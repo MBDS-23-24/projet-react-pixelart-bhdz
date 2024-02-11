@@ -4,11 +4,61 @@ generator client {
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DB_URL")
 }
 
 model User {
-  id    String @id @default(uuid()) @map("_id")
-  email String @unique
-  name  String
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  username   String
+  email      String       @unique
+  password   String
+  Line       Line[]
+  PixelBoard PixelBoard[]
+  roleId     String       @map("role_id")
+  role       Role         @relation(fields: [roleId], references: [id])
+
+  @@map("user")
+}
+
+model PixelBoard {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  creatorId        String   @map("creator_id") @db.ObjectId
+  creator          User     @relation(fields: [creatorId], references: [id])
+  dateCreated      DateTime @map("date_created")
+  startDate        DateTime @map("start_date")
+  endDate          DateTime @map("end_date")
+  delayMs          Int      @map("delay_ms")
+  pixelWidth       Int      @map("pixel_width")
+  pixelHeight      Int      @map("pixel_height")
+  isPixelOverwrite Boolean  @map("is_pixel_overwrite")
+  lines            Line[]
+
+  @@map("pixel_board")
+}
+
+model Role {
+  id    String @id @map("_id")
+  label String
+  User  User[]
+
+  @@map("role")
+}
+
+model Line {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  position     Int
+  ownerId      String     @map("owner_id") @db.ObjectId
+  owner        User       @relation(fields: [ownerId], references: [id])
+  pixelBoardId String     @map("pixel_board_id") @db.ObjectId
+  pixelBoard   PixelBoard @relation(fields: [pixelBoardId], references: [id])
+  pixels       Pixel[]
+
+  @@map("line")
+}
+
+type Pixel {
+  position   Int
+  hexaColor  String   @map("hexa_color")
+  lastUpdate DateTime @map("last_update")
 }

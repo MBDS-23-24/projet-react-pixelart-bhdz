@@ -2,6 +2,7 @@
   "name": "2024-project-bhdz-pixelart",
   "version": "0.0.1",
   "description": "MBDS project 2024",
+  "type" : "module",
   "main": "index.js",
   "repository": "https://github.com/MBDS-23-24/projet-react-pixelart-bhdz",
   "author": "BHDZ",
@@ -14,18 +15,17 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.1.2"
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "dotenv": "^16.4.1"
   },
   "workspaces": [
     "packages/*"
   ],
   "scripts": {
+    "start": "yarn run start:database && yarn run start:api && yarn run start:client",
     "start:client": "yarn workspace client start",
     "start:api": "yarn workspace api start",
-    "mongo:build": "docker build -t mongo-pixelart .",
-    "mongo:run": "docker run -d -p 27017:27017 --name mongo-pixelart mongo-pixelart",
-    "mongo:stop": "docker stop mongo-pixelart",
-    "mongo:delete": "docker rmi mongo-pixelart"
+    "start:database" : "yarn workspace database start"
   },
   "packageManager": "yarn@1.22.19",
   "engines": {
