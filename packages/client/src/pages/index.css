@@ -6,6 +6,14 @@
   color-scheme: light;
 }
 
+.b-600 {
+  font-weight: 600 !important;
+}
+
+.b-300 {
+  font-weight: 300 !important;
+}
+
 body {
   margin: 0;
   display: flex;
