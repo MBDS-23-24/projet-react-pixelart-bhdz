@@ -28,8 +28,6 @@ export default function Login() {
             setTimeout(() => {
                     setUser(data);
                     window.location.reload();
-                    window.location.href = '/';
-
                 }, 1000
             )
             notifications.show({
