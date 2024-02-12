@@ -5,16 +5,7 @@ export const loginUser = async (user) => {
     return post(`${LOGIN_USER}`, user).then(res => {
         localStorage.setItem('user_session', JSON.stringify(res.data.user));
         return res.data.user;
-    }).catch((error) => {
-        console.log('auth error')
-        return {error: 'error', status: 401};
     });
-}
-
-window.onload = () => {
-    if (window.location.pathname === '/login') {
-        console.log('login page - deconnexion token invalid');
-    }
 }
 
 axiosApi.interceptors.response.use((response) => {
@@ -24,6 +15,5 @@ axiosApi.interceptors.response.use((response) => {
         const cookies = new Cookies();
         cookies.remove('accessToken');
         localStorage.removeItem('user_session');
-        window.location.href = '/login';
     }
 });

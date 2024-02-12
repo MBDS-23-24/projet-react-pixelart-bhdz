@@ -1,40 +1,34 @@
 import {useContext} from "react";
-import { useForm } from "react-hook-form"
+import { useForm } from '@mantine/form';
 import {useMutation} from "react-query";
 import {UserContext} from "../../provider/UserContext.jsx";
 import {loginUser} from "../../functions/backend_functions/user_backend_functions.js";
 import Illustration from "./Illustration.jsx";
 import './Login.scss';
-import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
-import {Anchor, Button, Checkbox, Group, Input, Text, Title} from "@mantine/core";
+import {IconCheck, IconLock, IconMailFilled, IconX} from "@tabler/icons-react";
+import {Anchor, Button, Checkbox, Group, Input, Text, TextInput, Title} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 
 export default function Login() {
     const { user, setUser } = useContext(UserContext);
 
-    const { register, handleSubmit } = useForm({
-        defaultValues: {
-            email: "",
-            password: "",
+    const form = useForm({
+        initialValues: {
+            email: "pierre.bihannic@pixelart.com",
+            password: "PixelPass1!",
         },
-        errors: {
-            email: {
-                type: "required",
-                message: "Email is required"
-            },
-            password: {
-                type: "required",
-                message: "Password is required"
-            }
+        validate: {
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'L\'email est invalide'),
+            password: (value) => (value.length > 4 ? null : 'Le mot de passe doit contenir au moins 5 caractères'),
         }
     });
 
     const login = useMutation((user) => loginUser(user), {
         onSuccess: (data) => {
             setTimeout(() => {
-                setUser(data);
-                window.location.reload();
-                window.location.href = '/';
+                    setUser(data);
+                    window.location.reload();
+                    window.location.href = '/';
 
                 }, 1000
             )
@@ -47,6 +41,13 @@ export default function Login() {
         },
         onError: (error) => {
             console.log(error);
+            notifications.show({
+                title: 'Erreur !',
+                message: 'Identifiant ou mot de passe incorrect',
+                autoClose: 4000,
+                color: 'red',
+                loading: false
+            });
         }
     });
 
@@ -56,24 +57,23 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="login">
+        <form onSubmit={form.onSubmit(onSubmit)} className="login">
             <Illustration />
             <div className="card">
                 <div>
                     <Title order={3} className={"b-900"}>Connexion</Title>
                     <Text className={"b-600"} size="sm" color="dimmed">Connectez-vous à votre compte</Text>
                 </div>
-                <Input id="email"
+                <TextInput id="email"
                        placeholder={"Email"}
                        size="md"
                        leftSection={
                            <IconMailFilled size={24}
                            />
                        }
-                       {...register('email', { required: true })}
-                />
+                       {...form.getInputProps('email')}/>
 
-                <Input id="password"
+                <TextInput id="password"
                        type="password"
                        placeholder={"Mot de passe"}
                        size="md"
@@ -81,7 +81,7 @@ export default function Login() {
                            <IconLock size={24}
                            />
                        }
-                        {...register('password', { required: true })} />
+                       {...form.getInputProps('password')}/>
                 <Button fullWidth type="submit">Login</Button>
                 <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Inscrivez-vous</Button>
             </div>
