@@ -3,7 +3,7 @@ import { useForm } from '@mantine/form';
 import {useMutation} from "react-query";
 import {UserContext} from "../../provider/UserContext.jsx";
 import {loginUser} from "../../functions/backend_functions/user_backend_functions.js";
-import Illustration from "./Illustration.jsx";
+import BackgroundIllustration from "./BackgroundIllustration.jsx";
 import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
 import {Button, Text, TextInput, Title} from "@mantine/core";
@@ -43,7 +43,7 @@ export default function Login() {
             console.log(error);
             notifications.show({
                 title: 'Error !',
-                message: 'Identifiants incorrects ! Please try again',
+                message: 'Credentials incorrects ! Please try again',
                 autoClose: 4000,
                 color: 'red',
                 loading: false
@@ -58,7 +58,7 @@ export default function Login() {
 
     return (
         <form onSubmit={form.onSubmit(onSubmit)} className="login">
-            <Illustration />
+            <BackgroundIllustration />
             <div className="card">
                 <div>
                     <Title order={3} className={"b-600"}>Log in</Title>
