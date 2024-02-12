@@ -1,12 +1,10 @@
 import axios from "axios";
 import Cookies from 'universal-cookie';
-import "../../../config.js"
 
 const cookies = new Cookies();
 
 export const axiosApi = axios.create({
-    // eslint-disable-next-line no-undef
-    baseURL: process.env.EXPRESS_URL,
+    baseURL: import.meta.env.VITE_EXPRESS_URL,
     withCredentials: true,
     headers: {
         'Access-Control-Allow-Origin': '*',

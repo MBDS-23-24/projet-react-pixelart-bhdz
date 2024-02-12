@@ -1,5 +1,5 @@
 export class AppError extends Error {
-    errorType = 'AppError'
+    type = 'AppError'
     details;
     code;
     message;

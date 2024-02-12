@@ -34,7 +34,7 @@ export default function PixelGrid(props) {
         if (ctx) {
             drawGrid();
         }
-    }, [ctx, width, height]);
+    }, [ctx, width, height, drawGrid]);
 
     /**
      * Dessine la grille sur le canvas
