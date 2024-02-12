@@ -5,8 +5,8 @@ import {UserContext} from "../../provider/UserContext.jsx";
 import {loginUser} from "../../functions/backend_functions/user_backend_functions.js";
 import Illustration from "./Illustration.jsx";
 import './Login.scss';
-import {IconCheck, IconLock, IconMailFilled, IconX} from "@tabler/icons-react";
-import {Anchor, Button, Checkbox, Group, Input, Text, TextInput, Title} from "@mantine/core";
+import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
+import {Button, Text, TextInput, Title} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 
 export default function Login() {
@@ -18,8 +18,8 @@ export default function Login() {
             password: "PixelPass1!",
         },
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'L\'email est invalide'),
-            password: (value) => (value.length > 4 ? null : 'Le mot de passe doit contenir au moins 5 caractères'),
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email address'),
+            password: (value) => (value.length > 4 ? null : 'Password is too short'),
         }
     });
 
@@ -33,8 +33,8 @@ export default function Login() {
                 }, 1000
             )
             notifications.show({
-                title: "Connexion réussie",
-                message: "Vous êtes maintenant connecté",
+                title: "Successful connection",
+                message: "You are now logged in !",
                 color: "green",
                 icon: <IconCheck size={24} />,
             });
@@ -42,8 +42,8 @@ export default function Login() {
         onError: (error) => {
             console.log(error);
             notifications.show({
-                title: 'Erreur !',
-                message: 'Identifiant ou mot de passe incorrect',
+                title: 'Error !',
+                message: 'Identifiants incorrects ! Please try again',
                 autoClose: 4000,
                 color: 'red',
                 loading: false
@@ -61,8 +61,8 @@ export default function Login() {
             <Illustration />
             <div className="card">
                 <div>
-                    <Title order={3} className={"b-900"}>Connexion</Title>
-                    <Text className={"b-600"} size="sm" color="dimmed">Connectez-vous à votre compte</Text>
+                    <Title order={3} className={"b-600"}>Log in</Title>
+                    <Text className={"b-300"} size="sm" color="dimmed">Log in to your account</Text>
                 </div>
                 <TextInput id="email"
                        placeholder={"Email"}
@@ -75,7 +75,7 @@ export default function Login() {
 
                 <TextInput id="password"
                        type="password"
-                       placeholder={"Mot de passe"}
+                       placeholder={"Password"}
                        size="md"
                        leftSection={
                            <IconLock size={24}
@@ -83,7 +83,7 @@ export default function Login() {
                        }
                        {...form.getInputProps('password')}/>
                 <Button fullWidth type="submit">Login</Button>
-                <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Inscrivez-vous</Button>
+                <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Register</Button>
             </div>
         </form>
 

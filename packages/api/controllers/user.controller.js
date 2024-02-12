@@ -20,14 +20,10 @@ export const login = async (req, res, next) => {
         const {email, password} = req.body;
 
         if (!email || !password) {
-            return BusinessError(400, 'Bad request', 'Missing email or password');
+            throw BusinessError(400, 'Bad request', 'Missing email or password');
         }
 
         const info = await userService.login(email, password);
-
-        if (info instanceof BusinessError) {
-            return next(info);
-        }
 
         res.json(info);
     }, next)
