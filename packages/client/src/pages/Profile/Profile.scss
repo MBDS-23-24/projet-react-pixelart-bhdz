@@ -1,49 +1,42 @@
-.profile {
+// Profile.scss
+
+.profile-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  height: 100vh;
-}
-
-.card {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  width: 80%;
-  max-width: 600px;
   text-align: center;
-}
 
-.profile-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-
-  .profile-picture {
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
+  .avatar {
+    margin: 20px auto auto;
   }
 
-  .profile-username {
-    margin-top: 15px;
-  }
+  .button-wrapper {
+    margin-top: 20px;
 
-  .profile-email {
-    margin-bottom: 15px;
-  }
-}
+    .update-profile-button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
 
-.profile__section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+      &::before {
+        content: '\2192';  // Utilisation du code Unicode pour une flèche vers la droite
+        font-family: 'Arial', sans-serif;  // Utilisez une police qui prend en charge le code Unicode
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
 
-  svg {
-    margin-right: 8px;
+      &:hover::before {
+        opacity: 1;
+      }
+    }
   }
 }
