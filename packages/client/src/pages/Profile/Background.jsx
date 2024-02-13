@@ -1,5 +1,7 @@
-import './Profile.scss'
-export default function Background(){
+import React from 'react';
+import './Profile.scss';
+
+const Background = () => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800"
              className="fixed left-0 top-0 min-h-screen min-w-screen illustration" preserveAspectRatio="none">
@@ -15,3 +17,5 @@ export default function Background(){
         </svg>
     )
 }
+
+export { Background }; 
