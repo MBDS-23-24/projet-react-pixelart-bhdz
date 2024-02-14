@@ -22,7 +22,6 @@ const queryClient = new QueryClient({
 })
 
 const theme = createTheme({
-    colorScheme: 'light',
     primaryColor: 'blue',
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.6,
@@ -30,7 +29,6 @@ const theme = createTheme({
     headings: {
         fontFamily: 'Inter, sans-serif',
     },
-    defaultColorScheme: 'light',
     fontWeights: {
         normal: 400,
         bold: 700,

@@ -1,0 +1,29 @@
+.slider {
+  background-color: var(--mantine-color-dark-6);
+  box-shadow: var(--mantine-shadow-md);
+  border: 1px solid var(--mantine-color-dark-4);
+
+  .indicator {
+    background-image: linear-gradient(
+                    to right,
+                    var(--mantine-color-pink-filled),
+                    var(--mantine-color-orange-filled)
+    );
+  }
+
+  .control {
+    &::before {
+      display: none;
+    }
+  }
+
+  .label {
+    &,
+    &:hover {
+      &[data-active] {
+        color: var(--mantine-color-white);
+      }
+    }
+  }
+}
+
