@@ -1,112 +1,56 @@
-// import { Avatar, Text, Button, Paper } from '@mantine/core';
-// import { UserContext } from "../../provider/UserContext.jsx";
-// import { useContext } from "react";
+import { Avatar, Button, Card, Grid, TextInput, PasswordInput, Group, Text, Title, Paper, useMantineTheme } from '@mantine/core';
+import { useContext } from "react";
+import { UserContext } from "../../provider/UserContext.jsx";
 
-//
-// export default function Profile() {
-//     const { user } = useContext(UserContext);
-//     // Link to the user's profile image
-//     user.profileImageUrl = "https://picsum.photos/200/300";
-//
-//     return (
-//         <Paper className="profile-container" radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
-//             <Avatar
-//                 className="avatar"
-//                 src={user.profileImageUrl}
-//                 size={120}
-//                 radius={120}
-//                 mx="auto"
-//             />
-//             <Text ta="center" fz="lg" fw={500} mt="md">
-//                 {user.username}
-//             </Text>
-//             <Text ta="center" c="dimmed" fz="sm">
-//                 {user.email}
-//             </Text>
-//             <div className="button-wrapper">
-//                 <Button className="update-profile-button" variant="default" fullWidth mt="md">
-//                     Update Profile
-//                 </Button>
-//             </div>
-//         </Paper>
-//     );
-// }
-
-
-// eslint-disable-next-line no-unused-vars
-import React, { useContext } from 'react';
-import { Avatar, Button, Paper, TextInput, Title, Text, Grid } from '@mantine/core';
-import { UserContext } from '../../provider/UserContext.jsx';
-import './Profile.scss';
 export default function Profile() {
     const { user } = useContext(UserContext);
+    // Theme
+    const theme = useMantineTheme();
     // Link to the user's profile image
     user.profileImageUrl = "https://picsum.photos/200/300";
 
+    // Styles
+    const cardStyle = {
+        maxWidth: '400px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        textAlign: 'center',
+       // marginTop: '1rem'
+    };
+    const lastOnlineStyle = {
+        color: theme.colors.blue[6],
+        fontWeight: 550,
+        marginTop: '1rem',
+        fontSize: theme.fontSizes.sm,
+        letterSpacing: '0.5px',
+    };
+
     return (
-        <Grid className="user-profile-container" gutter="lg">
-            <Grid.Col span={6}>
-                <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
-                    <Avatar
-                        src={user.profileImageUrl}
-                        size={120}
-                        radius={120}
-                        mx="auto"
-                    />
-                    <Text ta="center" fz="lg" fw={500} mt="md">
-                        {user.username}
-                    </Text>
-                    <Text ta="center" c="dimmed" fz="sm">
-                        {user.email}
-                    </Text>
-                    <div className="button-wrapper">
-                        <Button variant="default" fullWidth mt="md">
-                            Update Profile
-                        </Button>
-                    </div>
-                </Paper>
-            </Grid.Col>
-
-            <Grid.Col span={6}>
-                <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
-                    <Title order={2}>
-                        Modify your account information
-                    </Title>
-                    <Avatar src={user.profileImageUrl} size={120} radius={120} mx="auto" />
-                    <Title order={1} mt="md">
-                        {user.username}
-                    </Title>
-                    <Text mt="sm" c="dimmed">
-                        {user.email}
-                    </Text>
-
-                    <div className="settings-card">
-                        <TextInput
-                            label="Username"
-                            placeholder="Enter your new username"
-                            fullWidth
-                        />
-                        <TextInput
-                            label="Email"
-                            placeholder="Enter your new email"
-                            type="email"
-                            fullWidth
-                        />
-                        <TextInput
-                            label="Password"
-                            placeholder="Enter your new password"
-                            type="password"
-                            fullWidth
-                        />
-                        <Button variant="outline" fullWidth mt="md">
-                            Update Profile
-                        </Button>
-                        <Button variant="filled" color="red" fullWidth mt="sm">
-                            Delete Account
-                        </Button>
-                    </div>
-                </Paper>
-            </Grid.Col>
-        </Grid>
+        // Profile Page
+        <Paper padding="md" style={{ background: theme.colors.gray[10], borderRadius: theme.radius.md }}>
+            <Grid>
+                <Grid.Col span={12} md={6} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Card shadow="xl" padding="md" style={cardStyle}>
+                        <Avatar src={user.profileImageUrl} size={120} radius="xl" mx="auto" />
+                        <Text size="lg" weight={300} mt="md">{user.username}</Text>
+                        <Text size="sm" color="dimmed">{user.email}</Text>
+                        <Text style={lastOnlineStyle}>Last Online: 3 hours ago</Text>
+                    </Card>
+                </Grid.Col>
+                 {/* Account modification */}
+                <Grid.Col span={12} md={6} style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Card shadow="xl" padding="lg" style={cardStyle}>
+                        <Title order={4} mb="md">Modify your account information</Title>
+                        <TextInput label="Username" placeholder="Enter your new username" defaultValue={user.username} />
+                        <TextInput label="Email" placeholder="Enter your new email" type="email" defaultValue={user.email} mt="md" />
+                        <PasswordInput label="Password" placeholder="Enter your new password" mt="md" />
+                        <Group position="right" mt="md">
+                            <Button color="green">Update Profile</Button>
+                            <Button color="red" variant="outline">Delete Account</Button>
+                        </Group>
+                    </Card>
+                </Grid.Col>
+            </Grid>
+        </Paper>
     );
 }
