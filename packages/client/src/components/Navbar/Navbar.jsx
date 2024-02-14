@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Center, Tooltip, UnstyledButton, Stack, rem} from '@mantine/core';
+import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme} from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -13,9 +13,12 @@ import {logoutUser} from "../../provider/UserContext.jsx";
 import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
 
 function NavbarLink({ icon: Icon, label, active, onClick, link }) {
+    const { colorScheme } = useMantineColorScheme()
+
+    console.log(colorScheme)
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <Link to={link} className={"link"} data-active={active || undefined}>
+            <Link to={link} className={`link ${colorScheme === "light" ? "link-light" : "link-dark"}`} data-active={active || undefined}>
                 <UnstyledButton onClick={onClick} className={"link"} data-active={active || undefined}>
                     <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
                 </UnstyledButton>

@@ -10,7 +10,7 @@ import {Button, Text, TextInput, Title} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 
 export default function Login() {
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
 
     const form = useForm({
         initialValues: {

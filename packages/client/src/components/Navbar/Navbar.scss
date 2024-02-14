@@ -29,15 +29,23 @@
   justify-content: center;
   color: var(--mantine-color-gray-6);
 
-  &:hover {
-    background-color: var(--mantine-color-gray-1);
-  }
-
   &[data-active] {
     &,
     &:hover {
         background-color: var(--mantine-color-blue-light);
         color: var(--mantine-color-blue-light-color);
     }
+  }
+}
+
+.link-dark {
+  &:hover {
+    background-color: var(--mantine-color-gray-8);
+  }
+}
+
+.link-light {
+  &:hover {
+    background-color: var(--mantine-color-gray-1);
   }
 }
