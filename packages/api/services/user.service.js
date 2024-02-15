@@ -27,5 +27,6 @@ export const userService = {
         const accessToken = this.generateAccessToken(user);
 
         return {user, accessToken};
-    }
+    },
+
 }
