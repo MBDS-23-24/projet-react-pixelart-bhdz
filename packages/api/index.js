@@ -5,6 +5,7 @@ import {errorHandler} from "./error/error-handler.js";
 import UserRoute from './routes/user.route.js'
 import "../../config.js"
 import {login} from "./controllers/user.controller.js";
+import PixelBoardRoute from "./routes/pixel-board.route.js";
 
 
 const app = express()
@@ -30,6 +31,7 @@ app.get('/', (req, res, err) => {
 })
 
 app.use('/user', UserRoute)
+app.use('/pixel-board', PixelBoardRoute)
 app.use('/login', login)
 app.use(errorHandler);
 

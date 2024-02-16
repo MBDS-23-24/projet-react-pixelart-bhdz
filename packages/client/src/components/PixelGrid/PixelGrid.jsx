@@ -1,6 +1,7 @@
 import {useRef, useState, useEffect} from 'react';
+import pixelSocket from "../../functions/sockets_functions.js";
 
-class Pixel {
+export class Pixel {
     constructor(x, y, color) {
         this.x = x;
         this.y = y;
@@ -8,13 +9,14 @@ class Pixel {
     }
 }
 
-export default function PixelGrid(props) {
+export default function PixelGrid({onDrawPixel, pixels, pixelColor, width, height}) {
     const canvasRef = useRef(); // Référence vers le canvas
     const [ctx, setCtx] = useState(null);
     const pixelSize = 10; // Taille d'un pixel
-    const [pixels] = useState([]);
 
-    const {color, width, height} = props;
+    useEffect(() => {
+        console.log('initPixels');
+    }, []);
 
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
@@ -26,21 +28,24 @@ export default function PixelGrid(props) {
     }, [pixels]);
 
     useEffect(() => {
-        // Initialisation du contexte 2D du canvas
-        setCtx(canvasRef.current.getContext('2d'));
+        if (canvasRef) {
+            setCtx(canvasRef.current.getContext('2d'));
+        }
     }, [canvasRef]);
+
 
     useEffect(() => {
         if (ctx) {
             drawGrid();
         }
-    }, [ctx, width, height, drawGrid]);
+    }, [ctx]);
+
 
     /**
      * Dessine la grille sur le canvas
      */
     function drawGrid() {
-        ctx.strokeStyle = '#6e6e6e'; // Couleur des lignes de la grille
+        ctx.strokeStyle = '#000000'; // Couleur des lignes de la grille
         ctx.lineWidth = 0.1;
 
         // Dessin des lignes verticales
@@ -66,36 +71,32 @@ export default function PixelGrid(props) {
      */
     function handleMouseClick(event) {
         const {offsetX, offsetY} = event.nativeEvent;
-        const realX = Math.floor(offsetX / pixelSize) * pixelSize;
-        const realy = Math.floor(offsetY / pixelSize) * pixelSize;
-        const pixel = new Pixel(getPixelX(realX), getPixelY(realy), color);
+        const realPoistionX = Math.floor(offsetX / pixelSize) * pixelSize;
+        const realPoistionY = Math.floor(offsetY / pixelSize) * pixelSize;
+        const pixel = new Pixel(getPixelPosition(realPoistionX), getPixelPosition(realPoistionY), pixelColor);
+        onDrawPixel(pixel);
         drawPixel(pixel);
     }
 
-    function getRealX(pixelX) {
-        return pixelX * pixelSize;
+    function getRealPosition(pixelPosition) {
+        return pixelPosition * pixelSize;
     }
 
-    function getRealY(pixelY) {
-        return pixelY * pixelSize;
+
+    function getPixelPosition(realPosition) {
+        return realPosition / pixelSize;
     }
 
-    function getPixelX(realX) {
-        return realX / pixelSize;
-    }
-
-    function getPixelY(realY) {
-        return realY / pixelSize;
-    }
 
     function drawPixel(pixel) {
         pixels.push(pixel);
         ctx.fillStyle = pixel.color;
-        ctx.fillRect(getRealX(pixel.x), getRealX(pixel.y), pixelSize, pixelSize);
+        ctx.fillRect(getRealPosition(pixel.x), getRealPosition(pixel.y), pixelSize, pixelSize);
     }
 
     return (
         <canvas
+            style={{background: 'rgba(255,247,234,0.85)'}}
             ref={canvasRef}
             width={realWidth}
             height={realHeight}

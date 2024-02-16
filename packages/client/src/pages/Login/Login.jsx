@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import { useForm } from '@mantine/form';
 import {useMutation} from "react-query";
 import {UserContext} from "../../provider/UserContext.jsx";
@@ -11,6 +11,10 @@ import {notifications} from "@mantine/notifications";
 
 export default function Login() {
     const { user, setUser } = useContext(UserContext);
+
+    useEffect(() => {
+        console.log('Login component is mounted');
+    })
 
     const form = useForm({
         initialValues: {

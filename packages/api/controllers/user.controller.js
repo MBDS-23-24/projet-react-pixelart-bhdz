@@ -15,6 +15,16 @@ export const helloWorld = async (req, res, next) => {
     }, next)
 }
 
+export const checkToken = async (req, res, next) => {
+    await catchError(async () => {
+        if(req.user){
+            res.send(req.user);
+        }else{
+            throw BusinessError(401, 'Unauthorized', 'You are not connected')
+        }
+    }, next)
+}
+
 export const login = async (req, res, next) => {
     await catchError(async () => {
         const {email, password} = req.body;

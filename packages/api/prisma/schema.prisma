@@ -58,7 +58,6 @@ model Line {
 }
 
 type Pixel {
-  position   Int
-  hexaColor  String   @map("hexa_color")
-  lastUpdate DateTime @map("last_update")
+  position  Int
+  hexaColor String @map("hexa_color")
 }

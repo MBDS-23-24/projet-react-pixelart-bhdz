@@ -1,10 +1,9 @@
 import {MongoClient, ObjectId} from 'mongodb'
-import dotenv from 'dotenv';
 
 import "../../../config.js"
 
 // URL de connexion à la base de données
-const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT;
+const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + "/?directConnection=true&serverSelectionTimeoutMS=2000";
 
 // Nom de la base de données
 const dbName = process.env.DB_NAME;
@@ -16,35 +15,35 @@ const client = new MongoClient(url);
 const data = () => {
     const users = [
         {
-            "_id": new ObjectId(0),
+            "_id": new ObjectId('00000000cdc41c32293c296c'),
             "email": "quentin.hoareau@pixelart.com",
             "username": "quentinhro",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
             "role_id": "ROLE_ADMIN"
         },
         {
-            "_id": new ObjectId(1),
+            "_id": new ObjectId('00000001cdc41c32293c296d'),
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
-            "_id": new ObjectId(2),
+            "_id": new ObjectId('00000002cdc41c32293c296e'),
             "email": "mouctar.diallo@pixelart.com",
             "username": "mouctardlo",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
-            "_id": new ObjectId(3),
+            "_id": new ObjectId('00000003cdc41c32293c296f'),
             "email": "yehoudi.vincent@pixelart.com",
             "username": "yehoudivct",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
             "role_id": "ROLE_USER"
         },
         {
-            "_id": new ObjectId(4),
+            "_id": new ObjectId('00000004cdc41c32293c2970'),
             "email": "dounia.zoubid@pixelart.com",
             "username": "douniazbd",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
@@ -60,7 +59,7 @@ const data = () => {
 
     const pixel_boards = [
         {
-            "_id": new ObjectId(0),
+            "_id": new ObjectId('0000000024239c0fe5ab43a1'),
             "title": "Example Test 1",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -2),
@@ -72,7 +71,7 @@ const data = () => {
             "is_pixel_overwrite": true
         },
         {
-            "_id": new ObjectId(1),
+            "_id": new ObjectId('0000000024239c0fe5ab43a2'),
             "title": "Example Test 2",
             "creator_id": users[1]["_id"],
             "date_created": adjustDate(new Date(), -30, 0, 0),
@@ -84,7 +83,7 @@ const data = () => {
             "is_pixel_overwrite": true
         },
         {
-            "_id": new ObjectId(0),
+            "_id": new ObjectId('0000000024239c0fe5ab43a3'),
             "title": "Example Test 3",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -3),
@@ -99,44 +98,44 @@ const data = () => {
 
     const lines = [
         {
-            "_id": new ObjectId(0),
+            "_id": new ObjectId('00000000879a35fdac1a8f61'),
             "position": 0,
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "hexa_color": "#000000", last_update: adjustDate(new Date(), 0, 0, -2)},
-                {"position": 14, "hexa_color": "#b01a1a", last_update: adjustDate(new Date(), 0, 0, -1)},
+                {"position": 0, "hexa_color": "#000000"},
+                {"position": 14, "hexa_color": "#b01a1a"},
             ]
         },
         {
-            "_id": new ObjectId(1),
+            "_id": new ObjectId('00000000879a35fdac1a8f62'),
             "position": 2,
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", last_update: adjustDate(new Date(), 0, 0, -2)},
-                {"position": 8, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -20, 0, 0)},
+                {"position": 2, "hexa_color": "#67218f"},
+                {"position": 8, "hexa_color": "#38bb4f"},
             ]
         },
         {
-            "_id": new ObjectId(2),
+            "_id": new ObjectId('00000000879a35fdac1a8f63'),
             "position": 0,
             owner_id: users[1]["_id"],
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#b7632c", last_update: adjustDate(new Date(), -33, -2, 0)},
-                {"position": 10, "hexa_color": "#1f9f9d", last_update: adjustDate(new Date(), -22, -1, 0)},
+                {"position": 2, "hexa_color": "#b7632c"},
+                {"position": 10, "hexa_color": "#1f9f9d"},
             ]
         },
         {
-            "_id": new ObjectId(2),
+            "_id": new ObjectId('00000000879a35fdac1a8f64'),
             "position": 0,
             owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", last_update: adjustDate(new Date(), -2, -2, 0)},
-                {"position": 8, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -1, -2, 0)},
-                {"position": 6, "hexa_color": "#38bb4f", last_update: adjustDate(new Date(), -5, -2, 0)},
+                {"position": 2, "hexa_color": "#67218f"},
+                {"position": 8, "hexa_color": "#38bb4f"},
+                {"position": 6, "hexa_color": "#38bb4f"},
             ]
         }
 
@@ -161,9 +160,7 @@ function adjustDate(date, minutes = 0, hours = 0, days = 0) {
     dateInMilliseconds += minutes * 60 * 1000;
 
     // Create a new date from the adjusted milliseconds
-    let newDate = new Date(dateInMilliseconds);
-
-    return newDate;
+    return new Date(dateInMilliseconds);
 }
 
 

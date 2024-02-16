@@ -13,6 +13,16 @@ export const axiosApi = axios.create({
     },
 });
 
+axiosApi.interceptors.response.use((response) => {
+    return response;
+}, async (error) => {
+    if(error.response.status === 403 || error.response.status === 401){
+        const cookies = new Cookies();
+        cookies.remove('accessToken');
+        localStorage.removeItem('user_session');
+    }
+});
+
 export async function get(url, config = {}) {
     return axiosApi.get(url, { ...config });
 }

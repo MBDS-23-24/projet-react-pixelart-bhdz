@@ -6,6 +6,7 @@ import Event from "./event.js";
 import '../../config.js'
 import ApiService from "./api-service.js";
 import {Observable, Subject} from "rxjs";
+import cors from "cors";
 
 import {takeUntil} from 'rxjs/operators';
 
@@ -76,8 +77,18 @@ class PixelBoardStore {
 
 
 const app = express();
+const corsOptions = {
+    origin: "http://localhost",
+    credentials: true,
+}
+app.use(cors(corsOptions));
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server,{
+    cors: {
+        origin: "http://localhost:5173",
+        credentials: true
+    }
+});
 
 const Room = {
     private(userId) {
@@ -106,7 +117,11 @@ function logRoom(room, message) {
 
 
 io.on('connection', (socket) => {
-
+    const request = socket.request;
+    const headers = request.headers;
+    const token = headers.authorization;
+    console.log("Headers:", headers);
+    console.log("Authorization Token:", token);
 
     console.log('Nouvelle connexion WebSocket établie');
     const userId = socket.handshake?.query?.userId;

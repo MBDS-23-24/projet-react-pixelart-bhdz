@@ -110,7 +110,7 @@ db.createCollection("line", {
                     description: "Array of pixels of the line",
                     items: {
                         bsonType: "object",
-                        required: ["position", "hexa_color", "last_update"],
+                        required: ["position", "hexa_color"],
                         properties: {
                             position: {
                                 bsonType: "int",
@@ -119,10 +119,6 @@ db.createCollection("line", {
                             hexa_color: {
                                 bsonType: "string",
                                 description: "Color of the pixel in hexadecimal format #RRGGBB"
-                            },
-                            last_update: {
-                                bsonType: "date",
-                                description: "Date of the last update of the pixel"
                             }
                         }
                     }
