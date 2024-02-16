@@ -9,8 +9,8 @@ export const loginUser = async (user) => {
 }
 export const updateUser = async (user) => {
     return put(`${UPDATE_USER}`, user).then(res => {
-        localStorage.setItem('user_session', JSON.stringify(res.data));
-        return res.data;
+        localStorage.setItem('user_session', JSON.stringify(res.data.user));
+        return res.data.user;
     });
 }
 

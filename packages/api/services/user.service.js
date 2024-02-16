@@ -29,4 +29,15 @@ export const userService = {
         return {user, accessToken};
     },
 
+    async updateUser(username, email, password) {
+        //const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
+
+        return await prisma.user.update({
+            where: {email: email},
+            data: {
+                username: username,
+                email: email
+            },
+        });
+    }
 }

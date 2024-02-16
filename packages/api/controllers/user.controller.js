@@ -29,24 +29,14 @@ export const login = async (req, res, next) => {
         res.json(info);
     }, next)
 }
-// export const updateUser = async (req, res, next) => {
-//     await catchError(async () => {
-//         const { id, username, email, password } = req.body;
-//
-//         // Hash the password if it's provided
-//         const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
-//
-//         const updatedUser = await prisma.user.update({
-//             where: { id: id },
-//             data: {
-//                 username: username,
-//                 email: email,
-//                 ...(hashedPassword && { password: hashedPassword }),
-//             },
-//         });
-//
-//         res.json(updatedUser);
-//     }, next);
-// };
+
+export const updateUser = async (req, res, next) => {
+    await catchError(async () => {
+        const {username, email, password} = req.body;
+        const updatedUser = await userService.updateUser(username, email, password);
+        res.json(updatedUser);
+    }, next);
+};
+
 
 
