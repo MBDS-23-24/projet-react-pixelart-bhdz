@@ -25,6 +25,9 @@ export const login = async (req, res, next) => {
 
         const info = await userService.login(email, password);
 
-        res.json(info);
+        res.cookie('accessToken', info.accessToken, {maxAge: 24 * 60 * 60 * 1000});
+
+        console.log(info.user)
+        res.json(info.user);
     }, next)
 }

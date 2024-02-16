@@ -4,22 +4,37 @@ import routes from "./routes.jsx";
 import {useContext} from "react";
 import {UserContext} from "../provider/UserContext.jsx";
 import Login from "./Login/Login.jsx";
-import {Notification} from "@mantine/core";
+import {AppShell} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
+import {NavBar} from "../components/Navbar/Navbar.jsx";
 
 function App() {
     const { user} = useContext(UserContext);
+
+    function getActiveLinkByUrl() {
+        const url = window.location.pathname;
+        return (url === "/" ? "Home" : url.substring(1).charAt(0).toUpperCase() + url.substring(2));
+    }
 
     return (
         <>
             <Notifications />
             {user ? (
-                <Routes>
-                    {routes.map((route, index) => (
-                        <Route key={index} path={route.path} element={route.element} />
-                    ))}
-                </Routes>
-            ) : (<Login />)}
+                <AppShell className="element-page">
+                    <AppShell.Navbar>
+                        <NavBar active={getActiveLinkByUrl()} />
+                    </AppShell.Navbar>
+                    <AppShell.Main>
+                        <div className="content mr-8 mt-8">
+                            <Routes>
+                                {routes.map((route, index) => (
+                                    <Route key={index} path={route.path} element={route.element}/>
+                                ))}
+                            </Routes>
+                        </div>
+                    </AppShell.Main>
+                </AppShell>
+            ) : (<Login/>)}
         </>
     )
 }
