@@ -30,8 +30,6 @@ export const userService = {
     },
 
     async updateUser(username, email, password) {
-        //const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
-
         return await prisma.user.update({
             where: {email: email},
             data: {
@@ -39,5 +37,17 @@ export const userService = {
                 email: email
             },
         });
+    },
+    updateUserPassword: async (userId, newPassword) => {
+        //const salt = await bcrypt.genSalt(10);
+
+       // const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        const updatedUser = await prisma.user.update({
+            where: { id: userId },
+            data: { password: newPassword },
+        });
+        const { password, ...userWithoutPassword } = updatedUser;
+        return userWithoutPassword;
     }
 }

@@ -8,6 +8,7 @@ import './index.css'
 import '@mantine/core/styles.css';
 import {createTheme, MantineProvider,} from "@mantine/core";
 import '@mantine/notifications/styles.css';
+import {ModalsProvider} from "@mantine/modals";
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -38,15 +39,17 @@ const theme = createTheme({
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <QueryClientProvider client={queryClient} contextSharing={true}>
-        <MantineProvider theme={theme}>
-            <UserProvider>
-                <StrictMode>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
-                </StrictMode>
-            </UserProvider>
-        </MantineProvider>
-    </QueryClientProvider>,
+    <MantineProvider theme={theme}>
+        <QueryClientProvider client={queryClient} contextSharing={true}>
+                <ModalsProvider>
+                    <UserProvider>
+                        <StrictMode>
+                            <BrowserRouter>
+                                <App />
+                            </BrowserRouter>
+                        </StrictMode>
+                    </UserProvider>
+                </ModalsProvider>
+        </QueryClientProvider>
+    </MantineProvider>,
 )
