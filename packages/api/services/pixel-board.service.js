@@ -13,6 +13,7 @@ const pixelBoardService = {
             }
         });
 
+
         lines.forEach(line => {
             const y = line.position;
             line.pixels.forEach(pixel => {
@@ -98,7 +99,7 @@ const pixelBoardService = {
                         id: existingLineConcerned.id
                     },
                     data: {
-                        pixels: mergePixel(existingLineConcerned, newLinesDatabaseFormat[i], existingLines[i].pixelBoard.isPixelOverwrite)
+                        pixels: mergePixel(existingLineConcerned, newLinesDatabaseFormat[i], existingLines[i]?.pixelBoard?.isPixelOverwrite)
                     }
                 })
             } else {

@@ -1,30 +1,35 @@
+import axios from "axios";
+
 const API_URL = process.env.VITE_EXPRESS_URL;
 
 const ApiService = {
-
-    async getUserIdByRequest(request) {
-        const response = await fetch(API_URL+'/check-token', {
-            method: 'GET',
-            headers: {
-                'Authorization': request.headers.get('Authorization'),
-            },
-        });
-        const data = await response.json();
-        return data;
+    async getUserIdByToken(token) {
+        try {
+            const response = await axios.get(API_URL + '/user/check-token', {
+                headers: {
+                    'Authorization': token,
+                },
+            });
+            return response.data.id;
+        } catch (error) {
+            //console.error('Error while fetching user ID:', error);
+            throw error;
+        }
     },
 
+
     async postPixels(pixelBoardId, pixelsList) {
-        const response = await fetch(API_URL+`/pixel-board/${pixelBoardId}/pixels`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(pixelsList),
-        });
-        return response;
+        try {
+            const response = await axios.post(API_URL + `/pixel-board/${pixelBoardId}/pixels`, pixelsList, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            return response;
+        } catch (error) {
+            throw error;
+        }
     }
-
-
 }
 
 export default ApiService;

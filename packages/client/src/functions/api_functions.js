@@ -9,7 +9,7 @@ export const axiosApi = axios.create({
     headers: {
         'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
-        "authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : "",
+        "Authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : "",
     },
 });
 

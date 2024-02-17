@@ -9,23 +9,17 @@ export class Pixel {
     }
 }
 
-export default function PixelGrid({onDrawPixel, pixels, pixelColor, width, height}) {
+export default function PixelGrid({onNewPixelAdded, pixelsInit, onDrawPixel, pixelColor, width, height}) {
     const canvasRef = useRef(); // Référence vers le canvas
     const [ctx, setCtx] = useState(null);
     const pixelSize = 10; // Taille d'un pixel
 
     useEffect(() => {
-        console.log('initPixels');
+
     }, []);
 
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
-
-    useEffect(() => {
-        pixels.forEach((pixel) => {
-            drawPixel(pixel)
-        })
-    }, [pixels]);
 
     useEffect(() => {
         if (canvasRef) {
@@ -37,6 +31,8 @@ export default function PixelGrid({onDrawPixel, pixels, pixelColor, width, heigh
     useEffect(() => {
         if (ctx) {
             drawGrid();
+            pixelsInit(drawPixel)
+            onNewPixelAdded(drawPixel);
         }
     }, [ctx]);
 
@@ -87,9 +83,7 @@ export default function PixelGrid({onDrawPixel, pixels, pixelColor, width, heigh
         return realPosition / pixelSize;
     }
 
-
     function drawPixel(pixel) {
-        pixels.push(pixel);
         ctx.fillStyle = pixel.color;
         ctx.fillRect(getRealPosition(pixel.x), getRealPosition(pixel.y), pixelSize, pixelSize);
     }

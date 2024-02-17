@@ -9,44 +9,39 @@ import {getPixelsByPixelBoardId} from "../../functions/backend_functions/pixelbo
 export default function PixelBoard() {
     const {id} = useParams();
     const [selectedColor, setSelectedColor] = useState('#000000');
-    const [pixels, setPixels] = useState([]);
 
     const onDrawPixel = (pixel) => {
         pixelSocket.emit('DRAW_PIXEL', {x: pixel.x, y: pixel.y, color: pixel.color})
     }
 
     useEffect(() => {
-        fetchPixelsData()
-        listenNewPixelAdded();
         joinPixelBoard();
     }, [id]);
 
     /**
      * Listen to new pixel added event
      */
-    function listenNewPixelAdded() {
+     const listenPixelAdded = (drawPixelFunction) => {
         pixelSocket.listen('NEW_PIXEL_ADDED', (pixel) => {
-            setPixels(prevPixels => [...prevPixels, new Pixel(pixel.x, pixel.y, pixel.color)]);
+            drawPixelFunction(new Pixel(pixel.x, pixel.y, pixel.color));
         });
     }
 
-    function fetchPixelsData() {
+
+
+    const fetchPixelsData = (drawPixelFunction) => {
         getPixelsByPixelBoardId(id).then((pixels) => {
-            const newPixels = []
             pixels.forEach(pixel => {
-                newPixels.push(new Pixel(pixel.x, pixel.y, pixel.color));
+                drawPixelFunction(new Pixel(pixel.x, pixel.y, pixel.color));
             })
-            setPixels(newPixels);
         });
 
         //NO_PERSISTED_PIXELS , this event is emitted when the user join the pixel board
         //The data received is the list of pixels not yet persisted in the database
         pixelSocket.listen('NO_PERSISTED_PIXELS', (pixelsNoPersisted) => {
-            const newPixels = []
             pixelsNoPersisted.forEach(pixel => {
-                newPixels.push(new Pixel(pixel.x, pixel.y, pixel.color));
+                drawPixelFunction(new Pixel(pixel.x, pixel.y, pixel.color));
             })
-            setPixels(prevPixels => [...prevPixels, ...newPixels]);
         });
     }
 
@@ -65,7 +60,7 @@ export default function PixelBoard() {
 
             <div className={"draw-container"}>
 
-                <PixelGrid onDrawPixel={onDrawPixel} pixels={pixels} width={100} height={100}
+                <PixelGrid onNewPixelAdded={listenPixelAdded} pixelsInit={fetchPixelsData} onDrawPixel={onDrawPixel} width={100} height={100}
                            pixelColor={selectedColor}/>
                 <ColorsRange onSelectColor={setSelectedColor}/>
             </div>
