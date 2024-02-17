@@ -1,9 +1,16 @@
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 import prisma from "../prisma/client.js";
 import {BusinessError} from "../error/business.error.js";
 
 const pixelBoardService = {
+
+    async getPixelBoardById(pixelBoardId) {
+        const pixelBoard = await prisma.pixelBoard.findUnique({
+            where: {
+                id: pixelBoardId
+            }
+        });
+        return pixelBoard;
+    },
 
     async getPixels(pixelBoardId) {
         const pixels = []
@@ -56,9 +63,9 @@ const pixelBoardService = {
         const existingLines = await prisma.line.findMany({
             where: {
                 pixelBoardId: boardId,
-                owner : {
-                    id : {
-                        in : ownersIdsConcerned
+                owner: {
+                    id: {
+                        in: ownersIdsConcerned
                     }
                 }
             },
@@ -69,7 +76,7 @@ const pixelBoardService = {
 
         function mergePixel(existingLine, newLine, isPixelOverride) {
             if (!existingLine || !newLine || !isPixelOverride) {
-                throw BusinessError(400, 'Bad request', 'To merge pixels, existing line, new line and isPixelOverride are required.');
+                throw new BusinessError(400, 'Bad request', 'To merge pixels, existing line, new line and isPixelOverride are required.');
             }
             const newPixelsForLine = [...existingLine.pixels];
 

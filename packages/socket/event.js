@@ -7,7 +7,8 @@ const Event = {
     },
     GENERAL: {
         INFO: 'INFO',
-        ERROR: 'ERROR'
+        ERROR: 'ERROR',
+        CONNECTION_SUCCESS: 'CONNECTION_SUCCESS',
     }
 }
 

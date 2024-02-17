@@ -1,12 +1,6 @@
-import {useRef, useState, useEffect} from 'react';
 import "./ColorsRange.scss"
 
 export default function ColorsRange({onSelectColor}) {
-
-    useEffect(() => {
-        console.log('ColorsRange component is mounted');
-
-    }, []);
 
     const availableHexaColors = [
         {
@@ -77,7 +71,7 @@ export default function ColorsRange({onSelectColor}) {
 
 
     return (
-        <div className={''}>
+        <div className={'color-range'}>
             {availableHexaColors.map(((color, index) => (
                 <div key={index}>
                     <div onClick={() => handleColorChange(color.hexaColor)} className={'color-legend'}

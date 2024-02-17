@@ -27,5 +27,16 @@ export const pixelBoardController = {
 
             res.send(await pixelBoardService.getPixels(pixelBoardId))
         }, next)
+    },
+
+    async getPixelBoard(req, res, next) {
+        await catchError(async () => {
+            const pixelBoardId = req?.params?.pixelBoardId;
+            if (!pixelBoardId) {
+                throw BusinessError(400, 'Bad request', 'Missing pixel board id');
+            }
+
+            res.send(await pixelBoardService.getPixelBoardById(pixelBoardId))
+        }, next)
     }
 }

@@ -24,7 +24,23 @@ class PixelBoardStore {
         this.pixels = [];
         this.pixelBoardId = pixelBoardId;
         this.unsubscribePersistence = new Subject();
-        this.recurrencePersistence = this.startRecurrencePersitence(10000).pipe(takeUntil(this.unsubscribePersistence));
+       this.recurrencePersistence = this.startRecurrencePersitence(10000).pipe(takeUntil(this.unsubscribePersistence))
+       this.recurrencePersistence.subscribe({
+           next: isPersisted => {
+               if (isPersisted)
+                   emitEvent(Room.pixelBoard(pixelBoardId), Event.PIXEL.PIXELS_IS_PERSISTED, true)
+               if (!io.sockets?.adapter?.rooms?.get(Room.pixelBoard(pixelBoardId))) {
+                   this.unsubscribePersistence.next();
+                   this.unsubscribePersistence.complete();
+                   PIXEL_BOARD_STORES.delete(pixelBoardId);
+                   logRoom(Room.pixelBoard(pixelBoardId), "No user connected to the pixel board, store deleted");
+               }
+           },
+           error: error => {
+               console.error("Une erreur s'est produite:", error);
+           }
+       });
+
     }
 
     startRecurrencePersitence(delayMs) {
@@ -53,11 +69,7 @@ class PixelBoardStore {
                 observer.next(isPersisted);
             }
 
-            persistPixels();
-
-            return () => {
-                this.unsubscribePersistence.next(); // Unsubscribe when complete
-            };
+            persistPixels()
         });
     }
 
@@ -83,7 +95,7 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 const server = http.createServer(app);
-const io = new Server(server,{
+const io = new Server(server, {
     cors: {
         origin: "http://localhost:5173",
         credentials: true
@@ -126,7 +138,7 @@ io.on('connection', async (socket) => {
     const token = headers.authorization;
     const userId = await ApiService.getUserIdByToken(token);
 
-    if(userId === null){
+    if (userId === null) {
         socket.disconnect();
         return;
     }
@@ -135,52 +147,35 @@ io.on('connection', async (socket) => {
     const privateRoomUser = Room?.private(userId);
     joinRoom(socket, privateRoomUser, userId); //Room privé pour le user
 
-        socket.on(Action.JOIN_PIXEL_BOARD, ({pixelBoardId}) => {
+    socket.on(Action.JOIN_PIXEL_BOARD, ({pixelBoardId}) => {
 
-            const pixelBoardRoom = Room.pixelBoard(pixelBoardId);
-            joinRoom(socket, pixelBoardRoom, userId); //Room pour le pixel board
+        const pixelBoardRoom = Room.pixelBoard(pixelBoardId);
+        joinRoom(socket, pixelBoardRoom, userId); //Room pour le pixel board
 
-
-            if (PIXEL_BOARD_STORES.has(pixelBoardId) === false) {
-                const pixelBoardStore = new PixelBoardStore(pixelBoardId);
-                PIXEL_BOARD_STORES.set(pixelBoardId, pixelBoardStore);
-
-               pixelBoardStore.recurrencePersistence.subscribe({
-                   next: isPersisted => {
-                       if (isPersisted)
-                           emitEvent(pixelBoardRoom, Event.PIXEL.PIXELS_IS_PERSISTED, true)
-                       if (!io.sockets.adapter.rooms.get(pixelBoardRoom)) {
-                           const pixelBoardStoreConcernedByUserDisconnect = PIXEL_BOARD_STORES.get(pixelBoardId);
-                           pixelBoardStoreConcernedByUserDisconnect.unsubscribePersistence.next();
-                           pixelBoardStoreConcernedByUserDisconnect.unsubscribePersistence.complete();
-                           PIXEL_BOARD_STORES.delete(pixelBoardId);
-                           logRoom(pixelBoardRoom, "No user connected to the pixel board, store deleted");
-                       }
-                   },
-                   error: error => {
-                       console.error("Une erreur s'est produite:", error);
-                   }
-               });
-            }
-            emitEvent(pixelBoardRoom, Event.PIXEL.NO_PERSISTED_PIXELS, PIXEL_BOARD_STORES.get(pixelBoardId).pixels);
+        if (PIXEL_BOARD_STORES.has(pixelBoardId) === false) {
+            const pixelBoardStore = new PixelBoardStore(pixelBoardId);
+            PIXEL_BOARD_STORES.set(pixelBoardId, pixelBoardStore);
+        }
+        emitEvent(pixelBoardRoom, Event.PIXEL.NO_PERSISTED_PIXELS, PIXEL_BOARD_STORES.get(pixelBoardId).pixels);
 
 
-            socket.on(Action.DRAW_PIXEL, ({x, y, color}) => {
-                emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_ADDED, {x: x, y: y, color: color});
-                PIXEL_BOARD_STORES.get(pixelBoardId).addPixel(userId, x, y, color);
-            });
-
-            socket.on(Action.ERASE_PIXEL, ({x, y}) => {
-                emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_REMOVED, {x: x, y: y});
-                PIXEL_BOARD_STORES.get(pixelBoardId).removePixel(userId, x, y);
-            });
-
-            socket.on('disconnect', () => {
-                logRoom(pixelBoardRoom, `User ${userId} disconnected`);
-
-            })
+        socket.on(Action.DRAW_PIXEL, ({x, y, color}) => {
+            emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_ADDED, {x: x, y: y, color: color});
+            PIXEL_BOARD_STORES.get(pixelBoardId).addPixel(userId, x, y, color);
         });
 
+        socket.on(Action.ERASE_PIXEL, ({x, y}) => {
+            emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_REMOVED, {x: x, y: y});
+            PIXEL_BOARD_STORES.get(pixelBoardId).removePixel(userId, x, y);
+        });
+
+        socket.on('disconnect', () => {
+            logRoom(pixelBoardRoom, `User ${userId} disconnected`);
+
+        })
+    });
+
+    emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS);
 });
 const PORT = 3200;
 

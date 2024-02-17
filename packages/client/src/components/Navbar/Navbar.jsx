@@ -15,7 +15,6 @@ import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
 function NavbarLink({ icon: Icon, label, active, onClick, link }) {
     const { colorScheme } = useMantineColorScheme()
 
-    console.log(colorScheme)
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
             <Link to={link} className={`link ${colorScheme === "light" ? "link-light" : "link-dark"}`} data-active={active || undefined}>

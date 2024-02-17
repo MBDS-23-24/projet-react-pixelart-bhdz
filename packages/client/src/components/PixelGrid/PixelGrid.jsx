@@ -1,5 +1,4 @@
 import {useRef, useState, useEffect} from 'react';
-import pixelSocket from "../../functions/sockets_functions.js";
 
 export class Pixel {
     constructor(x, y, color) {
@@ -9,14 +8,18 @@ export class Pixel {
     }
 }
 
-export default function PixelGrid({onNewPixelAdded, pixelsInit, onDrawPixel, pixelColor, width, height}) {
+export default function PixelGrid({onNewPixelAdded, initPixel, onDrawPixel, pixelColor, width, height}) {
     const canvasRef = useRef(); // Référence vers le canvas
     const [ctx, setCtx] = useState(null);
     const pixelSize = 10; // Taille d'un pixel
 
     useEffect(() => {
-
-    }, []);
+        if (ctx && initPixel.length > 0) {
+            initPixel.forEach(pixel => {
+                drawPixel(pixel);
+            });
+        }
+    }, [ctx, initPixel]);
 
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
@@ -31,7 +34,6 @@ export default function PixelGrid({onNewPixelAdded, pixelsInit, onDrawPixel, pix
     useEffect(() => {
         if (ctx) {
             drawGrid();
-            pixelsInit(drawPixel)
             onNewPixelAdded(drawPixel);
         }
     }, [ctx]);
