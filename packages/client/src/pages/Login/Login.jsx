@@ -8,6 +8,7 @@ import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
 import {Button, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
+import {checkEmail} from "../utils/Validation.jsx";
 
 export default function Login() {
     const { colorScheme } = useMantineColorScheme();
@@ -19,7 +20,7 @@ export default function Login() {
             password: "PixelPass1!",
         },
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email address'),
+            email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
             password: (value) => (value.length > 4 ? null : 'Password is too short'),
         }
     });
@@ -38,20 +39,9 @@ export default function Login() {
                 icon: <IconCheck size={24} />,
             });
         },
-        onError: (error) => {
-            console.log(error);
-            notifications.show({
-                title: 'Error !',
-                message: 'Credentials incorrects ! Please try again',
-                autoClose: 4000,
-                color: 'red',
-                loading: false
-            });
-        }
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         login.mutate(data);
     }
 

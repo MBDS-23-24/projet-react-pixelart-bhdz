@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from 'universal-cookie';
+import {notifications} from "@mantine/notifications";
 
 const cookies = new Cookies();
 
@@ -32,3 +33,13 @@ export async function del(url, config = {}) {
 export async function patch(url, data, config = {}) {
     return axiosApi.patch(url, { ...data }, { ...config });
 }
+
+axiosApi.interceptors.response.use((response) => {
+    return response;
+}, async (error) => {
+    notifications.show({
+        title: "Error",
+        message: error.response.data.message,
+        color: "red",
+    });
+});

@@ -5,8 +5,8 @@ import {IconMoon, IconSun} from "@tabler/icons-react";
 export function SliderDarkMode() {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
-    function changeColorScheme(value) {
-        setColorScheme(value);
+    function changeColorScheme(colorScheme) {
+        setColorScheme(colorScheme);
     }
 
     return (

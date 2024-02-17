@@ -24,14 +24,12 @@ function App() {
                     <AppShell.Navbar>
                         <NavBar active={getActiveLinkByUrl()} />
                     </AppShell.Navbar>
-                    <AppShell.Main>
-                        <div className="content mr-8 mt-8">
-                            <Routes>
-                                {routes.map((route, index) => (
-                                    <Route key={index} path={route.path} element={route.element}/>
-                                ))}
-                            </Routes>
-                        </div>
+                    <AppShell.Main className={"content"}>
+                        <Routes>
+                            {routes.map((route, index) => (
+                                <Route key={index} path={route.path} element={route.element}/>
+                            ))}
+                        </Routes>
                     </AppShell.Main>
                 </AppShell>
             ) : (<Login/>)}

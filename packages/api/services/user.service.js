@@ -15,13 +15,13 @@ export const userService = {
         });
 
         if (!user) {
-            throw new BusinessError(401, 'Invalid email', 'Email not found');
+            throw new BusinessError(401, 'Credentials incorrects ! Please try again');
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
-            throw new BusinessError(401, 'Invalid password');
+            throw new BusinessError(401, 'Credentials incorrects ! Please try again');
         }
 
         const accessToken = this.generateAccessToken(user);
