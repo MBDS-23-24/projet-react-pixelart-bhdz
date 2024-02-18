@@ -73,10 +73,8 @@ export default function ColorsRange({onSelectColor}) {
     return (
         <div className={'color-range'}>
             {availableHexaColors.map(((color, index) => (
-                <div key={index}>
-                    <div onClick={() => handleColorChange(color.hexaColor)} className={'color-legend'}
-                         style={{backgroundColor: color.hexaColor}}></div>
-                </div>
+                <div key={index} onClick={() => handleColorChange(color.hexaColor)} className={'color-legend'}
+                     style={{backgroundColor: color.hexaColor}}></div>
             )))}
         </div>
     );
