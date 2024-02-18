@@ -100,42 +100,38 @@ const data = () => {
         {
             "_id": new ObjectId('00000000879a35fdac1a8f61'),
             "position": 0,
-            owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "hexa_color": "#000000"},
-                {"position": 14, "hexa_color": "#b01a1a"},
+                {"position": 0, "hexa_color": "#000000", "owner_id": users[0]["_id"]},
+                {"position": 14, "hexa_color": "#b01a1a", "owner_id": users[1]["_id"]},
             ]
         },
         {
             "_id": new ObjectId('00000000879a35fdac1a8f62'),
             "position": 2,
-            owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f"},
-                {"position": 8, "hexa_color": "#38bb4f"},
+                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"]},
+                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"]},
             ]
         },
         {
             "_id": new ObjectId('00000000879a35fdac1a8f63'),
-            "position": 0,
-            owner_id: users[1]["_id"],
+            "position": 2,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#b7632c"},
-                {"position": 10, "hexa_color": "#1f9f9d"},
+                {"position": 2, "hexa_color": "#b7632c", "owner_id": users[1]["_id"]},
+                {"position": 10, "hexa_color": "#1f9f9d", "owner_id": users[2]["_id"]},
             ]
         },
         {
             "_id": new ObjectId('00000000879a35fdac1a8f64'),
             "position": 0,
-            owner_id: users[0]["_id"],
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f"},
-                {"position": 8, "hexa_color": "#38bb4f"},
-                {"position": 6, "hexa_color": "#38bb4f"},
+                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"]},
+                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"]},
+                {"position": 6, "hexa_color": "#38bb4f", "owner_id": users[2]["_id"]},
             ]
         }
 

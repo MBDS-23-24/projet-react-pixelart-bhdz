@@ -19,7 +19,6 @@ class PixelBoardStore {
     recurrencePersistence;
     unsubscribePersistence;
 
-
     constructor(pixelBoardId) {
         this.pixels = [];
         this.pixelBoardId = pixelBoardId;
@@ -48,16 +47,17 @@ class PixelBoardStore {
             const persistPixels = async () => {
                 let isPersisted = false;
                 if (this.pixels.length > 0) {
-                    await ApiService.postPixels(this.pixelBoardId, this.pixels).then();
+
+                    await ApiService.postPixels(this.pixelBoardId, this.pixels).catch(error => {
+                        console.error("Une erreur s'est produite:", error);
+                    });
                     logRoom(Room.pixelBoard(this.pixelBoardId), `${this.pixels.length} pixels persisted for Pixel Board id ${this.pixelBoardId}`);
                     this.pixels = []
-
                     logRoom(Room.pixelBoard(this.pixelBoardId), `Pixels in memory is cleared`);
                     isPersisted = true;
                 } else {
+                    logRoom(Room.pixelBoard(this.pixelBoardId), `No pixels to persist in board `);
                     isPersisted = false;
-
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `No pixels to persist`);
                 }
 
                 if (!this.unsubscribePersistence.isStopped) {
@@ -129,7 +129,6 @@ function logRoom(room, message) {
 
 process.on('uncaughtException', (error) => {
     console.error('Error', error);
-    // Ici, vous pouvez décider de logger l'erreur, d'alerter, ou même de redémarrer le service si nécessaire
 });
 
 io.on('connection', async (socket) => {

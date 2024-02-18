@@ -1,5 +1,5 @@
 import prisma from "../prisma/client.js";
-import {BusinessError} from "../error/business.error.js";
+import {AppLogger} from "../logger/app-logger.js";
 
 const pixelBoardService = {
 
@@ -36,20 +36,17 @@ const pixelBoardService = {
     },
 
     async insertPixels(boardId, pixels) {
-        const linesConcerned = pixels.map(p => p.y);
-        const ownersIdsConcerned = pixels.map(p => p.ownerId);
-
+        const linesConcerned = [...new Set(pixels.map(p => p.y))];
 
         const newLinesDatabaseFormat = linesConcerned.map((linePositionY) => {
             const pixelsForLine = pixels.filter(p => p.y === linePositionY);
-            const pixelsDbFormat = pixelsForLine.map(p => ({position: p.x, hexaColor: p.color}));
+            const pixelsDbFormat = pixelsForLine.map(p => ({
+                position: parseInt(p.x),
+                hexaColor: p.color,
+                ownerId: p.ownerId
+            }));
             return {
-                position: linePositionY,
-                owner: {
-                    connect: {
-                        id: pixels[0].ownerId
-                    }
-                },
+                position: parseInt(linePositionY),
                 pixelBoard: {
                     connect: {
                         id: boardId
@@ -59,15 +56,9 @@ const pixelBoardService = {
             }
         })
 
-
         const existingLines = await prisma.line.findMany({
             where: {
-                pixelBoardId: boardId,
-                owner: {
-                    id: {
-                        in: ownersIdsConcerned
-                    }
-                }
+                pixelBoardId: boardId
             },
             include: {
                 pixelBoard: true
@@ -75,33 +66,52 @@ const pixelBoardService = {
         });
 
         function mergePixel(existingLine, newLine, isPixelOverride) {
-            if (!existingLine || !newLine || !isPixelOverride) {
-                throw new BusinessError(400, 'Bad request', 'To merge pixels, existing line, new line and isPixelOverride are required.');
+            if (!existingLine || !newLine || !isPixelOverride === undefined) {
+                AppLogger.log("warning", 'PixelBoard', 'To merge pixels, existing line, new line and isPixelOverride are required.');
             }
-            const newPixelsForLine = [...existingLine.pixels];
+            if (existingLine.position !== newLine.position) {
+                AppLogger.log("warning", 'PixelBoard', 'The position of the existing line and the new line must be the same');
+            }
+
+            function distinctByAttribute(array, attribute) {
+                const distinctValues = new Set();
+                const distinctObjects = [];
+
+                array.forEach(obj => {
+                    if (!distinctValues.has(obj[attribute])) {
+                        distinctValues.add(obj[attribute]);
+                        distinctObjects.push(obj);
+                    }
+                });
+
+                return distinctObjects;
+            };
+
+            const distinctExistingPixels = distinctByAttribute(existingLine.pixels, 'position')
 
             newLine.pixels.forEach(newPixel => {
-                const indexOfExistingPixel = newPixelsForLine.findIndex(p => p.position === newPixel.position);
+                const indexOfExistingPixel = distinctExistingPixels.findIndex(p => p.position === newPixel.position);
                 if (indexOfExistingPixel === -1) {
-                    newPixelsForLine.push(newPixel);
-                } else if (indexOfExistingPixel >= 0 && isPixelOverride) {
-                    newPixelsForLine[indexOfExistingPixel].hexaColor = newPixel.hexaColor;
+                    distinctExistingPixels.push(newPixel);
+                } else if (indexOfExistingPixel >= 0 && isPixelOverride === true) {
+                    distinctExistingPixels[indexOfExistingPixel].hexaColor = newPixel.hexaColor;
                 } else {
-                    throw BusinessError(400, 'Bad request', 'Pixel already exists or cannot be overwritten');
+                    AppLogger.log("warning", 'PixelBoard', 'Pixel already exists or cannot be overwritten');
                 }
             })
-            return newPixelsForLine;
+            return distinctExistingPixels;
         }
 
-        const getIdExistingLines = (positionY, pixelBoardId, ownerId) => {
-            return existingLines.find(l => l.position === positionY && l.pixelBoardId === pixelBoardId && l.ownerId === ownerId)
+        const getIdExistingLines = (positionY, pixelBoardId) => {
+            return existingLines.find(l => l.position === positionY && l.pixelBoardId === pixelBoardId)
         }
 
+        const result = []
         for (let i = 0; i < newLinesDatabaseFormat.length; i++) {
-            const existingLineConcerned = getIdExistingLines(newLinesDatabaseFormat[i].position, boardId, newLinesDatabaseFormat[i].owner.connect.id);
+            const existingLineConcerned = getIdExistingLines(newLinesDatabaseFormat[i].position, boardId);
 
             if (existingLineConcerned) {
-                await prisma.line.update({
+                const lineUpdated = await prisma.line.update({
                     where: {
                         id: existingLineConcerned.id
                     },
@@ -109,15 +119,15 @@ const pixelBoardService = {
                         pixels: mergePixel(existingLineConcerned, newLinesDatabaseFormat[i], existingLines[i]?.pixelBoard?.isPixelOverwrite)
                     }
                 })
+                result.push(lineUpdated);
             } else {
-                await prisma.line.create({
+                const lineCreated = await prisma.line.create({
                     data: newLinesDatabaseFormat[i]
                 })
+                result.push(lineCreated);
             }
-
-
         }
-        return newLinesDatabaseFormat;
+        return result;
     }
 }
 

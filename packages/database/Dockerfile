@@ -1,19 +1,13 @@
-FROM mongo:6.0
+# Utiliser l'image officielle de MongoDB
+FROM mongo:latest
 
-# Répertoire pour stocker les données MongoDB et les scripts d'initialisation
-RUN mkdir -p /data/db /docker-entrypoint-initdb.d
+# Copier le script de configuration dans le conteneur
+COPY scripts/setup-mongo.sh /docker-entrypoint-initdb.d/
 
-#COPY scripts/config-replica.sh /docker-entrypoint-initdb.d/
+COPY scripts/init-mongo.js /scripts/
 
-# Copiez votre script d'initialisation dans le conteneur
-COPY scripts/init-mongo.js /docker-entrypoint-initdb.d/
-
-
-# Répertoire de travail par défaut
-WORKDIR /data/db
-
-# Exposez le port MongoDB
+# Exposer le port par défaut de MongoDB
 EXPOSE 27017
 
-# Commande par défaut pour lancer le serveur MongoDB
-CMD ["mongod"]
+# Commande pour démarrer MongoDB avec le Replica Set activé
+CMD ["mongod", "--replSet", "rs0", "--bind_ip_all"]

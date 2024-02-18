@@ -59,17 +59,17 @@ db.createCollection("pixel_board", {
                     description: "Date of end of the pixel board"
                 },
                 delay_ms: {
-                    bsonType: "int",
+                    bsonType: "number",
                     minimum: 0,
                     description: "Delay in milliseconds between each pixel for one user"
                 },
                 pixel_width: {
-                    bsonType: "int",
+                    bsonType: "number",
                     minimum: 0,
                     description: "Width in pixels of the pixel board"
                 },
                 pixel_height: {
-                    bsonType: "int",
+                    bsonType: "number",
                     minimum: 0,
                     description: "Height in pixels of the pixel board"
                 },
@@ -88,37 +88,34 @@ db.createCollection("line", {
     validator: {
         $jsonSchema: {
             bsonType: "object",
-            required: ["position", "owner_id", "pixel_board_id", "pixels"],
+            required: ["position", "pixel_board_id", "pixels"],
             properties: {
                 _id: {
                     bsonType: "objectId"
                 },
                 position: {
-                    bsonType: "int",
+                    bsonType: "number",
                     description: "Position y of the line on the pixel board"
-                },
-                owner_id: {
-                    bsonType: "objectId",
-                    description: "Owner's id of the line"
                 },
                 pixel_board_id: {
                     bsonType: "objectId",
                     description: "Pixel board's id concerned of the line"
                 },
                 pixels: {
-                    bsonType: "array",
                     description: "Array of pixels of the line",
+                    bsonType: "array",
                     items: {
                         bsonType: "object",
-                        required: ["position", "hexa_color"],
+                        required: ["position", "hexa_color", "owner_id"],
                         properties: {
-                            position: {
-                                bsonType: "int",
-                                description: "Position x of the pixel on the line"
-                            },
                             hexa_color: {
-                                bsonType: "string",
-                                description: "Color of the pixel in hexadecimal format #RRGGBB"
+                                bsonType: "string"
+                            },
+                            position: {
+                                bsonType: "number",
+                            },
+                            owner_id: {
+                                bsonType: "objectId"
                             }
                         }
                     }
@@ -127,4 +124,4 @@ db.createCollection("line", {
         }
     }
 })
-
+db.line.createIndex({"position": 1, "pixel_board_id": 1}, {unique: true})

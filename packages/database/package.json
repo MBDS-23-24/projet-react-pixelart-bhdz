@@ -10,12 +10,10 @@
     "mongodb": "^6.3.0"
   },
   "scripts": {
-    "mongo:cluster": "docker network create mongoCluster",
     "mongo:delete": "docker rm -v -f mongo-pixelart",
     "mongo:build": "docker build -t mongo-pixelart .",
-    "mongo:run": "docker run -d -p 27018:27017 --name mongo-pixelart --network mongoCluster mongo:5 mongod --replSet myReplicaSet --bind_ip localhost,mongo-pixelart",
-    "mongo:replica": "docker exec -it mongo-pixelart mongosh --eval \"rs.initiate({ _id: \\\"myReplicaSet\\\", members: [ {_id: 0, host: \\\"mongo-pixelart\\\"} ] })\"",
-    "mongo:init": "yarn run mongo:delete && yarn run mongo:build && yarn run mongo:run && yarn run reset-mock",
+    "mongo:run": "docker run -d -p 27018:27017 --name mongo-pixelart mongo-pixelart",
+    "mongo:init": "yarn run mongo:delete && yarn run mongo:build && yarn run mongo:run && sleep 5 && yarn run reset-mock",
     "mongo:stop": "docker stop mongo-pixelart",
     "start": "docker start mongo-pixelart",
     "reset-mock": "node ./scripts/reset-data-mock-mongo.js"
