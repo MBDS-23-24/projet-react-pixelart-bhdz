@@ -23,22 +23,22 @@ class PixelBoardStore {
         this.pixels = [];
         this.pixelBoardId = pixelBoardId;
         this.unsubscribePersistence = new Subject();
-       this.recurrencePersistence = this.startRecurrencePersitence(10000).pipe(takeUntil(this.unsubscribePersistence))
-       this.recurrencePersistence.subscribe({
-           next: isPersisted => {
-               if (isPersisted)
-                   emitEvent(Room.pixelBoard(pixelBoardId), Event.PIXEL.PIXELS_IS_PERSISTED, true)
-               if (!io.sockets?.adapter?.rooms?.get(Room.pixelBoard(pixelBoardId))) {
-                   this.unsubscribePersistence.next();
-                   this.unsubscribePersistence.complete();
-                   PIXEL_BOARD_STORES.delete(pixelBoardId);
-                   logRoom(Room.pixelBoard(pixelBoardId), "No user connected to the pixel board, store deleted");
-               }
-           },
-           error: error => {
-               console.error("Une erreur s'est produite:", error);
-           }
-       });
+        this.recurrencePersistence = this.startRecurrencePersitence(10000).pipe(takeUntil(this.unsubscribePersistence))
+        this.recurrencePersistence.subscribe({
+            next: isPersisted => {
+                if (isPersisted)
+                    emitEvent(Room.pixelBoard(pixelBoardId), Event.PIXEL.PIXELS_IS_PERSISTED, true)
+                if (!io.sockets?.adapter?.rooms?.get(Room.pixelBoard(pixelBoardId))) {
+                    this.unsubscribePersistence.next();
+                    this.unsubscribePersistence.complete();
+                    PIXEL_BOARD_STORES.delete(pixelBoardId);
+                    logRoom(Room.pixelBoard(pixelBoardId), "No user connected to the pixel board, store deleted");
+                }
+            },
+            error: error => {
+                console.error("Une erreur s'est produite:", error);
+            }
+        });
 
     }
 
@@ -176,9 +176,7 @@ io.on('connection', async (socket) => {
 
     emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS);
 });
-const PORT = 3200;
-
-server.listen(PORT, () => {
+server.listen(process.env.SOCKET_PORT, () => {
     console.log(`Serveur Socket.IO écoutant sur le port ${PORT}`);
 });
 
