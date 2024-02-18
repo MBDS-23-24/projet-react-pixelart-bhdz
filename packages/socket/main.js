@@ -12,6 +12,7 @@ import {takeUntil} from 'rxjs/operators';
 
 
 const PIXEL_BOARD_STORES = new Map();
+const DELAY_PERSISTENCE = 30000;
 
 class PixelBoardStore {
     pixels;
@@ -23,7 +24,7 @@ class PixelBoardStore {
         this.pixels = [];
         this.pixelBoardId = pixelBoardId;
         this.unsubscribePersistence = new Subject();
-        this.recurrencePersistence = this.startRecurrencePersitence(10000).pipe(takeUntil(this.unsubscribePersistence))
+        this.recurrencePersistence = this.startRecurrencePersitence(DELAY_PERSISTENCE).pipe(takeUntil(this.unsubscribePersistence))
         this.recurrencePersistence.subscribe({
             next: isPersisted => {
                 if (isPersisted)
@@ -97,7 +98,7 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: process.env.REACT_FRONT_URL,
         credentials: true
     }
 });
@@ -176,7 +177,9 @@ io.on('connection', async (socket) => {
 
     emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS);
 });
-server.listen(process.env.SOCKET_PORT, () => {
+
+const PORT = process.env.SOCKET_PORT;
+server.listen(PORT, () => {
     console.log(`Serveur Socket.IO écoutant sur le port ${PORT}`);
 });
 
