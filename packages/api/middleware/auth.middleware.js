@@ -7,7 +7,7 @@ export const authMiddleware = {
         if (authHeader) {
             const token = authHeader.split(' ')[1];
 
-            jwt.verify(token, process.env.USER_ACCESS_API_TOKEN_SECRET, (err, user) => {
+            jwt.verify(token, process.env.ACCESS_API_TOKEN_SECRET, (err, user) => {
                 if (err) {
                     return res.sendStatus(403);
                 }
@@ -26,7 +26,7 @@ export const authMiddleware = {
         if (authHeader) {
             const token = authHeader.split(' ')[1];
 
-            jwt.verify(token, process.env.SOCKET_SERVER_ACCESS_API_TOKEN_SECRET, (err, result) => {
+            jwt.verify(token, process.env.ACCESS_API_TOKEN_SECRET, (err, result) => {
                 if (err) {
                     return res.sendStatus(403);
                 }
