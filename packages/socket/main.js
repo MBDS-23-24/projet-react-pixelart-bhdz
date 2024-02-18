@@ -98,7 +98,7 @@ app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.REACT_FRONT_URL,
+        origin: process.env.SOCKET_FRONT_URL,
         credentials: true
     }
 });
