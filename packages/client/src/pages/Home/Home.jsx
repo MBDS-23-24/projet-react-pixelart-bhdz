@@ -8,7 +8,7 @@ export default function Home() {
         <div>
             <h1>Home Page</h1>
             <p>Welcome to the Pixel Art App !</p>
-            <Link to="/pixel-board">Click here to access the Pixel Board</Link>
+            <Link to="/pixel-board/0000000024239c0fe5ab43a1">Click here to access the Pixel Board</Link>
             <Button variant="filled" color="red" onClick={()=> logoutUser()}>Log out</Button>
         </div>
     )

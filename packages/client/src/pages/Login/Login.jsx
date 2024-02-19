@@ -6,11 +6,12 @@ import {loginUser} from "../../functions/backend_functions/user_backend_function
 import BackgroundIllustration from "./BackgroundIllustration.jsx";
 import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
-import {Button, Text, TextInput, Title} from "@mantine/core";
+import {Button, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 
 export default function Login() {
-    const { user, setUser } = useContext(UserContext);
+    const { colorScheme } = useMantineColorScheme();
+    const { setUser } = useContext(UserContext);
 
     const form = useForm({
         initialValues: {
@@ -50,14 +51,13 @@ export default function Login() {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         login.mutate(data);
     }
 
     return (
         <form onSubmit={form.onSubmit(onSubmit)} className="login">
             <BackgroundIllustration />
-            <div className="card">
+            <div className={`card ${colorScheme === "light" ? "card-background-light" : "card-background-dark"}`}>
                 <div>
                     <Title order={3} className={"b-600"}>Log in</Title>
                     <Text className={"b-300"} size="sm" color="dimmed">Log in to your account</Text>

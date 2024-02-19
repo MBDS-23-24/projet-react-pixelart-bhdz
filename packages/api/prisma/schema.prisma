@@ -12,7 +12,6 @@ model User {
   username   String
   email      String       @unique
   password   String
-  Line       Line[]
   PixelBoard PixelBoard[]
   roleId     String       @map("role_id")
   role       Role         @relation(fields: [roleId], references: [id])
@@ -48,8 +47,6 @@ model Role {
 model Line {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   position     Int
-  ownerId      String     @map("owner_id") @db.ObjectId
-  owner        User       @relation(fields: [ownerId], references: [id])
   pixelBoardId String     @map("pixel_board_id") @db.ObjectId
   pixelBoard   PixelBoard @relation(fields: [pixelBoardId], references: [id])
   pixels       Pixel[]
@@ -58,7 +55,7 @@ model Line {
 }
 
 type Pixel {
-  position   Int
-  hexaColor  String   @map("hexa_color")
-  lastUpdate DateTime @map("last_update")
+  position  Int
+  hexaColor String @map("hexa_color")
+  ownerId   String @map("owner_id") @db.ObjectId
 }

@@ -22,9 +22,10 @@
     "packages/*"
   ],
   "scripts": {
-    "start:client": "yarn workspace client start",
+    "start:database": "yarn workspace database start",
     "start:api": "yarn workspace api start",
-    "start:database": "yarn workspace database start"
+    "start:client": "yarn workspace client start",
+    "start:socket": "yarn workspace socket start"
   },
   "packageManager": "yarn@1.22.19",
   "engines": {

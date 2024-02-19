@@ -1,15 +1,15 @@
-import {StrictMode} from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import { createRoot } from 'react-dom/client';
 import {QueryClient, QueryClientProvider} from "react-query";
 import {BrowserRouter} from "react-router-dom";
 import {UserProvider} from "../provider/UserContext.jsx";
-import './index.css'
+import App from './App.jsx';
+import './index.scss';
 import '@mantine/core/styles.css';
-import {createTheme, MantineProvider,} from "@mantine/core";
+import {createTheme, MantineProvider} from "@mantine/core";
 import '@mantine/notifications/styles.css';
 import {ModalsProvider} from "@mantine/modals";
 
+// Configuration du QueryClient
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -20,10 +20,10 @@ const queryClient = new QueryClient({
             retry: false,
         }
     },
-})
+});
 
+// Configuration du thème Mantine
 const theme = createTheme({
-    colorScheme: 'light',
     primaryColor: 'blue',
     fontFamily: 'Inter, sans-serif',
     lineHeight: 1.6,
@@ -31,25 +31,20 @@ const theme = createTheme({
     headings: {
         fontFamily: 'Inter, sans-serif',
     },
-    defaultColorScheme: 'light',
     fontWeights: {
         normal: 400,
         bold: 700,
     },
 });
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-    <MantineProvider theme={theme}>
-        <QueryClientProvider client={queryClient} contextSharing={true}>
-                <ModalsProvider>
-                    <UserProvider>
-                        <StrictMode>
-                            <BrowserRouter>
-                                <App />
-                            </BrowserRouter>
-                        </StrictMode>
-                    </UserProvider>
-                </ModalsProvider>
-        </QueryClientProvider>
-    </MantineProvider>,
-)
+createRoot(document.getElementById('root')).render(
+    <QueryClientProvider client={queryClient} contextSharing={true}>
+        <MantineProvider theme={theme}>
+            <UserProvider>
+                <BrowserRouter>
+                    <App/>
+                </BrowserRouter>
+            </UserProvider>
+        </MantineProvider>
+    </QueryClientProvider>,
+);
