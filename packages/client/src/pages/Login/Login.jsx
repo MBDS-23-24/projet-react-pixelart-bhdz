@@ -51,7 +51,6 @@ export default function Login() {
     });
 
     const onSubmit = (data) => {
-        console.log(data);
         login.mutate(data);
     }
 
