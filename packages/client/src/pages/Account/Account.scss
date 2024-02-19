@@ -1,50 +1,50 @@
-/* Profile.css */
-.profile-paper {
+/* Account.css */
+.account-paper {
   background: var(--mantine-color-gray-10);
   border-radius: var(--mantine-border-radius-md);
 }
 
-.profile-grid-col {
+.account-grid-col {
   display: flex;
   justify-content: center;
 }
 
-.profile-card {
+.account-card {
   max-width: 400px;
   width: 100%;
   margin: auto;
   text-align: center;
 }
 
-.profile-avatar {
+.account-avatar {
   margin: auto;
 }
 
-.profile-title {
+.account-title {
   margin-bottom: var(--mantine-space-md);
 }
-.profile-subtitle {
+.account-subtitle {
   margin-bottom: var(--mantine-space-lg);
   text-align: left;
 }
 
-.profile-text-lg {
+.account-text-lg {
   margin-top: var(--mantine-space-md);
 }
 
-.profile-text-sm {
+.account-text-sm {
   color: var(--mantine-color-dimmed);
 }
 
-.profile-update-button:hover {
+.account-update-button:hover {
   background-color: #45a049;
 }
 
-.avatar-container:hover .profile-avatar img {
+.avatar-container:hover .account-avatar img {
   filter: grayscale(100%);
 }
 
-.avatar-container:hover .profile-avatar button {
+.avatar-container:hover .account-avatar button {
   display: block;
 }
 .avatar-container {
@@ -52,7 +52,7 @@
   display: inline-block;
   cursor: pointer;
 
-  &:hover .profile-avatar img {
+  &:hover .account-avatar img {
     filter: grayscale(100%);
   }
 }

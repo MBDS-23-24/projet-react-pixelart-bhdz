@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useContext, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useMutation } from 'react-query';
@@ -6,13 +5,13 @@ import { updateUser, changeUserPassword } from "../../functions/backend_function
 import { logoutUser, UserContext } from "../../provider/UserContext.jsx";
 import {Button, TextInput, Group, Title, Paper, Text, Avatar, Grid, Card, Modal, PasswordInput} from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import './Profile.scss';
+import './Account.scss';
 import {useDisclosure} from "@mantine/hooks";
 
-export default function Profile() {
+export default function Account() {
     const { user, setUser } = useContext(UserContext);
-    //Link to user's profile
-    user.profileImageUrl = "https://picsum.photos/200/300";
+    //Link to user's account
+    user.accountImageUrl = "https://picsum.photos/200/300";
     const [opened,{open, close}] = useDisclosure(false);
 
     const form = useForm({
@@ -33,19 +32,19 @@ export default function Profile() {
         },
     });
 
-    const { mutate: updateProfile } = useMutation(updateUser, {
+    const { mutate: updateAccount } = useMutation(updateUser, {
         onSuccess: (data) => {
             setUser(data);
             showNotification({
                 title: 'Success',
-                message: 'Profile updated successfully',
+                message: 'Account updated successfully',
                 color: 'green',
             });
         },
         onError: (error) => {
             showNotification({
                 title: 'Error',
-                message: error?.response?.data?.message || 'Failed to update profile',
+                message: error?.response?.data?.message || 'Failed to update account',
                 color: 'red',
             });
         },
@@ -80,30 +79,30 @@ export default function Profile() {
     };
 
     const onSubmit = (values) => {
-        updateProfile(values);
+        updateAccount(values);
     };
 
     return (
         <form onSubmit={form.onSubmit(onSubmit)}>
-            <Paper padding="md" className="profile-paper">
+            <Paper padding="md" className="account-paper">
                 <Grid>
-                    <Grid.Col span={12} md={6} className="profile-grid-col">
-                        <Card shadow="xl" padding="md" className="profile-card">
-                            <Avatar src={user.profileImageUrl} size={120} radius="xl" className="profile-avatar" />
-                            <Text size="lg" weight={300} mt="md" className="profile-text-lg">{user.username}</Text>
-                            <Text size="sm" className="profile-text-sm" color="dimmed">{user.email}</Text>
+                    <Grid.Col span={12} md={6} className="account-grid-col">
+                        <Card shadow="xl" padding="md" className="account-card">
+                            <Avatar src={user.accountImageUrl} size={120} radius="xl" className="account-avatar" />
+                            <Text size="lg" weight={300} mt="md" className="account-text-lg">{user.username}</Text>
+                            <Text size="sm" className="account-text-sm" color="dimmed">{user.email}</Text>
                         </Card>
                     </Grid.Col>
 
-                    <Grid.Col span={12} md={6} className="profile-grid-col">
-                        <Card shadow="xl" padding="lg" className="profile-card">
-                            <Title order={4} mb="md" className="profile-title">Modify your account information</Title>
-                            <TextInput label="Username" {...form.getInputProps('username')} className="profile-text-input" placeholder="New Username" />
-                            <TextInput label="Email" {...form.getInputProps('email')} className="profile-text-input" mt="md" placeholder="New E-mail" />
+                    <Grid.Col span={12} md={6} className="account-grid-col">
+                        <Card shadow="xl" padding="lg" className="account-card">
+                            <Title order={4} mb="md" className="accoun-title">Modify your account information</Title>
+                            <TextInput label="Username" {...form.getInputProps('username')} className="account-text-input" placeholder="New Username" />
+                            <TextInput label="Email" {...form.getInputProps('email')} className="account-text-input" mt="md" placeholder="New E-mail" />
                             <Group position="right" mt="md">
-                                <Button type="submit" color="green" className="profile-update-button">Update Profile</Button>
+                                <Button type="submit" color="green" className="account-update-button">Update Account</Button>
                             </Group>
-                            <Title order={5} mt="lg" className="profile-subtitle">Advanced Options</Title>
+                            <Title order={5} mt="lg" className="account-subtitle">Advanced Options</Title>
                             <Button onClick={open} mt="md">Change Password</Button>
                         </Card>
                     </Grid.Col>
