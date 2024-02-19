@@ -3,7 +3,7 @@ import PixelGrid, {Pixel} from "../../components/PixelGrid/PixelGrid.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
-import pixelSocket from "../../functions/sockets_functions.js";
+import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,
     getPixelsByPixelBoardId
@@ -19,7 +19,7 @@ export default function PixelBoard() {
     const [savedPixels, setSavedPixels] = useState([]);
 
     const onDrawPixel = (pixel) => {
-        pixelSocket.emit('DRAW_PIXEL', {x: pixel.x, y: pixel.y, color: pixel.color})
+        pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color})
     }
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export default function PixelBoard() {
      * Listen to new pixel added event
      */
     const listenPixelAdded = (drawPixelFunction) => {
-        pixelSocket.listen('NEW_PIXEL_ADDED', (pixel) => {
+        pixelSocket.listen(socketEvents.PIXEL.NEW_PIXEL_ADDED, (pixel) => {
             drawPixelFunction(new Pixel(pixel.x, pixel.y, pixel.color));
         });
     }
@@ -51,7 +51,7 @@ export default function PixelBoard() {
     const fetchNoPersistedPixel = () => {
         //NO_PERSISTED_PIXELS , this event is emitted when the user join the pixel board
         //The data received is the list of pixels not yet persisted in the database
-        pixelSocket.listen('NO_PERSISTED_PIXELS', (pixelsNoPersisted) => {
+        pixelSocket.listen(socketEvents.PIXEL.NO_PERSISTED_PIXELS, (pixelsNoPersisted) => {
             if (pixelsNoPersisted?.length > 0) {
                 const newPixels = []
                 pixelsNoPersisted.forEach(pixel => {
@@ -78,7 +78,7 @@ export default function PixelBoard() {
      * Join the pixel board
      */
     function joinPixelBoard() {
-        pixelSocket.emit('JOIN_PIXEL_BOARD', {pixelBoardId: id})
+        pixelSocket.emit(socketActions.JOIN_PIXEL_BOARD, {pixelBoardId: id})
     }
 
 

@@ -103,6 +103,7 @@ db.createCollection("line", {
                 },
                 pixels: {
                     description: "Array of pixels of the line",
+                    required: ["position", "hexa_color"],
                     bsonType: "array",
                     items: {
                         bsonType: "object",

@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="database &gt; reset-mock" type="js.build_tools.npm" folderName="Pixel Art env" nameIsGenerated="true">
+    <package-json value="$PROJECT_DIR$/packages/database/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="reset-mock" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

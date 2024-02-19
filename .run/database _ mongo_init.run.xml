@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="database &gt; mongo:init" type="js.build_tools.npm" folderName="Pixel Art env" nameIsGenerated="true">
+    <package-json value="$PROJECT_DIR$/packages/database/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="mongo:init" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2" />
+  </configuration>
+</component>

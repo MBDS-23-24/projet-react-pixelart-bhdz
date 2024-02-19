@@ -175,7 +175,7 @@ io.on('connection', async (socket) => {
         })
     });
 
-    emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS);
+    emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS, true);
 });
 
 const PORT = process.env.SOCKET_PORT;
