@@ -39,7 +39,7 @@ axiosApi.interceptors.response.use((response) => {
 }, async (error) => {
     notifications.show({
         title: "Error",
-        message: error.response.data.message,
+        message: error.response.data.message + (error.response.data.details ? `: ${error.response.data.details}` : ""),
         color: "red",
     });
 });

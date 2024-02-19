@@ -8,7 +8,7 @@ import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
 import {Button, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
-import {checkEmail} from "../utils/Validation.jsx";
+import {checkEmail, checkPassword} from "../utils/FormValidation.js";
 
 export default function Login() {
     const { colorScheme } = useMantineColorScheme();
@@ -21,7 +21,7 @@ export default function Login() {
         },
         validate: {
             email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
-            password: (value) => (value.length > 4 ? null : 'Password is too short'),
+            password: (value) => (checkPassword(value) ? null : 'Password is too short'),
         }
     });
 

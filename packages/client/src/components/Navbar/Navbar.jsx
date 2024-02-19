@@ -11,7 +11,6 @@ import "./Navbar.scss";
 import {Link} from "react-router-dom";
 import {logoutUser, UserContext} from "../../provider/UserContext.jsx";
 import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
-import {splitStringMaxSize} from "../../pages/utils/Utils.jsx";
 
 function NavbarLink({ icon: Icon, label, active, onClick, link }) {
     const { colorScheme } = useMantineColorScheme()
@@ -64,7 +63,7 @@ export function NavBar() {
                 <NavbarLink icon={IconLogout} label="Logout" onClick={()=>logoutUser()} />
                 <SliderDarkMode />
                 <Avatar src={"https://picsum.photos/200/300"} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/> {/** TODO: replace with user profile picture */}
-                {splitStringMaxSize(user.username, 9)}
+                <p className={"text-username"}>{user.username}</p>
             </Stack>
         </nav>
     );

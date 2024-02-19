@@ -5,17 +5,13 @@ import {IconMoon, IconSun} from "@tabler/icons-react";
 export function SliderDarkMode() {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
 
-    function changeColorScheme(colorScheme) {
-        setColorScheme(colorScheme);
-    }
-
     return (
         <SegmentedControl
             radius="md"
             size="md"
             defaultValue={colorScheme}
             orientation="vertical"
-            onChange={(value) => changeColorScheme(value)}
+            onChange={(value) => setColorScheme(value)}
             transitionDuration={500}
             data={[
                 { value: "light", label: (

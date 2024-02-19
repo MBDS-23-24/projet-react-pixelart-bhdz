@@ -4,6 +4,15 @@
   padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
+
+  .text-username{
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    width: 80px;
+    margin: 0;
+  }
 }
 
 .navbarMain {
