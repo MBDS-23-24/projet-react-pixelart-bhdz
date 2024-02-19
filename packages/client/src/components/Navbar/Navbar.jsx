@@ -62,7 +62,7 @@ export function NavBar() {
             <Stack justify="center" align={"center"} gap={10}>
                 <NavbarLink icon={IconLogout} label="Logout" onClick={()=>logoutUser()} />
                 <SliderDarkMode />
-                <Avatar src={"https://picsum.photos/200/300"} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/> {/** TODO: replace with user profile picture */}
+                <Avatar src={"https://picsum.photos/200/300"} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/> {/** TODO: replace with user profile picture - TICKET #46 */}
                 <p className={"text-username"}>{user.username}</p>
             </Stack>
         </nav>
