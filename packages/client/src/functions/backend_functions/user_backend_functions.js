@@ -8,12 +8,3 @@ export const loginUser = async (user) => {
     });
 }
 
-axiosApi.interceptors.response.use((response) => {
-    return response;
-}, async (error) => {
-    if(error.response.status === 403 || error.response.status === 401){
-        const cookies = new Cookies();
-        cookies.remove('accessToken');
-        localStorage.removeItem('user_session');
-    }
-});

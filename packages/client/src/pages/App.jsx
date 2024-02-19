@@ -1,4 +1,4 @@
-import './App.css'
+import './App.scss'
 import {Route, Routes} from "react-router-dom";
 import routes from "./routes.jsx";
 import {useContext} from "react";
@@ -9,7 +9,7 @@ import {Notifications} from "@mantine/notifications";
 import {NavBar} from "../components/Navbar/Navbar.jsx";
 
 function App() {
-    const { user} = useContext(UserContext);
+    const {user} = useContext(UserContext);
 
     function getActiveLinkByUrl() {
         const url = window.location.pathname;
@@ -18,11 +18,11 @@ function App() {
 
     return (
         <>
-            <Notifications />
+            <Notifications/>
             {user ? (
                 <AppShell className="element-page">
                     <AppShell.Navbar>
-                        <NavBar active={getActiveLinkByUrl()} />
+                        <NavBar active={getActiveLinkByUrl()}/>
                     </AppShell.Navbar>
                     <AppShell.Main className={"content"}>
                         <Routes>

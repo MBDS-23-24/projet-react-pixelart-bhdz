@@ -10,8 +10,18 @@ export const axiosApi = axios.create({
     headers: {
         'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
-        "authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : "",
+        "Authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : "",
     },
+});
+
+axiosApi.interceptors.response.use((response) => {
+    return response;
+}, async (error) => {
+    if(error.response.status === 403 || error.response.status === 401){
+        const cookies = new Cookies();
+        cookies.remove('accessToken');
+        localStorage.removeItem('user_session');
+    }
 });
 
 export async function get(url, config = {}) {
