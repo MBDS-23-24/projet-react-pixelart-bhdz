@@ -6,6 +6,6 @@ const router = express.Router()
 
 router.get('/', helloWorld)
 router.put('/update', updateUser)
-router.post('/change-password', changePassword);
+router.put('/change-password', changePassword);
 
 export default router

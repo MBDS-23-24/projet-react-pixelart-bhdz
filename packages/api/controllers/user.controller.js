@@ -2,7 +2,6 @@ import prisma from "../prisma/client.js";
 import {catchError} from "../error/error-handler.js";
 import {userService} from "../services/user.service.js";
 import {BusinessError} from "../error/business.error.js";
-import bcrypt from "bcrypt";
 
 export const helloWorld = async (req, res, next) => {
     await catchError(async () => {
@@ -44,7 +43,7 @@ export const changePassword = async (req, res, next) => {
         if (!newPassword) {
             return res.status(400).json({ message: 'Missing userId or newPassword' });
         }
-        const updatedUser = await userService.updateUserPassword( newPassword);
+        const updatedUser = await userService.updateUserPassword(newPassword);
         return res.status(200).json(updatedUser);
     } catch (error) {
         next(error);

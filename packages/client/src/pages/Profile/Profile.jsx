@@ -73,7 +73,6 @@ export default function Profile() {
     const onSubmitChangePassword = (values) => {
         if (values.newPassword === values.confirmNewPassword) {
             changePasswordMutation.mutate({
-
                 userId: user.id,
                 newPassword: values.newPassword,
             });
@@ -132,7 +131,7 @@ export default function Profile() {
                         required
                     />
                     <Group position="right" mt="md">
-                        <Button variant="default" onClick={open}>Cancel</Button>
+                        <Button variant="default" onClick={close}>Cancel</Button>
                         <Button type="submit" color="green">Save</Button>
                     </Group>
                 </form>

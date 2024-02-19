@@ -39,10 +39,6 @@ export const userService = {
         });
     },
     updateUserPassword: async (userId, newPassword) => {
-        //const salt = await bcrypt.genSalt(10);
-
-       // const hashedPassword = await bcrypt.hash(newPassword, salt);
-
         const updatedUser = await prisma.user.update({
             where: { id: userId },
             data: { password: newPassword },
