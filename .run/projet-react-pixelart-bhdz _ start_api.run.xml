@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="projet-react-pixelart-bhdz &gt; start:api" type="js.build_tools.npm" folderName="Pixel Art env" nameIsGenerated="true">
+  <configuration default="false" name="projet-react-pixelart-bhdz &gt; start:api" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="run" />
     <scripts>
