@@ -1,6 +1,31 @@
 .draw-container .color-range{
-  //display: flex;
   position: fixed;
   top: 0;
   right: 0;
+}
+
+.draw-container{
+  position: relative;
+}
+
+.draw-container nav {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 1000;
+  opacity: 0.6;
+  font-family: cursive;
+}
+
+main{
+  overflow-x: auto;
+  background-color: #f8f8f8;
+}
+
+canvas{
+  position: absolute;
+  left: 0;
+    top: 0;
 }
