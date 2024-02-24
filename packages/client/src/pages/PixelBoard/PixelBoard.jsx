@@ -9,7 +9,7 @@ import {
     getPixelsByPixelBoardId
 } from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {ApiStatus} from "../../utils/ApiStatus.js";
-import {LoadingOverlay} from "@mantine/core";
+import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
 import Pixels from "../../components/PixelBoard/Pixels.jsx";
 import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
@@ -23,6 +23,7 @@ export class Pixel {
 }
 
 export default function PixelBoard() {
+    const {colorScheme} = useMantineColorScheme();
     const {id} = useParams();
     const pixelsComponentRef = useRef([]);
     const [selectedColor, setSelectedColor] = useState('#000000');
@@ -125,7 +126,7 @@ export default function PixelBoard() {
 
     return (
         <>
-            <div>
+            <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
                 <LoadingOverlay visible={fetchPixelBoardStatus === ApiStatus.LOADING} zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
                 {fetchPixelBoardStatus === ApiStatus.SUCCESS && (
