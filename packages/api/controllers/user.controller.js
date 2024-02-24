@@ -44,7 +44,7 @@ export const login = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
     await catchError(async () => {
         const {username, email, password} = req.body;
-        const updatedUser = await userService.updateUser(username, email, password);
+        const updatedUser = await userService.updateUser(req.user, username, email, password);
         res.json(updatedUser);
     }, next);
 };
@@ -55,7 +55,7 @@ export const changePassword = async (req, res, next) => {
         if (!newPassword) {
             return res.status(400).json({ message: 'Missing userId or newPassword' });
         }
-        const updatedUser = await userService.updateUserPassword(newPassword);
+        const updatedUser = await userService.updateUserPassword(req.user.id,newPassword);
         return res.status(200).json(updatedUser);
     } catch (error) {
         next(error);

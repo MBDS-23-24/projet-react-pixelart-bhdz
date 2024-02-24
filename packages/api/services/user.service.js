@@ -25,9 +25,9 @@ export const userService = {
         return {user, accessToken};
     },
 
-    async updateUser(username, email, password) {
+    async updateUser(user,username, email, password) {
         return await prisma.user.update({
-            where: {email: email},
+            where: {email: user.email},
             data: {
                 username: username,
                 email: email
