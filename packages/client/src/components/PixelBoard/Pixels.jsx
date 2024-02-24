@@ -1,9 +1,7 @@
 import {useRef, useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 
 
-
-// eslint-disable-next-line react/display-name
-const Pixels = forwardRef(({onNewPixelAdded, initPixel, width, height, pixelSize}, ref) => {
+const Pixels = forwardRef(function MyInput({onNewPixelAdded, initPixel, width, height, pixelSize}, ref) {
     const canvasRef = useRef(); // Référence vers le canvas
     const [ctx, setCtx] = useState(null);
 
@@ -54,5 +52,6 @@ const Pixels = forwardRef(({onNewPixelAdded, initPixel, width, height, pixelSize
         ></canvas>
     );
 });
+
 
 export default Pixels;
