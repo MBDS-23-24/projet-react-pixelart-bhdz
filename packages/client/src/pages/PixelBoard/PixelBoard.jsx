@@ -1,7 +1,7 @@
 import './PixelBoard.scss'
-import PixelGrid, {Pixel} from "../../components/PixelGrid/PixelGrid.jsx";
+import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router";
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
@@ -9,16 +9,33 @@ import {
     getPixelsByPixelBoardId
 } from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {ApiStatus} from "../../utils/ApiStatus.js";
-import {LoadingOverlay} from "@mantine/core";
+import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
+import Pixels from "../../components/PixelBoard/Pixels.jsx";
+import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
+import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
+
+export class Pixel {
+    constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+    }
+}
 
 export default function PixelBoard() {
+    const {colorScheme} = useMantineColorScheme();
     const {id} = useParams();
+    const pixelsComponentRef = useRef([]);
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [pixelBoard, setPixelBoard] = useState(null);
     const [fetchPixelBoardStatus, setFetchPixelBoardStatus] = useState(ApiStatus.INITIAL);
     const [savedPixels, setSavedPixels] = useState([]);
+    const [lastDrawedPixel, setLastDrawedPixel] = useState(null);
+    const [currentHoveredPixel, setCurrentHoveredPixel] = useState(null);
+    const pixelSize = 10;
 
     const onDrawPixel = (pixel) => {
+        setLastDrawedPixel(pixel);
         pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color})
     }
 
@@ -75,32 +92,74 @@ export default function PixelBoard() {
     }
 
     /**
+     * Gère le clic de la souris sur le canvas
+     * @param event
+     */
+    function handleMouseClick(event) {
+        const {offsetX, offsetY} = event.nativeEvent;
+        const realPoistionX = Math.floor(offsetX / pixelSize) * pixelSize;
+        const realPoistionY = Math.floor(offsetY / pixelSize) * pixelSize;
+        const pixel = new Pixel(getPixelPosition(realPoistionX), getPixelPosition(realPoistionY), selectedColor);
+        onDrawPixel(pixel)
+    }
+
+    function handleMouseMove(event) {
+        const {offsetX, offsetY} = event.nativeEvent;
+        const pixelPositionX = getPixelPosition(Math.floor(offsetX / pixelSize) * pixelSize);
+        const pixelPositionY = getPixelPosition(Math.floor(offsetY / pixelSize) * pixelSize);
+        if (pixelPositionX !== currentHoveredPixel?.x || pixelPositionY !== currentHoveredPixel?.y) {
+            setCurrentHoveredPixel(new Pixel(pixelPositionX, pixelPositionY, selectedColor));
+        }
+    }
+
+    /**
      * Join the pixel board
      */
     function joinPixelBoard() {
         pixelSocket.emit(socketActions.JOIN_PIXEL_BOARD, {pixelBoardId: id})
     }
 
+    function getPixelPosition(realPosition) {
+        return realPosition / pixelSize;
+    }
+
 
     return (
         <>
-            <div>
+            <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
                 <LoadingOverlay visible={fetchPixelBoardStatus === ApiStatus.LOADING} zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
-
                 {fetchPixelBoardStatus === ApiStatus.SUCCESS && (
-                    <div>
-                        <h1>Pixel Board</h1>
-                        <p>Libre à vous de dessiner !</p>
+                    <div className={"draw-container"}>
+                        <nav>{pixelBoard.title}</nav>
+                        <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>
 
-                        <div className={"draw-container"}>
+                            <Pixels
+                                ref={pixelsComponentRef}
+                                initPixel={savedPixels} onNewPixelAdded={listenPixelAdded}
+                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                                pixelColor={selectedColor}
+                                pixelSize={pixelSize}
+                            />
 
-                            <PixelGrid initPixel={savedPixels} onNewPixelAdded={listenPixelAdded}
-                                       onDrawPixel={onDrawPixel}
-                                       width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                       pixelColor={selectedColor}/>
-                            <ColorsRange onSelectColor={setSelectedColor}/>
+                            <HoveredPixel
+                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                                currentHoveredPixel={currentHoveredPixel}
+                                pixelSize={pixelSize}
+                            />
+
+                            <Grids
+                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                                pixelSize={pixelSize}
+                            />
+
+                            <PixelAnimation
+                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                                pixelSize={pixelSize}
+                                currentDrawedPixel={lastDrawedPixel}
+                            />
                         </div>
+                        <ColorsRange onSelectColor={setSelectedColor}/>
                     </div>
                 )}
             </div>
