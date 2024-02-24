@@ -24,5 +24,17 @@ export const userService = {
         const accessToken = jwtService.generateUserAccessToken(user);
 
         return {user, accessToken};
-    }
+    },
+
+    async getUsernameUser(userId) {
+        return prisma.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                username: true
+                // TODO : ajouter l'avatar de l'utilisateur
+            }
+        });
+    },
 }

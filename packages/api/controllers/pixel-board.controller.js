@@ -38,5 +38,16 @@ export const pixelBoardController = {
 
             res.send(await pixelBoardService.getPixelBoardById(pixelBoardId))
         }, next)
+    },
+
+    async getHistoryPixelsByBoardId(req, res, next) {
+        await catchError(async () => {
+            const pixelBoardId = req?.params?.pixelBoardId;
+            if (!pixelBoardId) {
+                throw BusinessError(400, 'Bad request', 'Missing pixel board id');
+            }
+
+            res.send(await pixelBoardService.getHistoryPixels(pixelBoardId))
+        }, next)
     }
 }
