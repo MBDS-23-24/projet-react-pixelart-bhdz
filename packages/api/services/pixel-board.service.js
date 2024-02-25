@@ -37,23 +37,33 @@ const pixelBoardService = {
     },
 
     async getHistoryPixels(pixelBoardId) {
-        const pixels = []
+        const pixels = [];
         const lines = await prisma.line.findMany({
             where: {
                 pixelBoardId: pixelBoardId
             }
         });
-        
+
+        const distinctOwnerIds = new Set();
+        for (const line of lines) {
+            for (const pixel of line.pixels) {
+                distinctOwnerIds.add(pixel.ownerId);
+            }
+        }
+
+        const distinctOwnerIdsArray = Array.from(distinctOwnerIds);
+        const usersMap = await userService.getUsernameByListUserId(distinctOwnerIdsArray);
+
         for (const line of lines) {
             const y = line.position;
             for (const pixel of line.pixels) {
-                const user = await userService.getUsernameUser(pixel.ownerId);
+                const user = usersMap.get(pixel.ownerId);
                 pixels.push({
                     position: "[" + pixel.position + "," + y + "]",
                     color: pixel.hexaColor,
                     user: user,
                     lastUpdate: pixel.lastUpdate
-                })
+                });
             }
         }
         return pixels;

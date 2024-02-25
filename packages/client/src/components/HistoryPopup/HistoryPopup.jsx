@@ -10,9 +10,9 @@ import {IconChevronDown, IconChevronUp, IconSearch, IconSelector} from "@tabler/
 import {useQuery} from "react-query";
 import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import './HistoryPopup.scss';
-import {formatedDate, sortArrayByDate} from "../../pages/utils/Utils.js";
+import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/Utils.js";
 
-function Th({ children, reversed, sorted, onSort }) {
+function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
     return (
         <Table.Th className={"th"}>
@@ -96,7 +96,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
             <Table.Td className={"avatar"}><Avatar src={"https://picsum.photos/200/300"} />{row.user.username}</Table.Td>
             <Table.Td>{row.position}</Table.Td>
             <Table.Td className={"avatar"}><ColorSwatch radius={"md"} color={row.color} />{row.color}</Table.Td>
-            <Table.Td>{formatedDate(row.lastUpdate)}</Table.Td>
+            <Table.Td>{formatedDateCountDown(row.lastUpdate)}</Table.Td>
         </Table.Tr>
     ));
 
@@ -113,34 +113,34 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
                 <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
                     <Table.Tbody>
                         <Table.Tr>
-                            <Th
+                            <HistoryHeaderCell
                                 sorted={sortBy === 'username'}
                                 reversed={reverseSortDirection}
                                 onSort={() => setSorting('username')}
                             >
                                 User
-                            </Th>
-                            <Th
+                            </HistoryHeaderCell>
+                            <HistoryHeaderCell
                                 sorted={sortBy === 'position'}
                                 reversed={reverseSortDirection}
                                 onSort={() => setSorting('position')}
                             >
                                 Pixel position
-                            </Th>
-                            <Th
+                            </HistoryHeaderCell>
+                            <HistoryHeaderCell
                                 sorted={sortBy === 'color'}
                                 reversed={reverseSortDirection}
                                 onSort={() => setSorting('color')}
                             >
                                 Color
-                            </Th>
-                            <Th
+                            </HistoryHeaderCell>
+                            <HistoryHeaderCell
                                 sorted={sortBy === 'lastUpdate'}
                                 reversed={reverseSortDirection}
                                 onSort={() => setSorting('lastUpdate')}
                             >
                                 Date
-                            </Th>
+                            </HistoryHeaderCell>
                         </Table.Tr>
                     </Table.Tbody>
                     <Table.Tbody>

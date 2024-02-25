@@ -26,15 +26,24 @@ export const userService = {
         return {user, accessToken};
     },
 
-    async getUsernameUser(userId) {
-        return prisma.user.findUnique({
+    async getUsernameByListUserId(listUserId) {
+        const users = await prisma.user.findMany({
             where: {
-                id: userId
+                id: {
+                    in: listUserId
+                }
             },
             select: {
+                id: true,
                 username: true
-                // TODO : ajouter l'avatar de l'utilisateur
             }
         });
+
+        const usersMap = new Map();
+        for (const user of users) {
+            usersMap.set(user.id, user);
+        }
+
+        return usersMap;
     },
 }

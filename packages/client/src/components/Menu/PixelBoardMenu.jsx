@@ -1,10 +1,10 @@
 import {Button, Card, Title, useMantineColorScheme} from "@mantine/core";
 import {useState} from "react";
-import "./Menu.scss";
+import "./PixelBoardMenu.scss";
 import {IconHistory} from "@tabler/icons-react";
 import {HistoryPopup} from "../HistoryPopup/HistoryPopup.jsx";
 
-export default function Menu({pixelBoard}) {
+export default function PixelBoardMenu({pixelBoard}) {
     const {colorScheme} = useMantineColorScheme();
     const [open, setOpen] = useState(false);
 
