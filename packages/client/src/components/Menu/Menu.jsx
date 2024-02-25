@@ -1,4 +1,4 @@
-import {Button, Card, Modal, Title, useMantineColorScheme} from "@mantine/core";
+import {Button, Card, Title, useMantineColorScheme} from "@mantine/core";
 import {useState} from "react";
 import "./Menu.scss";
 import {IconHistory} from "@tabler/icons-react";
@@ -15,7 +15,7 @@ export default function Menu({pixelBoard}) {
                     <Title order={2}>{pixelBoard.title}</Title>
                 </div>
                 <div className={"menu-options"}>
-                    <Button leftSection={<IconHistory size={18} />} color="blue" size="sm" onClick={()=> setOpen(!open)}>History</Button>
+                    <Button leftSection={<IconHistory size={18} />} color="blue" size="sm" radius={"lg"} onClick={()=> setOpen(!open)}>History</Button>
                     <HistoryPopup pixelBoard={pixelBoard} open={open} onClose={() => setOpen(false)} />
                 </div>
             </Card>

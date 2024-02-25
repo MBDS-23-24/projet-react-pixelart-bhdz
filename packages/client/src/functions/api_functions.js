@@ -21,6 +21,7 @@ axiosApi.interceptors.response.use((response) => {
         const cookies = new Cookies();
         cookies.remove('accessToken');
         localStorage.removeItem('user_session');
+        window.location.href = "/";
     }
 });
 
