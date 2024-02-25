@@ -3,8 +3,6 @@ export function formatedDateCountDown(date) {
     const target = new Date(date);
     const diff = now - target;
 
-    console.log(date)
-
     const seconds = Math.floor(diff / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
