@@ -35,8 +35,6 @@ export const userService = {
         });
     },
     updateUserPassword: async (userId, newPassword) => {
-
-
         bcrypt.genSalt(10, function(err, salt) {
             bcrypt.hash(newPassword, salt, async function (err, hash) {
                 const updatedUser = await prisma.user.update({
@@ -45,7 +43,6 @@ export const userService = {
                 });
             });
         });
-
         return true;
     }
 }
