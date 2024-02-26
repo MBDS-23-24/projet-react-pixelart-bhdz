@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme} from '@mantine/core';
+import {useContext, useState} from 'react';
+import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avatar, Card, Divider} from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -9,7 +9,7 @@ import {
 } from '@tabler/icons-react';
 import "./Navbar.scss";
 import {Link} from "react-router-dom";
-import {logoutUser} from "../../provider/UserContext.jsx";
+import {logoutUser, UserContext} from "../../provider/UserContext.jsx";
 import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
 
 function NavbarLink({ icon: Icon, label, active, onClick, link }) {
@@ -17,7 +17,7 @@ function NavbarLink({ icon: Icon, label, active, onClick, link }) {
 
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
-            <Link to={link} className={`link ${colorScheme === "light" ? "link-light" : "link-dark"}`} data-active={active || undefined}>
+            <Link to={link} className={"link"} data-active={active || undefined} dark-mode={(colorScheme === "dark").toString()}>
                 <UnstyledButton onClick={onClick} className={"link"} data-active={active || undefined}>
                     <Icon style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
                 </UnstyledButton>
@@ -26,7 +26,7 @@ function NavbarLink({ icon: Icon, label, active, onClick, link }) {
     );
 }
 
-const mockdata = [
+const listLinkedRoute = [
     { icon: IconHome2, label: 'Home', link: "/" },
     { icon: IconGauge, label: 'Dashboard', link: "/dashboard"},
     { icon: IconUser, label: 'Account', link: "/account"},
@@ -34,14 +34,15 @@ const mockdata = [
 ];
 
 export function NavBar() {
-    const [active, setActive] = useState(0);
+    const {user} = useContext(UserContext);
+    const [indexActiveLinkRoute, setIndexActiveLinkRoute] = useState(0);
 
-    const links = mockdata.map((link, index) => (
+    const links = listLinkedRoute.map((link, index) => (
         <NavbarLink
             {...link}
             key={link.label}
-            active={index === active}
-            onClick={() => setActive(index)}
+            active={index === indexActiveLinkRoute}
+            onClick={() => setIndexActiveLinkRoute(index)}
             link={link.link}
         />
     ));
@@ -58,9 +59,11 @@ export function NavBar() {
                 </Stack>
             </div>
 
-            <Stack justify="center" gap={10}>
-                <SliderDarkMode />
+            <Stack justify="center" align={"center"} gap={10}>
                 <NavbarLink icon={IconLogout} label="Logout" onClick={()=>logoutUser()} />
+                <SliderDarkMode />
+                <Avatar src={"https://picsum.photos/200/300"} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/> {/** TODO: replace with user profile picture - TICKET #46 */}
+                <p className={"text-username"}>{user.username}</p>
             </Stack>
         </nav>
     );

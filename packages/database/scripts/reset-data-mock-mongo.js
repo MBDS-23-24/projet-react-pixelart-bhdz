@@ -66,8 +66,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 0, 0, 1),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 1000,
-            "pixel_width": 30,
-            "pixel_height": 30,
+            "pixel_width": 1000,
+            "pixel_height": 1000,
             "is_pixel_overwrite": true
         },
         {
@@ -78,8 +78,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 15, 0, 1),
             "end_date": adjustDate(new Date(), 0, 0, 7),
             "delay_ms": 5000,
-            "pixel_width": 50,
-            "pixel_height": 50,
+            "pixel_width": 300,
+            "pixel_height": 200,
             "is_pixel_overwrite": true
         },
         {
@@ -90,8 +90,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 0, 0, 2),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 5000,
-            "pixel_width": 100,
-            "pixel_height": 100,
+            "pixel_width": 700,
+            "pixel_height": 800,
             "is_pixel_overwrite": false
         },
     ]
