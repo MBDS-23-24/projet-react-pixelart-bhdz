@@ -110,8 +110,8 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
             <Divider />
             <Space h={10} />
             <ScrollArea h={400}>
-                <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed">
-                    <Table.Tbody>
+                <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed" stickyHeader>
+                    <Table.Thead>
                         <Table.Tr>
                             <HistoryHeaderCell
                                 sorted={sortBy === 'username'}
@@ -142,7 +142,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
                                 Date
                             </HistoryHeaderCell>
                         </Table.Tr>
-                    </Table.Tbody>
+                    </Table.Thead>
                     <Table.Tbody>
                         {rows.length > 0 ? (
                             rows
