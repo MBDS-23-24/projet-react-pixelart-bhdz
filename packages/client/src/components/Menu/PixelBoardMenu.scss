@@ -1,0 +1,36 @@
+.menu-pixelboard {
+  display: flex;
+  align-items: center;
+  flex-direction: row !important;
+  padding: 5px 10px;
+  background: transparent;
+  position: absolute;
+  justify-content: center;
+  z-index: 99;
+  left: 50%;
+  transform: translate(-50%);
+
+  .menu{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-radius: 30px;
+    padding: 5px 20px;
+    gap: 20px;
+    box-shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.3);
+
+    [dark-mode="dark"] & {
+      background-color: #1f1f1f;
+    }
+    [dark-mode="light"] & {
+      background-color: #f8f8f8;
+    }
+  }
+}
+
+[data-color-scheme="dark"] .menu {
+  background-color: #1f1f1f;
+}
+[data-color-scheme="light"] .menu {
+  background-color: #f8f8f8;
+}

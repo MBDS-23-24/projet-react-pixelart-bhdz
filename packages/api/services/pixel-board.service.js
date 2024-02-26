@@ -1,5 +1,6 @@
 import prisma from "../prisma/client.js";
 import {AppLogger} from "../logger/app-logger.js";
+import {userService} from "./user.service.js";
 
 const pixelBoardService = {
 
@@ -35,6 +36,39 @@ const pixelBoardService = {
         return pixels;
     },
 
+    async getHistoryPixels(pixelBoardId) {
+        const pixels = [];
+        const lines = await prisma.line.findMany({
+            where: {
+                pixelBoardId: pixelBoardId
+            }
+        });
+
+        const distinctOwnerIds = new Set();
+        for (const line of lines) {
+            for (const pixel of line.pixels) {
+                distinctOwnerIds.add(pixel.ownerId);
+            }
+        }
+
+        const distinctOwnerIdsArray = Array.from(distinctOwnerIds);
+        const usersMap = await userService.getUsernameByListUserId(distinctOwnerIdsArray);
+
+        for (const line of lines) {
+            const y = line.position;
+            for (const pixel of line.pixels) {
+                const user = usersMap.get(pixel.ownerId);
+                pixels.push({
+                    position: "[" + pixel.position + "," + y + "]",
+                    color: pixel.hexaColor,
+                    user: user,
+                    lastUpdate: pixel.lastUpdate
+                });
+            }
+        }
+        return pixels;
+    },
+
     async insertPixels(boardId, pixels) {
         const linesConcerned = [...new Set(pixels.map(p => p.y))];
 
@@ -43,7 +77,8 @@ const pixelBoardService = {
             const pixelsDbFormat = pixelsForLine.map(p => ({
                 position: parseInt(p.x),
                 hexaColor: p.color,
-                ownerId: p.ownerId
+                ownerId: p.ownerId,
+                lastUpdate: p.lastUpdate
             }));
             return {
                 position: parseInt(linePositionY),

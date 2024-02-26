@@ -46,35 +46,36 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={form.onSubmit(onSubmit)} className="login">
-            <BackgroundIllustration />
-            <div className={`card ${colorScheme === "light" ? "card-background-light" : "card-background-dark"}`}>
-                <div>
-                    <Title order={3} className={"b-600"}>Log in</Title>
-                    <Text className={"b-300"} size="sm" color="dimmed">Log in to your account</Text>
+        <div className={"login-container"}>
+            <form onSubmit={form.onSubmit(onSubmit)} className="login">
+                <BackgroundIllustration/>
+                <div className={`card ${colorScheme === "light" ? "card-background-light" : "card-background-dark"}`}>
+                    <div>
+                        <Title order={3} className={"b-600"}>Log in</Title>
+                        <Text className={"b-300"} size="sm" color="dimmed">Log in to your account</Text>
+                    </div>
+                    <TextInput id="email"
+                               placeholder={"Email"}
+                               size="md"
+                               leftSection={
+                                   <IconMailFilled size={24}
+                                   />
+                               }
+                               {...form.getInputProps('email')}/>
+
+                    <TextInput id="password"
+                               type="password"
+                               placeholder={"Password"}
+                               size="md"
+                               leftSection={
+                                   <IconLock size={24}
+                                   />
+                               }
+                               {...form.getInputProps('password')}/>
+                    <Button fullWidth type="submit">Login</Button>
+                    <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Register</Button>
                 </div>
-                <TextInput id="email"
-                       placeholder={"Email"}
-                       size="md"
-                       leftSection={
-                           <IconMailFilled size={24}
-                           />
-                       }
-                       {...form.getInputProps('email')}/>
-
-                <TextInput id="password"
-                       type="password"
-                       placeholder={"Password"}
-                       size="md"
-                       leftSection={
-                           <IconLock size={24}
-                           />
-                       }
-                       {...form.getInputProps('password')}/>
-                <Button fullWidth type="submit">Login</Button>
-                <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Register</Button>
-            </div>
-        </form>
-
+            </form>
+        </div>
     )
 }

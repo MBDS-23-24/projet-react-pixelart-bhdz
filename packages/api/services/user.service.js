@@ -24,5 +24,26 @@ export const userService = {
         const accessToken = jwtService.generateUserAccessToken(user);
 
         return {user, accessToken};
-    }
+    },
+
+    async getUsernameByListUserId(listUserId) {
+        const users = await prisma.user.findMany({
+            where: {
+                id: {
+                    in: listUserId
+                }
+            },
+            select: {
+                id: true,
+                username: true
+            }
+        });
+
+        const usersMap = new Map();
+        for (const user of users) {
+            usersMap.set(user.id, user);
+        }
+
+        return usersMap;
+    },
 }

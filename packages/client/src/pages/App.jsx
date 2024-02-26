@@ -4,11 +4,13 @@ import routes from "./routes.jsx";
 import {useContext} from "react";
 import {UserContext} from "../provider/UserContext.jsx";
 import Login from "./Login/Login.jsx";
-import {AppShell} from "@mantine/core";
+import {AppShell, Flex} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
 import {NavBar} from "../components/Navbar/Navbar.jsx";
+import {useDisclosure} from "@mantine/hooks";
 
 function App() {
+    const [opened, { toggle }] = useDisclosure();
     const {user} = useContext(UserContext);
 
     function getActiveLinkByUrl() {
@@ -20,7 +22,7 @@ function App() {
         <>
             <Notifications/>
             {user ? (
-                <AppShell className="element-page">
+                <AppShell>
                     <AppShell.Navbar>
                         <NavBar active={getActiveLinkByUrl()}/>
                     </AppShell.Navbar>

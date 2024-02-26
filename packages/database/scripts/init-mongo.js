@@ -66,11 +66,13 @@ db.createCollection("pixel_board", {
                 pixel_width: {
                     bsonType: "number",
                     minimum: 0,
+                    maximum: 500,
                     description: "Width in pixels of the pixel board"
                 },
                 pixel_height: {
                     bsonType: "number",
                     minimum: 0,
+                    maximum: 500,
                     description: "Height in pixels of the pixel board"
                 },
                 is_pixel_overwrite: {

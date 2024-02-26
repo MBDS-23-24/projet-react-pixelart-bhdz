@@ -13,12 +13,14 @@ import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
 import Pixels from "../../components/PixelBoard/Pixels.jsx";
 import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
+import PixelBoardMenu from "../../components/Menu/PixelBoardMenu.jsx";
 
 export class Pixel {
     constructor(x, y, color) {
         this.x = x;
         this.y = y;
         this.color = color;
+        this.lastUpdate = new Date();
     }
 }
 
@@ -129,9 +131,9 @@ export default function PixelBoard() {
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
                 <LoadingOverlay visible={fetchPixelBoardStatus === ApiStatus.LOADING} zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
+                {fetchPixelBoardStatus === ApiStatus.SUCCESS && <PixelBoardMenu pixelBoard={pixelBoard}/>}
                 {fetchPixelBoardStatus === ApiStatus.SUCCESS && (
                     <div className={"draw-container"}>
-                        <nav>{pixelBoard.title}</nav>
                         <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>
 
                             <Pixels

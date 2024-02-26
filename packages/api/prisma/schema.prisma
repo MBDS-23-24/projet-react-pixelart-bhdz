@@ -55,7 +55,8 @@ model Line {
 }
 
 type Pixel {
-  position  Int
-  hexaColor String @map("hexa_color")
-  ownerId   String @map("owner_id") @db.ObjectId
+  position   Int
+  hexaColor  String   @map("hexa_color")
+  ownerId    String   @map("owner_id") @db.ObjectId
+  lastUpdate DateTime @map("last_update")
 }

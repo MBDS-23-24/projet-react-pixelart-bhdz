@@ -1,3 +1,15 @@
+.login-container{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    place-items: center;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    padding: 0 20px;
+}
+
 .login{
   min-height: 100%;
   overflow: hidden;

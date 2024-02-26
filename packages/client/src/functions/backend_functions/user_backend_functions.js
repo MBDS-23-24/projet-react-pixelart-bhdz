@@ -1,5 +1,4 @@
-import {axiosApi, post} from "../api_functions.js";
-import Cookies from "universal-cookie";
+import {post} from "../api_functions.js";
 import {LOGIN_USER} from "../url_functions.js";
 export const loginUser = async (user) => {
     return post(`${LOGIN_USER}`, user).then(res => {
