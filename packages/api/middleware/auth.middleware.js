@@ -1,4 +1,6 @@
 import jwt from "jsonwebtoken";
+import {BusinessError} from "../error/business.error.js";
+import {TechnicalError} from "../error/technical.error.js";
 
 export const authMiddleware = {
     authenticatedUser(req, res, next) {
@@ -16,7 +18,7 @@ export const authMiddleware = {
                 next();
             });
         } else {
-            res.sendStatus(401);
+            throw new TechnicalError(401, 'Unauthorized', 'You are not connected to the API server');
         }
     },
 
@@ -34,7 +36,7 @@ export const authMiddleware = {
                 next();
             });
         } else {
-            res.sendStatus(401);
+            throw new TechnicalError(401, 'Unauthorized', 'You are not connected to the socket server')
         }
     }
 };
