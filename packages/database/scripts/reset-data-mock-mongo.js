@@ -90,8 +90,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 0, 0, 2),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 5000,
-            "pixel_width": 700,
-            "pixel_height": 800,
+            "pixel_width": 500,
+            "pixel_height": 500,
             "is_pixel_overwrite": false
         },
     ]
