@@ -35,11 +35,17 @@ export const userService = {
         });
     },
     updateUserPassword: async (userId, newPassword) => {
-        const updatedUser = await prisma.user.update({
-            where: { id: userId },
-            data: { password: newPassword },
+
+
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newPassword, salt, async function (err, hash) {
+                const updatedUser = await prisma.user.update({
+                    where: {id: userId},
+                    data: {password: hash},
+                });
+            });
         });
-        const { password, ...userWithoutPassword } = updatedUser;
-        return userWithoutPassword;
+
+        return true;
     }
 }
