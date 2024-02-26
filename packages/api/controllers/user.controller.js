@@ -53,7 +53,7 @@ export const changePassword = async (req, res, next) => {
     try {
         const {newPassword } = req.body;
         if (!newPassword) {
-            return res.status(400).json({ message: 'Missing userId or newPassword' });
+            return res.status(400).json({ message: 'Missing newPassword' });
         }
         const updatedUser = await userService.updateUserPassword(req.user.id,newPassword);
         return res.status(200).json(updatedUser);

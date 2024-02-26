@@ -10,13 +10,11 @@ export const loginUser = async (user) => {
 
 export const updateUser = async (user) => {
     return axiosApi.put(`${USER}/update`, user).then(res => {
-        localStorage.setItem('user_session', JSON.stringify(res.data));
         return res.data.user;
     });
 }
 export const changeUserPassword = async (password) => {
     return axiosApi.put(`${USER}/change-password`, password).then(res => {
-        localStorage.setItem('user_session', JSON.stringify(res.data));
         return res.data.user;
     });
 }
