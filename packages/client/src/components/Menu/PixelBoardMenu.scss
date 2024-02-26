@@ -3,11 +3,12 @@
   align-items: center;
   flex-direction: row !important;
   padding: 5px 10px;
-  width: 100%;
   background: transparent;
   position: absolute;
   justify-content: center;
   z-index: 99;
+  left: 50%;
+  transform: translate(-50%);
 
   .menu{
     display: flex;
