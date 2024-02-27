@@ -1,9 +1,8 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useForm } from '@mantine/form';
 import { useMutation } from 'react-query';
 import { updateUser, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
-import { logoutUser, UserContext } from "../../provider/UserContext.jsx";
+import {updateUserContext, UserContext} from "../../provider/UserContext.jsx";
 import {Button, TextInput, Group, Title, Paper, Text, Avatar, Grid, Card, Modal, PasswordInput} from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import './Account.scss';
@@ -36,6 +35,7 @@ export default function Account() {
     const { mutate: updateAccount } = useMutation(updateUser, {
         onSuccess: (data) => {
             setUser(data);
+            updateUserContext(data);
             showNotification({
                 title: 'Success',
                 message: 'Account updated successfully',
@@ -58,8 +58,6 @@ export default function Account() {
                 message: 'Your password has been changed successfully. Please log in again.',
                 color: 'green',
             });
-            open();
-            logoutUser();
         },
         onError: (error) => {
             showNotification({
