@@ -26,6 +26,27 @@ export const userService = {
         return {user, accessToken};
     },
 
+    async updateUser(user,username, email, password) {
+        return await prisma.user.update({
+            where: {email: user.email},
+            data: {
+                username: username,
+                email: email
+            },
+        });
+    },
+    updateUserPassword: async (userId, newPassword) => {
+        bcrypt.genSalt(10, function(err, salt) {
+            bcrypt.hash(newPassword, salt, async function (err, hash) {
+                const updatedUser = await prisma.user.update({
+                    where: {id: userId},
+                    data: {password: hash},
+                });
+            });
+        });
+        return true;
+    },
+
     async getUsernameByListUserId(listUserId) {
         const users = await prisma.user.findMany({
             where: {
@@ -47,3 +68,4 @@ export const userService = {
         return usersMap;
     },
 }
+   
