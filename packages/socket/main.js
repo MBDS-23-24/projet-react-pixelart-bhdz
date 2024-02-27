@@ -75,7 +75,7 @@ class PixelBoardStore {
     }
 
     addPixel(ownerId, x, y, color) {
-        this.pixels.push({ownerId: ownerId, x: x, y: y, color: color});
+        this.pixels.push({ownerId: ownerId, x: x, y: y, color: color, lastUpdate: new Date()});
     }
 
     removePixel(ownerId, x, y) {

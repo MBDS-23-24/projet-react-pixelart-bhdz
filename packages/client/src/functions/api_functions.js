@@ -17,6 +17,11 @@ export const axiosApi = axios.create({
 axiosApi.interceptors.response.use((response) => {
     return response;
 }, async (error) => {
+    notifications.show({
+        title: "Error",
+        message: error.response.data.message + (error.response.data.details ? `: ${error.response.data.details}` : ""),
+        color: "red",
+    });
     if(error.response.status === 403 || error.response.status === 401){
         const cookies = new Cookies();
         cookies.remove('accessToken');
@@ -43,13 +48,3 @@ export async function del(url, config = {}) {
 export async function patch(url, data, config = {}) {
     return axiosApi.patch(url, { ...data }, { ...config });
 }
-
-axiosApi.interceptors.response.use((response) => {
-    return response;
-}, async (error) => {
-    notifications.show({
-        title: "Error",
-        message: error.response.data.message + (error.response.data.details ? `: ${error.response.data.details}` : ""),
-        color: "red",
-    });
-});
