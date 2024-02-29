@@ -9,7 +9,7 @@ export default function NestedUsersAvatar({users, maxAvatarDisplayed = 3}) {
         setDisplayedUsers(users?.slice(0, maxAvatarDisplayed));
     }, [users, maxAvatarDisplayed]);
 
-
+// TODO : Change the static avatar to the users avatar
     return (
         <Tooltip.Group openDelay={300} closeDelay={100}>
             <Avatar.Group spacing="sm">

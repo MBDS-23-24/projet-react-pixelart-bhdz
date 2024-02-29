@@ -16,14 +16,13 @@ export default function PixelBoardMenu({pixelBoard, connectedUsers}) {
                     <Title order={2}>{pixelBoard.title}</Title>
                 </div>
                 <div className={"menu-options"}>
-                    <Button leftSection={<IconHistory size={18} />} color="blue" size="sm" radius={"lg"} onClick={()=> setOpen(!open)}>History</Button>
-                    <HistoryPopup pixelBoard={pixelBoard} open={open} onClose={() => setOpen(false)} />
+                    <Button leftSection={<IconHistory size={18}/>} color="blue" size="sm" radius={"lg"}
+                            onClick={() => setOpen(!open)}>History</Button>
+                    <HistoryPopup pixelBoard={pixelBoard} open={open} onClose={() => setOpen(false)}/>
                 </div>
 
                 {connectedUsers.length > 0 && (
-                    <div>
-                        <NestedUsersAvatar users={connectedUsers} maxAvatarDisplayed={2} />
-                    </div>
+                    <NestedUsersAvatar users={connectedUsers} maxAvatarDisplayed={2}/>
                 )}
             </Card>
         </div>
