@@ -2,7 +2,7 @@ import './PixelBoard.scss'
 import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useRef, useState} from "react";
-import {useParams} from "react-router";
+import {useNavigate, useParams} from "react-router";
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,
@@ -13,7 +13,9 @@ import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
 import Pixels from "../../components/PixelBoard/Pixels.jsx";
 import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
-import PixelBoardMenu from "../../components/Menu/PixelBoardMenu.jsx";
+import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
+import {notifications} from "@mantine/notifications";
+import {IconUser} from "@tabler/icons-react";
 
 export class Pixel {
     constructor(x, y, color) {
@@ -22,6 +24,11 @@ export class Pixel {
         this.color = color;
         this.lastUpdate = new Date();
     }
+}
+
+class PixelBoardStatus {
+    static INITIAL = "INITIAL";
+    static ALREADY_CONNECTED = "ALREADY_CONNECTED";
 }
 
 export default function PixelBoard() {
@@ -34,7 +41,11 @@ export default function PixelBoard() {
     const [savedPixels, setSavedPixels] = useState([]);
     const [lastDrawedPixel, setLastDrawedPixel] = useState(null);
     const [currentHoveredPixel, setCurrentHoveredPixel] = useState(null);
+    const [connectedUsers, setConnectedUsers] = useState([]);
+    const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
+    const navigate = useNavigate();
     const pixelSize = 10;
+    let lastNbUserConnected = useRef(0);
 
     const onDrawPixel = (pixel) => {
         setLastDrawedPixel(pixel);
@@ -42,10 +53,53 @@ export default function PixelBoard() {
     }
 
     useEffect(() => {
-        fetchPixelsData();
-        fetchNoPersistedPixel()
-        fetchPixelBoard();
+        if (globalPixelBoardStatus === PixelBoardStatus.ALREADY_CONNECTED) {
+            notifications.show({
+                title: "Already connected",
+                message: `You are already connected, you join a new session on this Pixel Board !`,
+                color: "orange",
+                icon: <IconUser size={24}/>,
+            })
+        }
+    }, [globalPixelBoardStatus])
+
+    useEffect(() => {
+        if (connectedUsers?.length < lastNbUserConnected.current) {
+            notifications.show({
+                title: "User leaved the Pixelboard",
+                message: `1 user leaved the pixel board !`,
+                color: "red",
+                icon: <IconUser size={24}/>,
+            })
+
+        } else if (connectedUsers.length > lastNbUserConnected.current) {
+            const newUserJoined = connectedUsers[connectedUsers.length - 1];
+            notifications.show({
+                title: "New user joined the Pixelboard",
+                message: `${newUserJoined?.username} joined the pixel board !`,
+                color: "green",
+                icon: <IconUser size={24}/>,
+            })
+        }
+        lastNbUserConnected.current = connectedUsers.length;
+    }, [connectedUsers]);
+
+    useEffect(() => {
+        pixelSocket.connect();
+        listenSocketError();
+        listenJoinedUsers();
+        fetchNoPersistedPixel();
         joinPixelBoard();
+        fetchPixelsData();
+        fetchPixelBoard();
+
+        pixelSocket.onDisconnect(() => {
+            navigate("/");
+        });
+
+        return () => {
+            pixelSocket.disconnect();
+        }
     }, [id]);
 
     /**
@@ -54,6 +108,21 @@ export default function PixelBoard() {
     const listenPixelAdded = (drawPixelFunction) => {
         pixelSocket.listen(socketEvents.PIXEL.NEW_PIXEL_ADDED, (pixel) => {
             drawPixelFunction(new Pixel(pixel.x, pixel.y, pixel.color));
+        });
+    }
+
+
+    const listenSocketError = () => {
+        pixelSocket.listen(socketEvents.GENERAL.ERROR, (error) => {
+            if (error?.code === 409 && error?.message === "Already in PixelBoard") {
+                setGlobalPixelBoardStatus(PixelBoardStatus.ALREADY_CONNECTED);
+            }
+        });
+    }
+
+    function listenJoinedUsers() {
+        pixelSocket.listen(socketEvents.PIXEL.CONNECTED_USERS_CHANGED, (connectedUsersInPixelBoard) => {
+            setConnectedUsers(connectedUsersInPixelBoard);
         });
     }
 
@@ -128,10 +197,12 @@ export default function PixelBoard() {
 
     return (
         <>
+
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
                 <LoadingOverlay visible={fetchPixelBoardStatus === ApiStatus.LOADING} zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
-                {fetchPixelBoardStatus === ApiStatus.SUCCESS && <PixelBoardMenu pixelBoard={pixelBoard}/>}
+                {fetchPixelBoardStatus === ApiStatus.SUCCESS &&
+                    <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>}
                 {fetchPixelBoardStatus === ApiStatus.SUCCESS && (
                     <div className={"draw-container"}>
                         <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>

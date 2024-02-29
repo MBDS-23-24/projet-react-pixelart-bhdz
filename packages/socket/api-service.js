@@ -3,14 +3,14 @@ import axios from "axios";
 const API_URL = process.env.VITE_EXPRESS_URL;
 
 const ApiService = {
-    async getUserIdByToken(userToken) {
+    async getUserByToken(userToken) {
         try {
             const response = await axios.get(API_URL + '/user/check-token', {
                 headers: {
                     'Authorization': userToken,
                 },
             });
-            return response.data.id;
+            return response.data;
         } catch (error) {
             throw error;
         }
