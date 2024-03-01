@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') })
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: process.env.VITE_FRONT_PORT,
     proxy: {
       '/api': process.env.VITE_EXPRESS_URL,
     },

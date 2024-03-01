@@ -9,38 +9,75 @@ import {Observable, Subject} from "rxjs";
 import cors from "cors";
 
 import {takeUntil} from 'rxjs/operators';
+import Room from "./room.js";
+import {SocketError} from "./socket-error.js";
 
-
-const PIXEL_BOARD_STORES = new Map();
+const PIXEL_BOARD = new Map();
 const DELAY_PERSISTENCE = 30000;
 
-class PixelBoardStore {
+class PixelBoard {
     pixels;
     pixelBoardId;
+    connectedUsers;
     recurrencePersistence;
     unsubscribePersistence;
+    socket;
 
     constructor(pixelBoardId) {
         this.pixels = [];
+        this.connectedUsers = [];
         this.pixelBoardId = pixelBoardId;
+        this.initPersistence();
+    }
+
+    initPersistence() {
         this.unsubscribePersistence = new Subject();
         this.recurrencePersistence = this.startRecurrencePersitence(DELAY_PERSISTENCE).pipe(takeUntil(this.unsubscribePersistence))
         this.recurrencePersistence.subscribe({
             next: isPersisted => {
                 if (isPersisted)
-                    emitEvent(Room.pixelBoard(pixelBoardId), Event.PIXEL.PIXELS_IS_PERSISTED, true)
-                if (!io.sockets?.adapter?.rooms?.get(Room.pixelBoard(pixelBoardId))) {
-                    this.unsubscribePersistence.next();
-                    this.unsubscribePersistence.complete();
-                    PIXEL_BOARD_STORES.delete(pixelBoardId);
-                    logRoom(Room.pixelBoard(pixelBoardId), "No user connected to the pixel board, store deleted");
-                }
+                    emitEvent(this.getRoom(), Event.PIXEL.PIXELS_IS_PERSISTED, true)
             },
             error: error => {
                 console.error("Une erreur s'est produite:", error);
             }
         });
+    }
 
+    join(socket, user) {
+        user.socket = socket;
+        const userFind = this.connectedUsers.find(u => u.id === user.id);
+        if (userFind) {
+            emitEvent(Room.private(user.id), Event.GENERAL.ERROR, new SocketError(409, "Already in PixelBoard", "You are already connected to this pixel board"));
+            this.leavePixelBoard(userFind, true);
+        }
+        joinRoom(user.socket, this.getRoom(), user.id);
+        this.connectedUsers.push(user);
+        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username}) => ({
+            id,
+            username
+        })));
+    }
+
+    leavePixelBoard(user, isReconnection = false) {
+        const indexToRemove = this.connectedUsers.findIndex(u => u.id === user.id);
+        if (indexToRemove > -1) {
+            //If the last user leave the pixel board, we delete the reference of this pixel board
+            if (this.connectedUsers.length === 1 && isReconnection === false) {
+                this.unsubscribePersistence.next();
+                this.unsubscribePersistence.complete();
+                PIXEL_BOARD.delete(this.pixelBoardId);
+                logRoom(this.getRoom(), "No user connected to the pixel board, will be deleted");
+            }
+            this.connectedUsers.splice(indexToRemove, 1);
+            user.socket.disconnect();
+            logRoom(this.getRoom(), `User ${user.id} disconnected`);
+
+        }
+        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username}) => ({
+            id,
+            username
+        })));
     }
 
     startRecurrencePersitence(delayMs) {
@@ -52,20 +89,20 @@ class PixelBoardStore {
                     await ApiService.postPixels(this.pixelBoardId, this.pixels).catch(error => {
                         console.error("Une erreur s'est produite:", error);
                     });
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `${this.pixels.length} pixels persisted for Pixel Board id ${this.pixelBoardId}`);
+                    logRoom(this.getRoom(), `${this.pixels.length} pixels persisted for Pixel Board id ${this.pixelBoardId}`);
                     this.pixels = []
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `Pixels in memory is cleared`);
+                    logRoom(this.getRoom(), `Pixels in memory is cleared`);
                     isPersisted = true;
                 } else {
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `No pixels to persist in board `);
+                    logRoom(this.getRoom(), `No pixels to persist in board `);
                     isPersisted = false;
                 }
 
                 if (!this.unsubscribePersistence.isStopped) {
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `Next persistence in ${delayMs / 1000} seconds`);
+                    logRoom(this.getRoom(), `Next persistence in ${delayMs / 1000} seconds`);
                     setTimeout(persistPixels, delayMs);
                 } else {
-                    logRoom(Room.pixelBoard(this.pixelBoardId), `Persistence stopped`);
+                    logRoom(this.getRoom(), `Persistence stopped due to no user connected to the pixel board`);
                 }
                 observer.next(isPersisted);
             }
@@ -75,7 +112,7 @@ class PixelBoardStore {
     }
 
     addPixel(ownerId, x, y, color) {
-        this.pixels.push({ownerId: ownerId, x: x, y: y, color: color});
+        this.pixels.push({ownerId: ownerId, x: x, y: y, color: color, lastUpdate: new Date()});
     }
 
     removePixel(ownerId, x, y) {
@@ -85,7 +122,9 @@ class PixelBoardStore {
         }
     }
 
-
+    getRoom() {
+        return Room.pixelBoard(this.pixelBoardId);
+    }
 }
 
 
@@ -102,16 +141,6 @@ const io = new Server(server, {
         credentials: true
     }
 });
-
-const Room = {
-    private(userId) {
-        return "private_" + userId.toString();
-    },
-
-    pixelBoard(pixelBoardId) {
-        return "pixel_board_" + pixelBoardId.toString();
-    },
-}
 
 
 function emitEvent(room, event, data) {
@@ -136,46 +165,50 @@ io.on('connection', async (socket) => {
     const request = socket.request;
     const headers = request.headers;
     const token = headers.authorization;
-    const userId = await ApiService.getUserIdByToken(token);
+    const user = await ApiService.getUserByToken(token);
 
-    if (userId === null) {
+    if (user === null) {
         socket.disconnect();
         return;
     }
 
     console.log('Nouvelle connexion WebSocket établie');
-    const privateRoomUser = Room?.private(userId);
-    joinRoom(socket, privateRoomUser, userId); //Room privé pour le user
+    const privateRoomUser = Room?.private(user.id);
+    if (privateRoomUser === null) {
+        socket.disconnect();
+        return;
+    }
+    joinRoom(socket, privateRoomUser, user.id); //Room privé pour le user
 
     socket.on(Action.JOIN_PIXEL_BOARD, ({pixelBoardId}) => {
-
-        const pixelBoardRoom = Room.pixelBoard(pixelBoardId);
-        joinRoom(socket, pixelBoardRoom, userId); //Room pour le pixel board
-
-        if (PIXEL_BOARD_STORES.has(pixelBoardId) === false) {
-            const pixelBoardStore = new PixelBoardStore(pixelBoardId);
-            PIXEL_BOARD_STORES.set(pixelBoardId, pixelBoardStore);
+        if (PIXEL_BOARD.has(pixelBoardId) === false) {
+            const pixelBoard = new PixelBoard(pixelBoardId);
+            PIXEL_BOARD.set(pixelBoardId, pixelBoard);
         }
-        emitEvent(pixelBoardRoom, Event.PIXEL.NO_PERSISTED_PIXELS, PIXEL_BOARD_STORES.get(pixelBoardId).pixels);
+        const pixelBoard = PIXEL_BOARD.get(pixelBoardId);
 
+        socket.on('disconnect', () => {
+            pixelBoard.leavePixelBoard(user);
+        });
+
+        pixelBoard.join(socket, user)
+
+        const pixelBoardRoom = pixelBoard.getRoom();
+
+        emitEvent(pixelBoardRoom, Event.PIXEL.NO_PERSISTED_PIXELS, pixelBoard.pixels);
 
         socket.on(Action.DRAW_PIXEL, ({x, y, color}) => {
             emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_ADDED, {x: x, y: y, color: color});
-            PIXEL_BOARD_STORES.get(pixelBoardId).addPixel(userId, x, y, color);
+            pixelBoard.addPixel(user.id, x, y, color);
         });
 
         socket.on(Action.ERASE_PIXEL, ({x, y}) => {
             emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_REMOVED, {x: x, y: y});
-            PIXEL_BOARD_STORES.get(pixelBoardId).removePixel(userId, x, y);
+            pixelBoard.removePixel(user.id, x, y);
         });
 
-        socket.on('disconnect', () => {
-            logRoom(pixelBoardRoom, `User ${userId} disconnected`);
 
-        })
     });
-
-    emitEvent(privateRoomUser, Event.GENERAL.CONNECTION_SUCCESS, true);
 });
 
 const PORT = process.env.SOCKET_PORT;

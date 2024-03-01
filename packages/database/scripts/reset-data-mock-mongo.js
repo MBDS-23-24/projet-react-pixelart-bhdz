@@ -67,8 +67,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 0, 0, 1),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 1000,
-            "pixel_width": 1000,
-            "pixel_height": 1000,
+            "pixel_width": 500,
+            "pixel_height": 500,
             "is_pixel_overwrite": true
         },
         {
@@ -91,8 +91,8 @@ const data = () => {
             "start_date": adjustDate(new Date(), 0, 0, 2),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 5000,
-            "pixel_width": 700,
-            "pixel_height": 800,
+            "pixel_width": 500,
+            "pixel_height": 500,
             "is_pixel_overwrite": false
         },
     ]
@@ -103,8 +103,8 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "hexa_color": "#000000", "owner_id": users[0]["_id"]},
-                {"position": 14, "hexa_color": "#b01a1a", "owner_id": users[1]["_id"]},
+                {"position": 0, "hexa_color": "#000000", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
+                {"position": 14, "hexa_color": "#b01a1a", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
             ]
         },
         {
@@ -112,8 +112,8 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"]},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"]},
+                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
+                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
             ]
         },
         {
@@ -121,8 +121,8 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#b7632c", "owner_id": users[1]["_id"]},
-                {"position": 10, "hexa_color": "#1f9f9d", "owner_id": users[2]["_id"]},
+                {"position": 2, "hexa_color": "#b7632c", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
+                {"position": 10, "hexa_color": "#1f9f9d", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
             ]
         },
         {
@@ -130,9 +130,9 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"]},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"]},
-                {"position": 6, "hexa_color": "#38bb4f", "owner_id": users[2]["_id"]},
+                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
+                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {"position": 6, "hexa_color": "#38bb4f", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
             ]
         }
 
