@@ -7,5 +7,6 @@ const router = express.Router()
 router.post('/:pixelBoardId/pixels',authMiddleware.authenticatedSocketServer, pixelBoardController.postPixels)
 router.get('/:pixelBoardId/pixels', authMiddleware.authenticatedUser, pixelBoardController.getPixels)
 router.get('/:pixelBoardId', authMiddleware.authenticatedUser, pixelBoardController.getPixelBoard)
+router.get("", pixelBoardController.getAllPixelBoards)
 
 export default router

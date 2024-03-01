@@ -12,3 +12,7 @@ export const getPixelBoardById = async (pixelBoardId) => {
         return res.data;
     });
 }
+
+export const getAllPixelBoards = async () => {
+    return get(`${PIXELBOARD}`).then(res => res.data)
+}

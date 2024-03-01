@@ -2,14 +2,33 @@ import prisma from "../prisma/client.js";
 import {AppLogger} from "../logger/app-logger.js";
 
 const pixelBoardService = {
+    async getAllPixelBoards(){
+        console.log("Board in service")
+        return prisma.pixelBoard.findMany();
+    },
+
+    // async addUserToTheBoard (pixelBoardId, userId) {
+    //     await getPixelBoardById(pixelBoardId)
+    //         .then(data => {
+    //             if (!data) {
+    //                 return prisma.pixelBoard.update({
+    //                     where: {
+    //                         id: pixelBoardId
+    //                     },
+    //                     data: {
+    //                         creatorId: userId
+    //                     }
+    //                 })
+    //             }
+    //         });
+    // },
 
     async getPixelBoardById(pixelBoardId) {
-        const pixelBoard = await prisma.pixelBoard.findUnique({
+        return prisma.pixelBoard.findUnique({
             where: {
                 id: pixelBoardId
             }
         });
-        return pixelBoard;
     },
 
     async getPixels(pixelBoardId) {

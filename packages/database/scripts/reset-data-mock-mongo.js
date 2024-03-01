@@ -1,4 +1,5 @@
 import {MongoClient, ObjectId} from 'mongodb'
+import dotenv from 'dotenv';
 
 import "../../../config.js"
 
@@ -6,7 +7,7 @@ import "../../../config.js"
 const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + "/?directConnection=true&serverSelectionTimeoutMS=2000";
 
 // Nom de la base de données
-const dbName = process.env.DB_NAME;
+const dbName = "pixel_art" || process.env.DB_NAME;
 
 // Créer un nouveau client MongoDB
 const client = new MongoClient(url);
