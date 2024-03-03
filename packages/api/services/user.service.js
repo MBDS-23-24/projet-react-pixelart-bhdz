@@ -6,7 +6,7 @@ import {jwtService} from "./jwt.service.js";
 export const userService = {
 
     async login(email, password) {
-        const errorCredentials = new BusinessError(401, 'Credentials incorrects ! Please try again');
+        const errorCredentials = new BusinessError(401, 'Credentials incorrect ! Please try again');
         const user = await prisma.user.findUnique({
             where: {email: email},
         });
@@ -36,15 +36,13 @@ export const userService = {
         });
     },
     updateUserPassword: async (userId, newPassword) => {
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(newPassword, salt, async function (err, hash) {
-                const updatedUser = await prisma.user.update({
-                    where: {id: userId},
-                    data: {password: hash},
-                });
-            });
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(newPassword, salt);
+        const updatedUser = await prisma.user.update({
+            where: {id: userId},
+            data: {password: hash},
         });
-        return true;
+        return !!updatedUser;
     },
 
     async getUsernameByListUserId(listUserId) {
