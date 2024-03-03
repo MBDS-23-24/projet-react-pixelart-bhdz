@@ -43,8 +43,11 @@ export const login = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
     await catchError(async () => {
-        const {username, email, password} = req.body;
-        const updatedUser = await userService.updateUser(req.user, username, email, password);
+        const {username, email, accountImageUrl} = req.body;
+        if (!username || !email) {
+            throw new BusinessError(400, 'Bad request', 'Missing username or email');
+        }
+        const updatedUser = await userService.updateUser(req.user, username, email, accountImageUrl);
         res.json(updatedUser);
     }, next);
 };

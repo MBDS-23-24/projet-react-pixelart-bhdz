@@ -26,12 +26,13 @@ export const userService = {
         return {user, accessToken};
     },
 
-    async updateUser(user,username, email, password) {
-        return await prisma.user.update({
+    async updateUser(user,username, email, accountImageUrl) {
+        return prisma.user.update({
             where: {email: user.email},
             data: {
                 username: username,
-                email: email
+                email: email,
+                accountImageUrl: accountImageUrl
             },
         });
     },
@@ -54,7 +55,8 @@ export const userService = {
             },
             select: {
                 id: true,
-                username: true
+                username: true,
+                accountImageUrl: true
             }
         });
 

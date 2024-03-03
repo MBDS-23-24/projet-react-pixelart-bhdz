@@ -93,7 +93,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
 
     const rows = dataHistorySorted.map((row, index) => (
         <Table.Tr key={index}>
-            <Table.Td className={"avatar"}><Avatar src={"https://picsum.photos/200/300"} />{row.user.username}</Table.Td>
+            <Table.Td className={"avatar"}><Avatar src={row.user.accountImageUrl} />{row.user.username}</Table.Td>
             <Table.Td>{row.position}</Table.Td>
             <Table.Td className={"avatar"}><ColorSwatch radius={"md"} color={row.color} />{row.color}</Table.Td>
             <Table.Td>{formatedDateCountDown(row.lastUpdate)}</Table.Td>

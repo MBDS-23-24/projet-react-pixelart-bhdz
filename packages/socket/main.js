@@ -53,9 +53,10 @@ class PixelBoard {
         }
         joinRoom(user.socket, this.getRoom(), user.id);
         this.connectedUsers.push(user);
-        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username}) => ({
+        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username, accountImageUrl}) => ({
             id,
-            username
+            username,
+            accountImageUrl
         })));
     }
 
