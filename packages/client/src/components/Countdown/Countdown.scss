@@ -1,0 +1,11 @@
+.countdown {
+  height: 10px;
+  transition: width 1s linear;
+}
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10px;
+  transition: width 1s linear;
+}

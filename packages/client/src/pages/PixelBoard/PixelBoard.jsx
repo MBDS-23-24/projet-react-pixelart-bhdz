@@ -3,6 +3,7 @@ import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router";
+import '../../components/Countdown/Countdown.scss'
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,
@@ -44,6 +45,7 @@ export default function PixelBoard() {
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
+    const [countdownProgress, setCountdownProgress] = useState(100);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
@@ -101,6 +103,29 @@ export default function PixelBoard() {
             pixelSocket.disconnect();
         }
     }, [id]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCountdownProgress(prevProgress => prevProgress - (100 / (9000 / 1000)));
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        let interval;
+        if (countdownProgress <= 0) {
+            setSelectedColor('#000000');
+            clearInterval(interval);
+        } else {
+            interval = setInterval(() => {
+                setCountdownProgress(prevProgress => prevProgress - (100 / (5000 / 1000)));
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [countdownProgress]);
+
+
 
     /**
      * Listen to new pixel added event
@@ -161,6 +186,11 @@ export default function PixelBoard() {
             }
         });
     }
+
+    const startCountdown = (color) => {
+        setSelectedColor(color);
+        setCountdownProgress(100);
+    };
 
     /**
      * Gère le clic de la souris sur le canvas
@@ -231,8 +261,11 @@ export default function PixelBoard() {
                                 pixelSize={pixelSize}
                                 currentDrawedPixel={lastDrawedPixel}
                             />
+                            <div className="countdown"
+                                 style={{backgroundColor: selectedColor, width: `${countdownProgress}%`}}>
+                            </div>
                         </div>
-                        <ColorsRange onSelectColor={setSelectedColor}/>
+                        <ColorsRange onSelectColor={(color) => startCountdown(color)}/>
                     </div>
                 )}
             </div>
