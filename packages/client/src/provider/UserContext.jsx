@@ -2,7 +2,7 @@ import {createContext, useEffect, useState} from "react";
 
 export function decryptUser() {
     const session_user = localStorage.getItem('user_session');
-    if (session_user) {
+    if (session_user !== null && session_user !== "undefined") {
         return JSON.parse(session_user);
     }
     return null;
