@@ -106,26 +106,30 @@ export default function PixelBoard() {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setCountdownProgress(prevProgress => prevProgress - (100 / (9000 / 1000)));
+            setCountdownProgress(prevProgress => prevProgress - (100 / (15000 / 1000)));
         }, 1000);
 
         return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
-        let interval;
+        let interval= null;
         if (countdownProgress <= 0) {
             setSelectedColor('#000000');
             clearInterval(interval);
         } else {
             interval = setInterval(() => {
-                setCountdownProgress(prevProgress => prevProgress - (100 / (5000 / 1000)));
+                setCountdownProgress(prevProgress => prevProgress - (100 / (15000 / 1000)));
             }, 1000);
         }
         return () => clearInterval(interval);
     }, [countdownProgress]);
 
 
+    const startCountdown = (color) => {
+        setSelectedColor(color);
+        setCountdownProgress(100);
+    };
 
     /**
      * Listen to new pixel added event
@@ -186,11 +190,6 @@ export default function PixelBoard() {
             }
         });
     }
-
-    const startCountdown = (color) => {
-        setSelectedColor(color);
-        setCountdownProgress(100);
-    };
 
     /**
      * Gère le clic de la souris sur le canvas
