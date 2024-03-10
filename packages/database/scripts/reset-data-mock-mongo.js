@@ -27,7 +27,7 @@ const data = () => {
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
-            "role_id": "ROLE_USER",
+            "role_id": "ROLE_ADMIN",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/244503151921594378/9e0139f4088df4ef4b09dae828743e17?size=1024",
         },
         {

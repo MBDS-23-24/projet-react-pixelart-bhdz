@@ -12,7 +12,7 @@ import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixel
 import './HistoryPopup.scss';
 import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/Utils.js";
 
-function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
+export function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
     return (
         <Table.Th className={"th"}>
@@ -49,7 +49,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
     function filterData(data, search) {
         const query = search.toLowerCase().trim();
         return data.filter((item) => {
-            return item.user.username.toLowerCase().includes(query) || item.position.toString().includes(query) || item.color.toLowerCase().includes(query);
+            return item.user.username.toLowerCase().includes(query) || item.position.toString().includes(query) || item.color.toLowerCase().includes(query) || formatedDateCountDown(item.lastUpdate).includes(query);
         });
     }
 

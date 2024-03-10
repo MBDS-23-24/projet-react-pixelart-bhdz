@@ -1,7 +1,7 @@
 import {useContext, useState} from 'react';
 import { useForm } from '@mantine/form';
 import { useMutation } from 'react-query';
-import { updateUser, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
+import { updateUserAccount, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
 import {logoutUser, updateUserContext, UserContext} from "../../provider/UserContext.jsx";
 import {
     Button,
@@ -48,7 +48,7 @@ export default function Account() {
         },
     });
 
-    const { mutate: updateAccount } = useMutation(updateUser, {
+    const { mutate: updateAccount } = useMutation(updateUserAccount, {
         onSuccess: (data) => {
             setUser(data);
             updateUserContext(data);
