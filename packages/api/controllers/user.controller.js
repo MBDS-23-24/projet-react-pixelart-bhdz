@@ -40,3 +40,28 @@ export const login = async (req, res, next) => {
         res.json(info.user);
     }, next)
 }
+
+export const updateUser = async (req, res, next) => {
+    await catchError(async () => {
+        const {username, email, password} = req.body;
+        const updatedUser = await userService.updateUser(req.user, username, email, password);
+        res.json(updatedUser);
+    }, next);
+};
+
+export const changePassword = async (req, res, next) => {
+    await catchError(async () => {
+            const {newPassword} = req.body;
+            if (!newPassword) {
+                throw new BusinessError(400, 'Bad request', 'Missing new password');
+            }
+            const updatedUser = await userService.updateUserPassword(req.user.id, newPassword);
+            if (!updatedUser) {
+                throw new BusinessError(404, 'Not found', 'User not found');
+            }
+            return res.status(200).json(updatedUser);
+        }
+        , next);
+}
+
+

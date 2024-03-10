@@ -1,0 +1,73 @@
+/* Account.css */
+.account-paper {
+  background: var(--mantine-color-gray-10);
+  border-radius: var(--mantine-border-radius-md);
+}
+
+.account-grid-col {
+  display: flex;
+  justify-content: center;
+}
+
+.account-card {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
+
+.account-avatar {
+  margin: auto;
+}
+
+.account-title {
+  margin-bottom: var(--mantine-space-md);
+}
+.account-subtitle {
+  margin-bottom: var(--mantine-space-lg);
+  text-align: left;
+}
+
+.account-text-lg {
+  margin-top: var(--mantine-space-md);
+}
+
+.account-text-sm {
+  color: var(--mantine-color-dimmed);
+}
+
+.account-update-button:hover {
+  background-color: #45a049;
+}
+
+.avatar-container:hover .account-avatar img {
+  filter: grayscale(100%);
+}
+
+.avatar-container:hover .account-avatar button {
+  display: block;
+}
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  &:hover .account-avatar img {
+    filter: grayscale(100%);
+  }
+}
+
+.avatar-edit-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+}
