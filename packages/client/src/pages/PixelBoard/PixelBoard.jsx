@@ -46,6 +46,7 @@ export default function PixelBoard() {
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
     const [countdownProgress, setCountdownProgress] = useState(100);
+    const [isChoosingColor, setIsChoosingColor] = useState(true);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
@@ -116,6 +117,7 @@ export default function PixelBoard() {
         let interval= null;
         if (countdownProgress <= 0) {
             setSelectedColor('#000000');
+            setIsChoosingColor(true);
             clearInterval(interval);
         } else {
             interval = setInterval(() => {
@@ -126,10 +128,24 @@ export default function PixelBoard() {
     }, [countdownProgress]);
 
 
-    const startCountdown = (color) => {
+    useEffect(() => {
+        const initialColor = localStorage.getItem('selectedColor');
+        if (initialColor) {
+            setSelectedColor(initialColor);
+            setIsChoosingColor(false);
+            setCountdownProgress(100);
+        }
+    }, []);
+
+
+    const startCountdownAndSelectColor = (color) => {
+        if (!isChoosingColor) return;
         setSelectedColor(color);
+        setIsChoosingColor(false);
         setCountdownProgress(100);
+        localStorage.setItem('selectedColor', color);
     };
+
 
     /**
      * Listen to new pixel added event
@@ -264,7 +280,7 @@ export default function PixelBoard() {
                                  style={{backgroundColor: selectedColor, width: `${countdownProgress}%`}}>
                             </div>
                         </div>
-                        <ColorsRange onSelectColor={(color) => startCountdown(color)}/>
+                        <ColorsRange onSelectColor={startCountdownAndSelectColor} />
                     </div>
                 )}
             </div>
