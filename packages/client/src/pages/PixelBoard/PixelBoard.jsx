@@ -260,7 +260,7 @@ export default function PixelBoard() {
                                 pixelSize={pixelSize}
                                 currentDrawedPixel={lastDrawedPixel}
                             />
-                            <div className="countdown"
+                            <div className="bar"
                                  style={{backgroundColor: selectedColor, width: `${countdownProgress}%`}}>
                             </div>
                         </div>
