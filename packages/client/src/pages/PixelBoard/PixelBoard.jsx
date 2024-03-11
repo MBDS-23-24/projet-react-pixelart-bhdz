@@ -149,13 +149,13 @@ export default function PixelBoard() {
     }, []);
 
     const startCountdownAndSelectColor = (color) => {
-        if (!isChoosingColor && color === selectedColor) return;
+        if(!isChoosingColor) return;
         setSelectedColor(color);
         setIsChoosingColor(false);
         setCountdownProgress(100);
         setRemainingTime(15);
-        setHasDrawnDuringCountdown(false);
         localStorage.setItem('selectedColor', color);
+        setHasDrawnDuringCountdown(false);
     };
 
 
