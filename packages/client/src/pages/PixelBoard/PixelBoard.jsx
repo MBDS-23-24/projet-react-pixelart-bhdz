@@ -53,7 +53,7 @@ export default function PixelBoard() {
     let lastNbUserConnected = useRef(0);
 
     const onDrawPixel = (pixel) => {
-        if (!hasDrawnDuringCountdown) {
+        if (!hasDrawnDuringCountdown && !isChoosingColor) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             setHasDrawnDuringCountdown(true)
@@ -124,7 +124,6 @@ export default function PixelBoard() {
     useEffect(() => {
         let interval= null;
         if (countdownProgress <= 0) {
-            setSelectedColor('#000000');
             setIsChoosingColor(true);
             setHasDrawnDuringCountdown(false);
             setRemainingTime(15);
@@ -150,13 +149,13 @@ export default function PixelBoard() {
     }, []);
 
     const startCountdownAndSelectColor = (color) => {
-        if (!isChoosingColor) return;
+        if (!isChoosingColor && color === selectedColor) return;
         setSelectedColor(color);
         setIsChoosingColor(false);
         setCountdownProgress(100);
         setRemainingTime(15);
-        localStorage.setItem('selectedColor', color);
         setHasDrawnDuringCountdown(false);
+        localStorage.setItem('selectedColor', color);
     };
 
 
