@@ -47,12 +47,16 @@ export default function PixelBoard() {
     const navigate = useNavigate();
     const [countdownProgress, setCountdownProgress] = useState(100);
     const [isChoosingColor, setIsChoosingColor] = useState(true);
+    const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
     const onDrawPixel = (pixel) => {
-        setLastDrawedPixel(pixel);
-        pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color})
+        if (!hasDrawnDuringCountdown) {
+            setLastDrawedPixel(pixel);
+            pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
+            setHasDrawnDuringCountdown(true)
+        }
     }
 
     useEffect(() => {
@@ -119,6 +123,7 @@ export default function PixelBoard() {
             setSelectedColor('#000000');
             setIsChoosingColor(true);
             clearInterval(interval);
+            setHasDrawnDuringCountdown(false);
         } else {
             interval = setInterval(() => {
                 setCountdownProgress(prevProgress => prevProgress - (100 / (15000 / 1000)));
@@ -144,6 +149,7 @@ export default function PixelBoard() {
         setIsChoosingColor(false);
         setCountdownProgress(100);
         localStorage.setItem('selectedColor', color);
+        setHasDrawnDuringCountdown(false);
     };
 
 
