@@ -1,13 +1,17 @@
-# Définir l'image de base
-FROM node:18
+FROM node:18-alpine
 
-# Créer le répertoire de l'application
-WORKDIR /usr/src/app
-COPY . .
+WORKDIR /app
+
+COPY package.json .
 
 RUN npm install
 
+COPY . .
 
-EXPOSE 8080
+RUN cd packages/client
+RUN npm install
+RUN yarn workspace client build
 
-CMD ["npm", "run", "start:client"]
+EXPOSE 5173
+
+CMD [ "npm", "run", "start:client" ]

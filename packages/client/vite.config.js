@@ -8,11 +8,19 @@ dotenv.config({ path: path.resolve(__dirname, '.env') })
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/",
   plugins: [react()],
+  preview: {
+    port: 5173,
+    strictPort: true,
+  },
   server: {
-    port: process.env.VITE_FRONT_PORT,
+    port: 5173,
+    strictPort: true,
+    host: true,
+    origin: "http://0.0.0.0:8080",
     proxy: {
       '/api': process.env.VITE_EXPRESS_URL,
-    },
+    }
   },
-})
+});
