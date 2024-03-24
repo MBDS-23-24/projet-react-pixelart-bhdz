@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # Installer les dépendances de l'application
 # Le caractère joker est utilisé pour s'assurer que les fichiers package.json ET package-lock.json sont copiés
 # où disponible (npm@5+)
-COPY package*.json ./
+COPY packages/client ./
 
 RUN npm install
 # Si tu construis ton code pour la production
