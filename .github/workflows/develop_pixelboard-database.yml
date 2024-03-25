@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_5388477085f44da6bb2b504433e9b4c5 }}/pixelboard_database:${{ github.sha }}
-        file: ./packages/database/Dockerfile
+        file: database.Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
