@@ -10,6 +10,6 @@ COPY . .
 
 RUN cd packages/api
 RUN npm install
-EXPOSE 5173
+EXPOSE 5010
 
 CMD [ "npm", "run", "start:api" ]
