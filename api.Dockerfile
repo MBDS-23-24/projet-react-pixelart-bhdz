@@ -2,17 +2,16 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY ../../package.json .
+COPY package.json .
 
 RUN npm install
 
-COPY ../.. .
+COPY . .
 
 RUN cd packages/api
 RUN npm install
 RUN yarn workspace api build
 
-EXPOSE 5010
-
+EXPOSE 5173
 
 CMD [ "npm", "run", "start:api" ]

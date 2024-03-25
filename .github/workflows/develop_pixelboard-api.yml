@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - pixelboard
+name: PixelBoard - API
 
 on:
   push:
@@ -23,15 +23,15 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_ddccf53ef612493798babdac985a3b18 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_9842c4405c104d538af9ebcf6577dc07 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_f9e4fc74783046fab91f4ff27884a6e7 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_2146ef65a90749e7bba0547ec80fc059 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ddccf53ef612493798babdac985a3b18 }}/toi_hitchway:${{ github.sha }}
-        file: ./Dockerfile
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f9e4fc74783046fab91f4ff27884a6e7 }}/pixelboard-back:${{ github.sha }}
+        file: api.Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'pixelboard'
+        app-name: 'pixekboard-back'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_92c01d67928f4b11913a2ed7b84b5da0 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_ddccf53ef612493798babdac985a3b18 }}/toi_hitchway:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_39cd5ef19ce14b60bebbff01cfef9e7a }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f9e4fc74783046fab91f4ff27884a6e7 }}/pixelboard-back:${{ github.sha }}'
