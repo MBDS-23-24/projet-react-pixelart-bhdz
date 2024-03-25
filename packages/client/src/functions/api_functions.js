@@ -10,7 +10,7 @@ export const axiosApi = axios.create({
     headers: {
         'Access-Control-Allow-Origin': '*',
         "Content-Type": "application/json",
-        "Authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : "",
+        "Authorization": localStorage?.getItem('user_session') ? `Bearer ${JSON.parse(localStorage.getItem('user_session')).accessToken}` : "",
     },
 });
 
