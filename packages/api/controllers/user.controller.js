@@ -24,6 +24,8 @@ export const login = async (req, res, next) => {
 
         res.cookie('accessToken', info.accessToken, {maxAge: 24 * 60 * 60 * 1000});
 
+        delete info.user.password;
+        info.user.accessToken = info.accessToken;
         res.json(info.user);
     }, next)
 }

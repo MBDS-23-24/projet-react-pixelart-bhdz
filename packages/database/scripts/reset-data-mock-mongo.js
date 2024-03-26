@@ -3,7 +3,7 @@ import {MongoClient, ObjectId} from 'mongodb'
 import "../../../config.js"
 
 // URL de connexion à la base de données
-const url = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + "/?directConnection=true&serverSelectionTimeoutMS=2000";
+const url = process.env.MONGO_URL;
 
 // Nom de la base de données
 const dbName = process.env.DB_NAME;
