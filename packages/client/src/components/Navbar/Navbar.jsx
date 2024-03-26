@@ -1,5 +1,5 @@
 import {useContext, useState} from 'react';
-import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avatar, Card, Divider} from '@mantine/core';
+import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avatar} from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
@@ -11,9 +11,12 @@ import "./Navbar.scss";
 import {Link} from "react-router-dom";
 import {logoutUser, UserContext} from "../../provider/UserContext.jsx";
 import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
+import {hasRightToAccess} from "../../utils/Utils.js";
 
-function NavbarLink({ icon: Icon, label, active, onClick, link }) {
+function NavbarLink({ icon: Icon, label, active, onClick, link, isHidden=false}) {
     const { colorScheme } = useMantineColorScheme()
+
+    if (isHidden) return null;
 
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
@@ -27,10 +30,10 @@ function NavbarLink({ icon: Icon, label, active, onClick, link }) {
 }
 
 const listLinkedRoute = [
-    { icon: IconHome2, label: 'Home', link: "/" },
-    { icon: IconGauge, label: 'Dashboard', link: "/dashboard"},
-    { icon: IconUser, label: 'Account', link: "/account"},
-    { icon: IconSettings, label: 'Settings', link: "/settings" },
+    { icon: IconHome2, label: 'Home', link: "/", needRight: false },
+    { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
+    { icon: IconUser, label: 'Account', link: "/account", needRight: false},
+    { icon: IconSettings, label: 'Settings', link: "/settings", needRight: false },
 ];
 
 export function NavBar() {
@@ -44,6 +47,7 @@ export function NavBar() {
             active={index === indexActiveLinkRoute}
             onClick={() => setIndexActiveLinkRoute(index)}
             link={link.link}
+            isHidden={!hasRightToAccess(user, link)}
         />
     ));
 
