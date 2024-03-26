@@ -53,6 +53,8 @@ class PixelBoard {
         }
         joinRoom(user.socket, this.getRoom(), user.id);
         this.connectedUsers.push(user);
+        emitEvent(this.getRoom(), Event.PIXEL.NO_PERSISTED_PIXELS, this.pixels);
+
         emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username, accountImageUrl}) => ({
             id,
             username,
@@ -67,7 +69,6 @@ class PixelBoard {
             if (this.connectedUsers.length === 1 && isReconnection === false) {
                 this.unsubscribePersistence.next();
                 this.unsubscribePersistence.complete();
-                PIXEL_BOARD.delete(this.pixelBoardId);
                 logRoom(this.getRoom(), "No user connected to the pixel board, will be deleted");
             }
             this.connectedUsers.splice(indexToRemove, 1);
@@ -103,6 +104,7 @@ class PixelBoard {
                     logRoom(this.getRoom(), `Next persistence in ${delayMs / 1000} seconds`);
                     setTimeout(persistPixels, delayMs);
                 } else {
+                    PIXEL_BOARD.delete(this.pixelBoardId);
                     logRoom(this.getRoom(), `Persistence stopped due to no user connected to the pixel board`);
                 }
                 observer.next(isPersisted);
@@ -187,16 +189,14 @@ io.on('connection', async (socket) => {
             PIXEL_BOARD.set(pixelBoardId, pixelBoard);
         }
         const pixelBoard = PIXEL_BOARD.get(pixelBoardId);
+        pixelBoard.join(socket, user)
 
         socket.on('disconnect', () => {
             pixelBoard.leavePixelBoard(user);
         });
 
-        pixelBoard.join(socket, user)
 
         const pixelBoardRoom = pixelBoard.getRoom();
-
-        emitEvent(pixelBoardRoom, Event.PIXEL.NO_PERSISTED_PIXELS, pixelBoard.pixels);
 
         socket.on(Action.DRAW_PIXEL, ({x, y, color}) => {
             emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_ADDED, {x: x, y: y, color: color});
@@ -207,9 +207,9 @@ io.on('connection', async (socket) => {
             emitEvent(pixelBoardRoom, Event.PIXEL.NEW_PIXEL_REMOVED, {x: x, y: y});
             pixelBoard.removePixel(user.id, x, y);
         });
-
-
     });
+
+    emitEvent(privateRoomUser, Event.GENERAL.READY, {});
 });
 
 const PORT = process.env.SOCKET_PORT;

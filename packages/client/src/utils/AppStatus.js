@@ -1,4 +1,4 @@
-  export class ApiStatus {
+  export class AppStatus {
     static INITIAL = "INITIAL"
     static SUCCESS = "SUCCESS"
     static ERROR = "ERROR"

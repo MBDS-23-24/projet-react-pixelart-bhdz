@@ -1,5 +1,6 @@
 import {io} from "socket.io-client";
 import Cookies from 'universal-cookie';
+
 const cookies = new Cookies();
 
 let socket;
@@ -24,7 +25,7 @@ export const socketEvents = {
     GENERAL: {
         INFO: 'INFO',
         ERROR: 'ERROR',
-        CONNECTION_SUCCESS: 'CONNECTION_SUCCESS',
+        READY: 'READY',
     }
 }
 
@@ -36,33 +37,26 @@ export const socketActions = {
 
 const pixelSocket = {
     listen(eventName, callback) {
-        if (!socket) {
-            initializeSocket();
-        }
         socket.on(eventName, callback);
+
     },
     stopListening(eventName, callback) {
-        if (socket) {
-            socket.off(eventName, callback);
-        }
+        socket.off(eventName, callback);
+
     },
     emit(eventName, data) {
-        if (socket) {
-            socket.emit(eventName, data);
-        }
+        socket.emit(eventName, data);
     },
     disconnect() {
-        if (socket) {
-            socket.disconnect();
-        }
+        socket.disconnect();
+
     },
     connect() {
         initializeSocket();
     },
     onDisconnect(callback) {
-        if (socket) {
-            socket.on('disconnect', callback);
-        }
+        socket.on('disconnect', callback);
+
     }
 };
 
