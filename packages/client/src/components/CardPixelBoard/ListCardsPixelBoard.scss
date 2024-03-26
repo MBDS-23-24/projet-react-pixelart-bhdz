@@ -1,0 +1,22 @@
+.list-pixelboard{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+
+  .card-pixelboard{
+    min-width: 400px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .list-pixelboard{
+    flex-direction: column;
+    align-items: center;
+
+    .card-pixelboard{
+      min-width: 100%;
+    }
+  }
+}

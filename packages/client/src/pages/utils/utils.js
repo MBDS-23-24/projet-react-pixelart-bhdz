@@ -1,7 +1,39 @@
 import {useMediaQuery} from "@mantine/hooks";
-import {useNavigate} from "react-router-dom";
-import {useContext} from "react";
-import {UserContext} from "../../provider/UserContext.jsx";
+export function formatedDateCountDown(date) {
+    const now = new Date();
+    const target = new Date(date);
+    const diff = now - target;
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+
+    const remainingSeconds = seconds % 60;
+    const remainingMinutes = minutes % 60;
+    const remainingHours = hours % 24;
+
+    const timeParts = [];
+    if (remainingHours > 0) {
+        timeParts.push(`${remainingHours}h `);
+    }
+    if (remainingMinutes > 0) {
+        timeParts.push(`${remainingMinutes}min `);
+    }
+    if (remainingSeconds > 0) {
+        timeParts.push(`${remainingSeconds}s `);
+    }
+
+    return `il y a ${timeParts.join('')}`;
+}
+
+export function formatedDate(date) {
+    const options = {year: 'numeric', month: 'long', day: 'numeric'};
+    return new Date(date).toLocaleDateString(undefined, options);
+}
+
+export function sortArrayByDate(array) {
+    return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
+}
 
 export const isPixelBoardClosed = (pixelboard) => {
     let start = new Date(pixelboard.start_date).getTime()
@@ -14,14 +46,14 @@ export const isPixelBoardStarted = (pixelboard) => {
     let start = new Date(pixelboard.start_date).getTime()
     let end = new Date(pixelboard.end_date).getTime()
     let current = Date.now()
-    return start < end && start < current
+    return start < end && start > current
 }
 export const isPixelBoardComingSoon = (pixelboard) => {
 
     let start = new Date(pixelboard.start_date).getTime()
     let end = new Date(pixelboard.end_date).getTime()
     let current = Date.now()
-    return start < end && start > current
+    return start < end && start < current
 }
 
 export const isSmallScreen = () => useMediaQuery('(max-width: 768px)');

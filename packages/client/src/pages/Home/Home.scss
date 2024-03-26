@@ -1,0 +1,12 @@
+.home-page {
+  width: calc(100% - 80px);
+  float: right;
+
+  .input-sort{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+}
