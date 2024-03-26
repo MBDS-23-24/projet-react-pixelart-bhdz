@@ -14,7 +14,37 @@
   width: 100%;
   margin: auto;
   text-align: center;
+
+  .avatar-container{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding-top: 20px;
+    margin: auto;
+    position: relative;
+  }
+
+  .container-form-avatar{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .img{
+    position: relative;
+  }
+
+  .account-edit-avatar-button{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+  }
 }
+
 
 .account-avatar {
   margin: auto;

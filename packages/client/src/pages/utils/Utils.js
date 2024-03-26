@@ -22,7 +22,7 @@ export function formatedDateCountDown(date) {
         timeParts.push(`${remainingSeconds}s `);
     }
 
-    return `il y a ${timeParts.join('')}`;
+    return `${timeParts.join('')} ago`;
 }
 
 export function sortArrayByDate(array) {
