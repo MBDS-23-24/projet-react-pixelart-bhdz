@@ -49,6 +49,7 @@ export default function PixelBoard() {
     const [isChoosingColor, setIsChoosingColor] = useState(true);
     const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(15);
+    const [delayMs, setDelayMs] = useState(15000);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
@@ -57,6 +58,8 @@ export default function PixelBoard() {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             setHasDrawnDuringCountdown(true)
+        }else {
+            console.log('Drawing conditions not met.');
         }
     }
 
@@ -113,20 +116,24 @@ export default function PixelBoard() {
     useEffect(() => {
         const interval = setInterval(() => {
             setCountdownProgress(prevProgress => {
-                return prevProgress - (100 / (15000 / 1000));
+                let decrement = (1000 / delayMs) * 100;
+                return Math.max(prevProgress - decrement, 0);
             });
-            setRemainingTime(prevTime => Math.max(prevTime - 1, 0));
+            setRemainingTime(prevTime => {
+                let decrementInSeconds = 1000;
+                return Math.max(prevTime - (decrementInSeconds / 1000), 0);
+            });
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [delayMs]);
 
     useEffect(() => {
         let interval= null;
         if (countdownProgress <= 0) {
             setIsChoosingColor(true);
             setHasDrawnDuringCountdown(false);
-            setRemainingTime(15);
+            setRemainingTime(0);
         } else {
             interval = setInterval(() => {
                 setCountdownProgress(prevProgress => {
@@ -187,6 +194,7 @@ export default function PixelBoard() {
         setFetchPixelBoardStatus(ApiStatus.LOADING);
         getPixelBoardById(id).then((pixelBoard) => {
             setPixelBoard(pixelBoard);
+            setDelayMs(pixelBoard.delayMs);
             setFetchPixelBoardStatus(ApiStatus.SUCCESS);
         }).catch(() => {
             setFetchPixelBoardStatus(ApiStatus.ERROR);
