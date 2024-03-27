@@ -53,16 +53,22 @@ export default function PixelBoard() {
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
+    // Save the drawn pixel in the local storage
+    const saveDrawnPixel = (pixel) => {
+        let drawnPixels = JSON.parse(localStorage.getItem('drawnPixels')) || [];
+        drawnPixels.push(pixel);
+        localStorage.setItem('drawnPixels', JSON.stringify(drawnPixels));
+    };
     const onDrawPixel = (pixel) => {
         if (!hasDrawnDuringCountdown && !isChoosingColor) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
-            setHasDrawnDuringCountdown(true)
+            setHasDrawnDuringCountdown(true);
+            saveDrawnPixel(pixel);
         }else {
             console.log('Drawing conditions not met.');
         }
     }
-
     useEffect(() => {
         if (globalPixelBoardStatus === PixelBoardStatus.ALREADY_CONNECTED) {
             notifications.show({
@@ -155,6 +161,38 @@ export default function PixelBoard() {
         }
     }, []);
 
+    useEffect(() => {
+        const savedColor = localStorage.getItem('selectedColor');
+        const savedProgress = localStorage.getItem('countdownProgress');
+        const savedRemainingTime = localStorage.getItem('remainingTime');
+        const savedDrawn = localStorage.getItem('hasDrawnDuringCountdown');
+        const drawnPixels = JSON.parse(localStorage.getItem('drawnPixels')) || [];
+
+        if (savedColor) {
+            setSelectedColor(savedColor);
+            setIsChoosingColor(false);
+        }
+        if (savedProgress) {
+            setCountdownProgress(parseFloat(savedProgress));
+        }
+        if (savedRemainingTime) {
+            setRemainingTime(parseInt(savedRemainingTime, 10));
+        }
+        if (savedDrawn) {
+            setHasDrawnDuringCountdown(savedDrawn === 'true');
+        }
+        setSavedPixels(drawnPixels);
+        fetchPixelBoard();
+    }, []);
+
+    useEffect(() => {
+        // Save the state in the local storage
+        localStorage.setItem('countdownProgress', countdownProgress.toString());
+        localStorage.setItem('remainingTime', remainingTime.toString());
+        localStorage.setItem('hasDrawnDuringCountdown', hasDrawnDuringCountdown.toString());
+    }, [countdownProgress, hasDrawnDuringCountdown, remainingTime]);
+
+
     const startCountdownAndSelectColor = (color) => {
         if(!isChoosingColor) return;
         setSelectedColor(color);
@@ -164,7 +202,6 @@ export default function PixelBoard() {
         localStorage.setItem('selectedColor', color);
         setHasDrawnDuringCountdown(false);
     };
-
 
     /**
      * Listen to new pixel added event
