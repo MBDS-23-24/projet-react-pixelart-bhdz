@@ -1,0 +1,48 @@
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: calc(100% - 80px);
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  opacity: 0.75;
+
+  &[dark-mode = true] {
+    color: var(--mantine-color-dark-6);
+  }
+
+  &[dark-mode = false] {
+    color:var(--mantine-color-gray-0);
+  }
+}
+
+
+.content {
+  padding-top: 220px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.title {
+  font-family:
+          Greycliff CF,
+          var(--mantine-font-family);
+  text-align: center;
+  font-weight: 900;
+  font-size: 38px;
+}
+
+.description {
+  max-width: 450px;
+  margin: var(--mantine-spacing-xl) auto calc(var(--mantine-spacing-xl) * 1.5);
+}

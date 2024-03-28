@@ -1,21 +1,36 @@
-import React, { useContext } from 'react';
+import {useContext, useState} from 'react';
 import { useForm } from '@mantine/form';
 import { useMutation } from 'react-query';
-import { updateUser, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
+import { updateUserAccount, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
 import {logoutUser, updateUserContext, UserContext} from "../../provider/UserContext.jsx";
-import { Button, TextInput, Group, Title, Paper, Text, Avatar, Grid, Card, Modal, PasswordInput } from '@mantine/core';
+import {
+    Button,
+    TextInput,
+    Group,
+    Title,
+    Paper,
+    Text,
+    Avatar,
+    Grid,
+    Card,
+    Modal,
+    PasswordInput,
+    ActionIcon
+} from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import './Account.scss';
 import { useDisclosure } from "@mantine/hooks";
+import {IconEdit} from "@tabler/icons-react";
 
 export default function Account() {
     const { user, setUser } = useContext(UserContext);
-    //Link to user's profile
-   user.accountImageUrl = "https://picsum.photos/200/300";
     const [opened, { open, close }] = useDisclosure(false);
+
+    const [hiddenEditAvatar, setHiddenEditAvatar] = useState(true);
 
     const form = useForm({
         initialValues: {
+            accountImageUrl: user.accountImageUrl || '',
             username: user.username || '',
             email: user.email || '',
         },
@@ -33,7 +48,7 @@ export default function Account() {
         },
     });
 
-    const { mutate: updateAccount } = useMutation(updateUser, {
+    const { mutate: updateAccount } = useMutation(updateUserAccount, {
         onSuccess: (data) => {
             setUser(data);
             updateUserContext(data);
@@ -81,6 +96,7 @@ export default function Account() {
     };
 
     const onSubmit = (values) => {
+        console.log(values)
         updateAccount(values);
     };
 
@@ -94,6 +110,10 @@ export default function Account() {
         changePasswordForm.onSubmit(onSubmitChangePassword)(e);
     };
 
+    const onClickEditAvatar = () => {
+        setHiddenEditAvatar(!hiddenEditAvatar);
+    }
+
     return (
         <div>
             <form onSubmit={handleAccountFormSubmit}>
@@ -101,7 +121,22 @@ export default function Account() {
                     <Grid>
                         <Grid.Col span={12} md={6} className="account-grid-col">
                             <Card shadow="xl" padding="md" className="account-card">
-                                <Avatar src={user.accountImageUrl} size={120} radius="xl" className="account-avatar" />
+                                <div className={"avatar-container"}>
+                                    <div className={"img"}>
+                                        <Avatar src={user.accountImageUrl} size={120} radius="lg" className="account-avatar" />
+                                        <ActionIcon size="lg" className="account-edit-avatar-button" onClick={onClickEditAvatar}>
+                                            <IconEdit size={20} />
+                                        </ActionIcon>
+                                    </div>
+                                    <div className={"container-form-avatar " + (hiddenEditAvatar ? "hidden" : "")}>
+                                        <TextInput label="Avatar URL"
+                                                   {...form.getInputProps('accountImageUrl')}
+                                                   className="account-text-input"
+                                                   placeholder="New Avatar URL" />
+                                        <Button type="submit" color="green" className="account-update-avatar-button">Update Avatar</Button>
+                                    </div>
+                                </div>
+
                                 <Text size="lg" weight={300} mt="md" className="account-text-lg">{user.username}</Text>
                                 <Text size="sm" className="account-text-sm" color="dimmed">{user.email}</Text>
                             </Card>

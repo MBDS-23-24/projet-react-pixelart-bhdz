@@ -1,19 +1,6 @@
-import prisma from "../prisma/client.js";
 import {catchError} from "../error/error-handler.js";
 import {userService} from "../services/user.service.js";
 import {BusinessError} from "../error/business.error.js";
-
-export const helloWorld = async (req, res, next) => {
-    await catchError(async () => {
-        res.send(await prisma.user.findMany(
-            {
-                include: {
-                    role: true
-                }
-            }
-        ));
-    }, next)
-}
 
 export const checkToken = async (req, res, next) => {
     await catchError(async () => {
@@ -37,14 +24,30 @@ export const login = async (req, res, next) => {
 
         res.cookie('accessToken', info.accessToken, {maxAge: 24 * 60 * 60 * 1000});
 
+        delete info.user.password;
+        info.user.accessToken = info.accessToken;
         res.json(info.user);
     }, next)
 }
 
+export const updateUserAccount = async (req, res, next) => {
+    await catchError(async () => {
+        const {username, email, accountImageUrl} = req.body;
+        if (!username || !email) {
+            throw new BusinessError(400, 'Bad request', 'Missing username or email');
+        }
+        const updatedUser = await userService.updateUserAccount(req.user, username, email, accountImageUrl);
+        res.json(updatedUser);
+    }, next);
+};
+
 export const updateUser = async (req, res, next) => {
     await catchError(async () => {
-        const {username, email, password} = req.body;
-        const updatedUser = await userService.updateUser(req.user, username, email, password);
+        const {username, email, accountImageUrl, role} = req.body;
+        if (!username || !email) {
+            throw new BusinessError(400, 'Bad request', 'Missing username or email');
+        }
+        const updatedUser = await userService.updateUser(username, email, accountImageUrl, role);
         res.json(updatedUser);
     }, next);
 };
@@ -64,4 +67,16 @@ export const changePassword = async (req, res, next) => {
         , next);
 }
 
+export const getAllUsers = async (req, res, next) => {
+    await catchError(async () => {
+        const users = await userService.getAllUsers();
+        res.json(users);
+    }, next);
+}
 
+export const getAllRoles = async (req, res, next) => {
+    await catchError(async () => {
+        const roles = await userService.getAllRoles();
+        res.json(roles);
+    }, next);
+}

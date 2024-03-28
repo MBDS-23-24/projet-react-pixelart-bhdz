@@ -9,7 +9,7 @@ const Event = {
     GENERAL: {
         INFO: 'INFO',
         ERROR: 'ERROR',
-        CONNECTION_SUCCESS: 'CONNECTION_SUCCESS',
+        READY: 'READY',
     }
 }
 

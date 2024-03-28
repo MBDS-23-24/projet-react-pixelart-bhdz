@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(auto()) @map("_id") @db.ObjectId
-  username   String
-  email      String       @unique
-  password   String
-  PixelBoard PixelBoard[]
-  roleId     String       @map("role_id")
-  role       Role         @relation(fields: [roleId], references: [id])
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  username        String
+  email           String       @unique
+  password        String
+  PixelBoard      PixelBoard[]
+  roleId          String       @map("role_id")
+  role            Role         @relation(fields: [roleId], references: [id])
+  accountImageUrl String
 
   @@map("user")
 }
