@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import {BusinessError} from "../error/business.error.js";
 import {TechnicalError} from "../error/technical.error.js";
 
 export const authMiddleware = {

@@ -3,23 +3,17 @@ import {catchError} from "../error/error-handler.js";
 import {userService} from "../services/user.service.js";
 import {BusinessError} from "../error/business.error.js";
 
-export const helloWorld = async (req, res, next) => {
+export const contributors = async (req, res, next) => {
     await catchError(async () => {
-        res.send(await prisma.user.findMany(
-            {
-                include: {
-                    role: true
-                }
-            }
-        ));
+       res.status(200).json(await userService.contributors());
     }, next)
 }
 
 export const checkToken = async (req, res, next) => {
     await catchError(async () => {
-        if(req.user){
+        if (req.user) {
             res.send(req.user);
-        }else{
+        } else {
             throw BusinessError(401, 'Unauthorized', 'You are not connected')
         }
     }, next)
@@ -64,6 +58,17 @@ export const changePassword = async (req, res, next) => {
             return res.status(200).json(updatedUser);
         }
         , next);
+}
+
+export const getContributedPixelBoardByUserId = async (req, res, next) => {
+    await catchError(async () => {
+        const userId = req.params.userId;
+        if (!userId) {
+            throw new BusinessError(400, 'Bad request', 'Missing user id');
+        }
+
+        return res.status(200).json(await userService.getContributedPixelBoardByUserId(userId));
+    }, next);
 }
 
 

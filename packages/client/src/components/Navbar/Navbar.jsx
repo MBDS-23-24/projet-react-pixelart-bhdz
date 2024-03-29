@@ -1,11 +1,10 @@
 import {useContext, useState} from 'react';
-import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avatar, Card, Divider} from '@mantine/core';
+import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avatar} from '@mantine/core';
 import {
     IconHome2,
     IconGauge,
-    IconUser,
     IconSettings,
-    IconLogout,
+    IconLogout, IconUsers,
 } from '@tabler/icons-react';
 import "./Navbar.scss";
 import {Link} from "react-router-dom";
@@ -29,8 +28,8 @@ function NavbarLink({ icon: Icon, label, active, onClick, link }) {
 const listLinkedRoute = [
     { icon: IconHome2, label: 'Home', link: "/" },
     { icon: IconGauge, label: 'Dashboard', link: "/dashboard"},
-    { icon: IconUser, label: 'Account', link: "/account"},
-    { icon: IconSettings, label: 'Settings', link: "/settings" },
+    { icon: IconSettings, label: 'Account', link: "/account"},
+    { icon: IconUsers, label: 'Contributors', link: "/contributors"},
 ];
 
 export function NavBar() {

@@ -23,16 +23,22 @@ function App() {
             <Notifications/>
             {user ? (
                 <AppShell>
-                    <AppShell.Navbar>
-                        <NavBar active={getActiveLinkByUrl()}/>
-                    </AppShell.Navbar>
-                    <AppShell.Main className={"content"}>
-                        <Routes>
-                            {routes.map((route, index) => (
-                                <Route key={index} path={route.path} element={route.element}/>
-                            ))}
-                        </Routes>
-                    </AppShell.Main>
+                    <div className={"app-container"}>
+                        <div className={"nav-container"}>
+                            <AppShell.Navbar>
+                                <NavBar active={getActiveLinkByUrl()}/>
+                            </AppShell.Navbar>
+                        </div>
+                        <div className={"main-container"}>
+                            <AppShell.Main >
+                                <Routes>
+                                    {routes.map((route, index) => (
+                                        <Route key={index} path={route.path} element={route.element}/>
+                                    ))}
+                                </Routes>
+                            </AppShell.Main>
+                        </div>
+                    </div>
                 </AppShell>
             ) : (<Login/>)}
         </>

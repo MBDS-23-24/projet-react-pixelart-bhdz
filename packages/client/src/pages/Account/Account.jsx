@@ -1,18 +1,18 @@
-import React, { useContext } from 'react';
-import { useForm } from '@mantine/form';
-import { useMutation } from 'react-query';
-import { updateUser, changeUserPassword } from "../../functions/backend_functions/user_backend_functions.js";
+import React, {useContext} from 'react';
+import {useForm} from '@mantine/form';
+import {useMutation} from 'react-query';
+import {updateUser, changeUserPassword} from "../../functions/backend_functions/user_backend_functions.js";
 import {logoutUser, updateUserContext, UserContext} from "../../provider/UserContext.jsx";
-import { Button, TextInput, Group, Title, Paper, Text, Avatar, Grid, Card, Modal, PasswordInput } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
+import {Button, TextInput, Group, Title, Paper, Text, Avatar, Grid, Card, Modal, PasswordInput} from '@mantine/core';
+import {showNotification} from '@mantine/notifications';
 import './Account.scss';
-import { useDisclosure } from "@mantine/hooks";
+import {useDisclosure} from "@mantine/hooks";
 
 export default function Account() {
-    const { user, setUser } = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
     //Link to user's profile
-   user.accountImageUrl = "https://picsum.photos/200/300";
-    const [opened, { open, close }] = useDisclosure(false);
+    user.accountImageUrl = "https://picsum.photos/200/300";
+    const [opened, {open, close}] = useDisclosure(false);
 
     const form = useForm({
         initialValues: {
@@ -33,7 +33,7 @@ export default function Account() {
         },
     });
 
-    const { mutate: updateAccount } = useMutation(updateUser, {
+    const {mutate: updateAccount} = useMutation(updateUser, {
         onSuccess: (data) => {
             setUser(data);
             updateUserContext(data);
@@ -101,7 +101,7 @@ export default function Account() {
                     <Grid>
                         <Grid.Col span={12} md={6} className="account-grid-col">
                             <Card shadow="xl" padding="md" className="account-card">
-                                <Avatar src={user.accountImageUrl} size={120} radius="xl" className="account-avatar" />
+                                <Avatar src={user.accountImageUrl} size={120} radius="xl" className="account-avatar"/>
                                 <Text size="lg" weight={300} mt="md" className="account-text-lg">{user.username}</Text>
                                 <Text size="sm" className="account-text-sm" color="dimmed">{user.email}</Text>
                             </Card>
@@ -109,11 +109,15 @@ export default function Account() {
 
                         <Grid.Col span={12} md={6} className="account-grid-col">
                             <Card shadow="xl" padding="lg" className="account-card">
-                                <Title order={4} mb="md" className="accoun-title">Modify your account information</Title>
-                                <TextInput label="Username" {...form.getInputProps('username')} className="account-text-input" placeholder="New Username" />
-                                <TextInput label="Email" {...form.getInputProps('email')} className="account-text-input" mt="md" placeholder="New E-mail" />
+                                <Title order={4} mb="md" className="accoun-title">Modify your account
+                                    information</Title>
+                                <TextInput label="Username" {...form.getInputProps('username')}
+                                           className="account-text-input" placeholder="New Username"/>
+                                <TextInput label="Email" {...form.getInputProps('email')} className="account-text-input"
+                                           mt="md" placeholder="New E-mail"/>
                                 <Group position="right" mt="md">
-                                    <Button type="submit" color="green" className="account-update-button">Update Account</Button>
+                                    <Button type="submit" color="green" className="account-update-button">Update
+                                        Account</Button>
                                 </Group>
                                 <Title order={5} mt="lg" className="account-subtitle">Advanced Options</Title>
                                 <Button onClick={open} mt="md">Change Password</Button>

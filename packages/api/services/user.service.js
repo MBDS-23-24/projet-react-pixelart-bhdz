@@ -5,6 +5,17 @@ import {jwtService} from "./jwt.service.js";
 
 export const userService = {
 
+    async contributors() {
+        return prisma.user.findMany(
+            {
+                select: {
+                    id: true,
+                    username: true
+                }
+            }
+        );
+    },
+
     async login(email, password) {
         const errorCredentials = new BusinessError(401, 'Credentials incorrect ! Please try again');
         const user = await prisma.user.findUnique({
@@ -26,7 +37,7 @@ export const userService = {
         return {user, accessToken};
     },
 
-    async updateUser(user,username, email, password) {
+    async updateUser(user, username, email, password) {
         return await prisma.user.update({
             where: {email: user.email},
             data: {
@@ -65,5 +76,60 @@ export const userService = {
 
         return usersMap;
     },
+
+    async getContributedPixelBoardByUserId(userId) {
+        const result = {
+            user: null,
+            pixelBoardsContributed: [],
+            totalPixel: null
+        }
+
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+        delete user.password;
+
+
+        const pixelBoardsContributed = await prisma.pixelBoard.findMany({
+            where: {
+                lines: {
+                    some: {
+                        pixels: {
+                            some: {
+                                ownerId: userId
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const lines = await prisma.line.findMany({
+            where: {
+                pixels: {
+                    some: {
+                        ownerId: userId
+                    }
+                }
+            }
+        });
+
+        pixelBoardsContributed.forEach(pixelBoard => {
+            const linesForPixelBoard = lines.filter(line => line.pixelBoardId === pixelBoard.id);
+            const totalPixelDrawByUserId = linesForPixelBoard.reduce((acc, line) => {
+                const totalDrawInLIne = line.pixels.filter(pixel => pixel.ownerId === userId).length;
+                return acc + totalDrawInLIne;
+            }, 0);
+            pixelBoard.totalPixelUser = totalPixelDrawByUserId;
+        });
+
+        result.pixelBoardsContributed = pixelBoardsContributed;
+        result.totalPixel = pixelBoardsContributed.reduce((acc, pixelBoard) => acc + pixelBoard.totalPixelUser, 0)
+        result.user = user;
+
+        return result;
+    }
 }
    

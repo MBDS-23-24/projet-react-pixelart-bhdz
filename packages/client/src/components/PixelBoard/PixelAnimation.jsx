@@ -1,8 +1,8 @@
 import {useRef, useState, useEffect} from 'react';
 
 export default function PixelAnimation({
-                                         width, height, pixelSize, currentDrawedPixel
-                                     }) {
+                                           width, height, pixelSize, currentDrawedPixel
+                                       }) {
     const canvasRef = useRef();
     const [ctx, setCtx] = useState(null);
 
@@ -25,21 +25,21 @@ export default function PixelAnimation({
 
     function animateDrawedPixel() {
         if (ctx && currentDrawedPixel) {
-            const { x, y } = currentDrawedPixel;
+            const {x, y} = currentDrawedPixel;
             const realX = x * pixelSize;
             const realY = y * pixelSize;
 
-            const animationFrames = 15;
+            const animationFrames = 8;
             let frame = 0;
-             const draw = () => {
+            const draw = () => {
                 ctx.clearRect(realX, realY, pixelSize, pixelSize);
                 ctx.fillStyle = currentDrawedPixel.color;
-                ctx.fillRect(realX-1.5, realY-1.5, pixelSize+3, pixelSize+3);
+                ctx.fillRect(realX - 1.5, realY - 1.5, pixelSize + 3, pixelSize + 3);
 
                 frame++;
                 if (frame <= animationFrames) {
                     requestAnimationFrame(draw);
-                }else{
+                } else {
                     ctx.clearRect(0, 0, realWidth, realHeight);
                 }
             }
@@ -47,7 +47,6 @@ export default function PixelAnimation({
 
         }
     }
-
 
 
     return (
