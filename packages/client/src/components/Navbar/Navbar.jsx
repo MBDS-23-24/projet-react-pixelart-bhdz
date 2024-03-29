@@ -10,9 +10,12 @@ import "./Navbar.scss";
 import {Link} from "react-router-dom";
 import {logoutUser, UserContext} from "../../provider/UserContext.jsx";
 import {SliderDarkMode} from "../SliderDarkMode/SliderDarkMode.jsx";
+import {hasRightToAccess} from "../../utils/Utils.js";
 
-function NavbarLink({ icon: Icon, label, active, onClick, link }) {
+function NavbarLink({ icon: Icon, label, active, onClick, link, isHidden=false}) {
     const { colorScheme } = useMantineColorScheme()
+
+    if (isHidden) return null;
 
     return (
         <Tooltip label={label} position="right" transitionProps={{ duration: 0 }}>
@@ -26,10 +29,10 @@ function NavbarLink({ icon: Icon, label, active, onClick, link }) {
 }
 
 const listLinkedRoute = [
-    { icon: IconHome2, label: 'Home', link: "/" },
-    { icon: IconGauge, label: 'Dashboard', link: "/dashboard"},
-    { icon: IconSettings, label: 'Account', link: "/account"},
-    { icon: IconUsers, label: 'Contributors', link: "/contributors"},
+    { icon: IconHome2, label: 'Home', link: "/", needRight: false },
+    { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
+    { icon: IconSettings, label: 'Account', link: "/account", needRight: true},
+    { icon: IconUsers, label: 'Contributors', link: "/contributors", needRight: true},
 ];
 
 export function NavBar() {
@@ -43,6 +46,7 @@ export function NavBar() {
             active={index === indexActiveLinkRoute}
             onClick={() => setIndexActiveLinkRoute(index)}
             link={link.link}
+            isHidden={!hasRightToAccess(user, link)}
         />
     ));
 
@@ -61,7 +65,7 @@ export function NavBar() {
             <Stack justify="center" align={"center"} gap={10}>
                 <NavbarLink icon={IconLogout} label="Logout" onClick={()=>logoutUser()} />
                 <SliderDarkMode />
-                <Avatar src={"https://picsum.photos/200/300"} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/> {/** TODO: replace with user profile picture - TICKET #46 */}
+                <Avatar src={user.accountImageUrl} alt="logo" className={"logo-profile"} size={"lg"} radius={"lg"}/>
                 <p className={"text-username"}>{user.username}</p>
             </Stack>
         </nav>

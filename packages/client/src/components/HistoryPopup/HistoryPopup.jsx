@@ -12,7 +12,7 @@ import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixel
 import './HistoryPopup.scss';
 import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/Utils.js";
 
-function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
+export function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
     return (
         <Table.Th className={"th"}>
@@ -49,7 +49,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
     function filterData(data, search) {
         const query = search.toLowerCase().trim();
         return data.filter((item) => {
-            return item.user.username.toLowerCase().includes(query) || item.position.toString().includes(query) || item.color.toLowerCase().includes(query);
+            return item.user.username.toLowerCase().includes(query) || item.position.toString().includes(query) || item.color.toLowerCase().includes(query) || formatedDateCountDown(item.lastUpdate).includes(query);
         });
     }
 
@@ -93,7 +93,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
 
     const rows = dataHistorySorted.map((row, index) => (
         <Table.Tr key={index}>
-            <Table.Td className={"avatar"}><Avatar src={"https://picsum.photos/200/300"} />{row.user.username}</Table.Td>
+            <Table.Td className={"avatar"}><Avatar src={row.user.accountImageUrl} />{row.user.username}</Table.Td>
             <Table.Td>{row.position}</Table.Td>
             <Table.Td className={"avatar"}><ColorSwatch radius={"md"} color={row.color} />{row.color}</Table.Td>
             <Table.Td>{formatedDateCountDown(row.lastUpdate)}</Table.Td>

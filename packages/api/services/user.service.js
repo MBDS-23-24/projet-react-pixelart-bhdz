@@ -37,15 +37,33 @@ export const userService = {
         return {user, accessToken};
     },
 
-    async updateUser(user, username, email, password) {
-        return await prisma.user.update({
-            where: {email: user.email},
+    async updateUserAccount(user, username, email, accountImageUrl) {
+        return prisma.user.update({
+            where: { email: user.email },
             data: {
                 username: username,
-                email: email
+                email: email,
+                accountImageUrl: accountImageUrl
             },
         });
     },
+
+    async updateUser(username, email, accountImageUrl, role) {
+        return prisma.user.update({
+            where: { email: email },
+            data: {
+                username: username,
+                email: email,
+                accountImageUrl: accountImageUrl,
+                role: {
+                    connect: {
+                        id: role.id
+                    }
+                }
+            },
+        });
+    },
+
     updateUserPassword: async (userId, newPassword) => {
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(newPassword, salt);
@@ -55,7 +73,9 @@ export const userService = {
         });
         return !!updatedUser;
     },
-
+    getAllRoles: async () => {
+        return prisma.role.findMany();
+    },
     async getUsernameByListUserId(listUserId) {
         const users = await prisma.user.findMany({
             where: {
@@ -65,7 +85,8 @@ export const userService = {
             },
             select: {
                 id: true,
-                username: true
+                username: true,
+                accountImageUrl: true
             }
         });
 
@@ -75,6 +96,18 @@ export const userService = {
         }
 
         return usersMap;
+    },
+
+    async getAllUsers() {
+        return prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                accountImageUrl: true,
+                role: true
+            }
+        });
     },
 
     async getContributedPixelBoardByUserId(userId) {

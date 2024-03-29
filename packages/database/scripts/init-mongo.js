@@ -12,7 +12,7 @@ db.createCollection("user",
         validator: {
             $jsonSchema: {
                 bsonType: "object",
-                required: ["username", "email", "password"],
+                required: ["username", "email", "password", "accountImageUrl"],
                 properties: {
                     username: {
                         bsonType: "string",
@@ -25,7 +25,11 @@ db.createCollection("user",
                     password: {
                         bsonType: "string",
                         description: "Encrypted Password"
-                    }
+                    },
+                    accountImageUrl: {
+                        bsonType: "string",
+                        description: "Url of the user's profile picture"
+                    },
                 }
             }
         }

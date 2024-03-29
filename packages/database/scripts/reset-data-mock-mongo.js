@@ -19,35 +19,40 @@ const data = () => {
             "email": "quentin.hoareau@pixelart.com",
             "username": "quentinhro",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
-            "role_id": "ROLE_ADMIN"
+            "role_id": "ROLE_ADMIN",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/305357600898285581/36f2f1e07a3b0e47a00880bb689e4d94?size=1024",
         },
         {
             "_id": new ObjectId('00000001cdc41c32293c296d'),
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
-            "role_id": "ROLE_USER"
+            "role_id": "ROLE_ADMIN",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/244503151921594378/9e0139f4088df4ef4b09dae828743e17?size=1024",
         },
         {
             "_id": new ObjectId('00000002cdc41c32293c296e'),
             "email": "mouctar.diallo@pixelart.com",
             "username": "mouctardlo",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
-            "role_id": "ROLE_USER"
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/689829928593653789/78efa94ac8b7aac9f018d1b30ab546a8?size=1024",
         },
         {
             "_id": new ObjectId('00000003cdc41c32293c296f'),
             "email": "yehoudi.vincent@pixelart.com",
             "username": "yehoudivct",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
-            "role_id": "ROLE_USER"
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/992430319972139149/fe89566425b9db172bdc8b03f9ff45d2?size=1024",
         },
         {
             "_id": new ObjectId('00000004cdc41c32293c2970'),
             "email": "dounia.zoubid@pixelart.com",
             "username": "douniazbd",
             "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
-            "role_id": "ROLE_USER"
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/1158381399410225163/fce46d6a6a8bb493a0a54f5a27b728d0?size=1024",
         },
     ]
 

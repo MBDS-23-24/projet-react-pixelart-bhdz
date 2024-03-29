@@ -55,9 +55,10 @@ class PixelBoard {
         this.connectedUsers.push(user);
         emitEvent(this.getRoom(), Event.PIXEL.NO_PERSISTED_PIXELS, this.pixels);
 
-        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username}) => ({
+        emitEvent(this.getRoom(), Event.PIXEL.CONNECTED_USERS_CHANGED, this.connectedUsers.map(({id, username, accountImageUrl}) => ({
             id,
-            username
+            username,
+            accountImageUrl
         })));
     }
 
