@@ -74,6 +74,13 @@ export const getAllUsers = async (req, res, next) => {
     }, next);
 }
 
+export const getNumberOfRegisteredUsers = async (req, res, next) => {
+    await catchError(async () => {
+        const numberOfUsers = await userService.getNumberOfRegisteredUsers();
+        res.json(numberOfUsers);
+    }, next);
+}
+
 export const getAllRoles = async (req, res, next) => {
     await catchError(async () => {
         const roles = await userService.getAllRoles();

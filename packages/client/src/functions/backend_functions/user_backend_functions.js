@@ -29,6 +29,12 @@ export const getAllUsers = async () => {
     });
 }
 
+export const getNumberOfUsers = async () => {
+    return get(`${USER}/count`).then(res => {
+        return res.data;
+    });
+}
+
 export const getAllRoles = async () => {
     return get(`${USER}/roles`).then(res => {
         return res.data;

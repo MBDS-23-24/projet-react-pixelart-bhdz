@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import "../../../config.js"
 
 // URL de connexion à la base de données
-const url = process.env.MONGO_URL;
+const url = process.env.PRISMA_DB_URL;
 
 // Nom de la base de données
 const dbName = "pixel_art" || process.env.DB_NAME;
@@ -69,7 +69,7 @@ const data = () => {
             "title": "Example Test 1",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -2),
-            "start_date": adjustDate(new Date(), 0, 0, 1),
+            "start_date": adjustDate(new Date(), 0, 0, -1),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 1000,
             "pixel_width": 500,
@@ -81,8 +81,8 @@ const data = () => {
             "title": "Example Test 2",
             "creator_id": users[1]["_id"],
             "date_created": adjustDate(new Date(), -30, 0, 0),
-            "start_date": adjustDate(new Date(), 15, 0, 1),
-            "end_date": adjustDate(new Date(), 0, 0, 7),
+            "start_date": adjustDate(new Date(), 15, 0, -5),
+            "end_date": adjustDate(new Date(), 0, 0, -3),
             "delay_ms": 5000,
             "pixel_width": 300,
             "pixel_height": 200,

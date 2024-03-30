@@ -23,11 +23,11 @@ export function formatedDateCountDown(date) {
         timeParts.push(`${remainingSeconds}s `);
     }
 
-    return `il y a ${timeParts.join('')}`;
+    return `${timeParts.join('')} ago`;
 }
 
-export function formatedDate(date) {
-    const options = {year: 'numeric', month: 'long', day: 'numeric'};
+export function formatedDateTime(date) {
+    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
     return new Date(date).toLocaleDateString(undefined, options);
 }
 
@@ -35,25 +35,25 @@ export function sortArrayByDate(array) {
     return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }
 
-export const isPixelBoardClosed = (pixelboard) => {
-    let start = new Date(pixelboard.start_date).getTime()
-    let end = new Date(pixelboard.end_date).getTime()
-    let current = Date.now()
-    return start < end && end < current
-}
-export const isPixelBoardStarted = (pixelboard) => {
+export const getStatePixelBoard = (pixelboard) => {
+    const start = new Date(pixelboard.startDate);
+    const end = new Date(pixelboard.endDate);
+    const current = Date.now();
 
-    let start = new Date(pixelboard.start_date).getTime()
-    let end = new Date(pixelboard.end_date).getTime()
-    let current = Date.now()
-    return start < end && start > current
-}
-export const isPixelBoardComingSoon = (pixelboard) => {
+    if (start <= current && end >= current) {
+        return "Online";
+    } else if (start > current) {
+        return "Coming soon";
+    } else {
+        return "Closed";
+    }
+};
 
-    let start = new Date(pixelboard.start_date).getTime()
-    let end = new Date(pixelboard.end_date).getTime()
+export const isPixelBoardComingSoon = (pixelBoard) => {
+    let start = new Date(pixelBoard.startDate);
+    let end = new Date(pixelBoard.endDate);
     let current = Date.now()
-    return start < end && start < current
+    return start > current && end > current;
 }
 
 export const isSmallScreen = () => useMediaQuery('(max-width: 768px)');

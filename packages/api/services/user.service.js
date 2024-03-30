@@ -26,6 +26,10 @@ export const userService = {
         return {user, accessToken};
     },
 
+    async getNumberOfRegisteredUsers() {
+        return prisma.user.count();
+    },
+
     async updateUserAccount(user, username, email, accountImageUrl) {
         return prisma.user.update({
             where: { email: user.email },
@@ -85,6 +89,19 @@ export const userService = {
         }
 
         return usersMap;
+    },
+    async getUsersByListUserId(listUserId) {
+        return prisma.user.findMany({
+            where: {
+                id: {
+                    in: listUserId
+                }
+            },
+            select: {
+                username: true,
+                accountImageUrl: true
+            }
+        });
     },
 
     async getAllUsers() {

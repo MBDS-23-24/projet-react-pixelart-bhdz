@@ -1,38 +1,31 @@
 import {useContext, useEffect} from "react";
 import {UserContext} from "../../provider/UserContext.jsx";
-import {
-    formatedDate,
-    isPixelBoardClosed,
-    isPixelBoardComingSoon,
-    isPixelBoardStarted,
-    numberPixelToDisplay
-} from "../../pages/utils/utils.js";
-import {Badge, Button, Card, Grid, Group, Text, Title} from "@mantine/core";
+import {Avatar, Badge, Button, Card, Divider, Group, Space, Switch, Text, Title, Tooltip} from "@mantine/core";
 import {IconLink, IconUser} from "@tabler/icons-react";
 import './ListCardsPixelBoard.scss';
+import {
+    formatedDateTime, getStatePixelBoard, isPixelBoardComingSoon
+} from "../../pages/utils/Utils.js";
+import NestedUsersAvatar from "../NestedUsersAvatar/NestedUsersAvatar.jsx";
 
 export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
     const {user} = useContext(UserContext);
 
-    console.log("updated", pixelboards)
     const setColor = (pixelboard) => {
-        let color = 'blue';
-        if (isPixelBoardComingSoon(pixelboard)) color = 'blue';
-        if (isPixelBoardStarted(pixelboard)) color = 'green';
-        if (isPixelBoardClosed(pixelboard)) color = 'red';
-        return color
-    }
-    const setLabel = (pixelboard) => {
-        let label = 'Coming soon';
-        if (isPixelBoardComingSoon(pixelboard)) label = 'Coming soon';
-        if (isPixelBoardStarted(pixelboard)) label = 'Online';
-        if (isPixelBoardClosed(pixelboard)) label = 'Closed';
-        return label;
+        let state = getStatePixelBoard(pixelboard)
+        if (state === "Online") {
+            return "green"
+        } else if (state === "Closed") {
+            return "red"
+        } else if (state === "Coming soon") {
+            return "indigo"
+        }
+        return "blue"
     }
 
-    useEffect(() => {
-        console.log("pixelboards", pixelboards)
-    }, [pixelboards])
+    const convertMsToSeconds = (ms) => {
+        return Math.floor(ms / 1000)
+    }
 
     return <div className={"list-pixelboard"}>
         {pixelboards.map((pixelBoard, index) =>
@@ -40,22 +33,32 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                 <Title component="h3">
                     {pixelBoard.title}
                 </Title>
-                {console.log(pixelBoard)}
                 <Group justify="space-between" mt="md" mb="xs">
                     <Text fw={500}>Status:</Text>
-                    <Badge color={setColor(pixelBoard)}>{ setLabel(pixelBoard)}</Badge>
+                    <Badge color={setColor(pixelBoard)}>{ getStatePixelBoard(pixelBoard)}</Badge>
                 </Group>
 
                 <Group justify="space-between" mt="md" mb="xs">
                     <Text fw={500}> Date: </Text>
-                    <Badge color={setColor(pixelBoard)}>{formatedDate(pixelBoard.startDate)}</Badge>
+                    <Badge color="blue">{formatedDateTime(pixelBoard.startDate)}</Badge> - <Badge color="red">{formatedDateTime(pixelBoard.endDate)}</Badge>
+                </Group>
+                <Group justify="space-between" mt="md" mb="xs">
+                    <Text fw={500}>Participants: </Text>
+                    {pixelBoard.participants.length > 0 ? <NestedUsersAvatar users={pixelBoard.participants} /> : "Aucun"}
+                </Group>
+                <Divider />
+                <Space mt="md" />
+                <Group justify="space-between">
+                    <Text>Size : [{pixelBoard.pixelWidth}, {pixelBoard.pixelHeight}]</Text>
+                    <Text>Delay : {convertMsToSeconds(pixelBoard.delayMs)}s</Text>
+                    <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Override : </Text></Tooltip><Switch checked={pixelBoard.isPixelOverwrite} disabled/></Group>
                 </Group>
                 <Group justify="flex-around">
                     <Button
                         color="green"
                         mt="md" radius="md"
                         rightSection={<IconUser size={14} /> }>
-                        S'incrire à ce board
+                        Subscribe to this board
                     </Button>
                     {isPixelBoardComingSoon(pixelBoard) ? "": <Button
                         color="blue"
@@ -64,7 +67,7 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                         rightSection={<IconLink size={14}/>}
                         onClick={() =>navigateToBoard(`/pixel-board/${pixelBoard.id}`)}
                     >
-                        Voir le board
+                        View the board
                     </Button>}
                 </Group>
             </Card>

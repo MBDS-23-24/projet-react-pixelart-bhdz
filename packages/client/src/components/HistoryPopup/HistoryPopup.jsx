@@ -10,7 +10,8 @@ import {IconChevronDown, IconChevronUp, IconSearch, IconSelector} from "@tabler/
 import {useQuery} from "react-query";
 import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import './HistoryPopup.scss';
-import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/utils.js";
+import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/Utils.js";
+
 
 export function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;

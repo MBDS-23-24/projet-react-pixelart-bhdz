@@ -4,25 +4,14 @@ import {userService} from "./user.service.js";
 
 const pixelBoardService = {
     async getAllPixelBoards(){
-        console.log("Board in service")
-        return prisma.pixelBoard.findMany();
-    },
+        let list = await prisma.pixelBoard.findMany();
 
-    // async addUserToTheBoard (pixelBoardId, userId) {
-    //     await getPixelBoardById(pixelBoardId)
-    //         .then(data => {
-    //             if (!data) {
-    //                 return prisma.pixelBoard.update({
-    //                     where: {
-    //                         id: pixelBoardId
-    //                     },
-    //                     data: {
-    //                         creatorId: userId
-    //                     }
-    //                 })
-    //             }
-    //         });
-    // },
+        for (let i = 0; i < list.length; i++) {
+            list[i].participants = await this.getAllUsersThatHaveDrawnOnPixelBoard(list[i].id);
+        }
+
+        return list;
+    },
 
     async getPixelBoardById(pixelBoardId) {
         return prisma.pixelBoard.findUnique({
@@ -86,6 +75,25 @@ const pixelBoardService = {
             }
         }
         return pixels;
+    },
+
+    async getAllUsersThatHaveDrawnOnPixelBoard(pixelBoardId) {
+        const lines = await prisma.line.findMany({
+            where: {
+                pixelBoardId: pixelBoardId
+            }
+        });
+
+        const distinctOwnerIds = new Set();
+        for (const line of lines) {
+            for (const pixel of line.pixels) {
+                distinctOwnerIds.add(pixel.ownerId);
+            }
+        }
+
+        let listOfUsers = await userService.getUsersByListUserId(Array.from(distinctOwnerIds));
+
+        return Array.from(listOfUsers);
     },
 
     async insertPixels(boardId, pixels) {
