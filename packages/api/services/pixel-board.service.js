@@ -4,6 +4,17 @@ import {userService} from "./user.service.js";
 
 const pixelBoardService = {
 
+    async getPixelBordsByCreator(creatorId){
+        console.log(creatorId)
+        const pixels = await prisma.pixelBoard.findMany({
+            where: {
+                creatorId: creatorId
+            }
+        })
+        console.log("hello from creator",pixels)
+        return pixels
+    },
+
     async getPixelBoardById(pixelBoardId) {
         const pixelBoard = await prisma.pixelBoard.findUnique({
             where: {
@@ -163,6 +174,29 @@ const pixelBoardService = {
             }
         }
         return result;
+    },
+    deletePixelBoard(pixelBoardId) {
+        return prisma.pixelBoard.deleteMany({
+            where: {
+                id: pixelBoardId
+            }
+        });
+    },
+    updatePixelBoard(pixelId, pixelToUpdate) {
+        return prisma.pixelBoard.update({
+            where: {
+                id: pixelId
+            },
+            data: pixelToUpdate
+        });
+    },
+    addPixelBoard(receivedPixel) {
+        return prisma.pixelBoard.create({
+            data: receivedPixel
+        });
+    },
+    getAllPixelBoards(){
+        return prisma.pixelBoard.findMany()
     }
 }
 

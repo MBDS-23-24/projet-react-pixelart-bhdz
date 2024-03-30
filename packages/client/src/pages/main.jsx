@@ -7,6 +7,7 @@ import './index.scss';
 import '@mantine/core/styles.css';
 import {createTheme, MantineProvider} from "@mantine/core";
 import '@mantine/notifications/styles.css';
+import {ModalsProvider} from "@mantine/modals";
 
 // Configuration du QueryClient
 const queryClient = new QueryClient({
@@ -39,11 +40,13 @@ const theme = createTheme({
 createRoot(document.getElementById('root')).render(
     <QueryClientProvider client={queryClient} contextSharing={true}>
         <MantineProvider theme={theme}>
-            <UserProvider>
-                <BrowserRouter>
-                    <App/>
-                </BrowserRouter>
-            </UserProvider>
+                <UserProvider>
+                    <ModalsProvider>
+                        <BrowserRouter>
+                            <App/>
+                        </BrowserRouter>
+                    </ModalsProvider>
+                </UserProvider>
         </MantineProvider>
     </QueryClientProvider>,
 );

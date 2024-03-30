@@ -1,13 +1,11 @@
 import Home from "./Home/Home.jsx";
 import PixelBoard from "./PixelBoard/PixelBoard.jsx";
-import Account from "./Account/Account.jsx";
-import Dashboard from "./Dashboard/Dashboard.jsx";
+import Dashboard from "./dashboard/Dashboard.jsx";
 
 const routes = [
-    {name: 'Page D\'accueil', path: '/', element: <Home/>, needAccess: false},
-    {name: 'Pixel Board', path: '/pixel-board/:id', element: <PixelBoard/>, needAccess: false},
-    {name: 'Account', path: '/account', element: <Account/>, needAccess: false},
-    {name: "Dashboard", path: "/dashboard", element: <Dashboard />, needAccess: true},
+    {name: 'Page D\'accueil', path: '/', element: <Home/>},
+    {name: 'Pixel Board', path: '/pixel-board/:id', element: <PixelBoard/>},
+    {name: 'Dashboard', path: '/dashboard', element: <Dashboard />}
 ];
 
 export default routes
