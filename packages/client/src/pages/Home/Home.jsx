@@ -25,7 +25,7 @@ function Home() {
     useEffect(() => {
         getAllPixelBoards().then(data => {
             console.log("From home",data)
-            setPixelBoards(data.data)
+            setPixelBoards(data)
         })
     }, [])
 

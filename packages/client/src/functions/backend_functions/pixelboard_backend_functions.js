@@ -36,7 +36,8 @@ export const addPixelBoard = async (pixelBoardToAdd) => {
 }
 
 export const getAllPixelBoards = async () => {
-    return get(`${PIXELBOARD}/pixels`);
+    return get(`${PIXELBOARD}/pixels`)
+        .then(res => res.data);
 }
 
 export const updatePixelBoard = async (pixelBoardId, pixelBoardToUpdate) => {

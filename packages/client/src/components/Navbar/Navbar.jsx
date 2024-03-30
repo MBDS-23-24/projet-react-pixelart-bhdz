@@ -31,7 +31,7 @@ function NavbarLink({ icon: Icon, label, active, onClick, link, isHidden=false})
 
 const listLinkedRoute = [
     { icon: IconHome2, label: 'Home', link: "/", needRight: false },
-    { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
+    { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: false},
     { icon: IconUser, label: 'Account', link: "/account", needRight: false},
     { icon: IconSettings, label: 'Settings', link: "/settings", needRight: false },
 ];
