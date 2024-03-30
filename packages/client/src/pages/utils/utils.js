@@ -1,4 +1,3 @@
-import {useMediaQuery} from "@mantine/hooks";
 export function formatedDateCountDown(date) {
     const now = new Date();
     const target = new Date(date);
@@ -31,10 +30,6 @@ export function formatedDateTime(date) {
     return new Date(date).toLocaleDateString(undefined, options);
 }
 
-export function sortArrayByDate(array) {
-    return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
-}
-
 export const getStatePixelBoard = (pixelboard) => {
     const start = new Date(pixelboard.startDate);
     const end = new Date(pixelboard.endDate);
@@ -56,19 +51,6 @@ export const isPixelBoardComingSoon = (pixelBoard) => {
     return start > current && end > current;
 }
 
-export const isSmallScreen = () => useMediaQuery('(max-width: 768px)');
-export const isMediumScreen = () => useMediaQuery('(min-width: 769px) and (max-width: 992px)');
-export const isLargeScreen = () => useMediaQuery('(min-width: 993px) and (max-width: 1200px)');
-export const isExtraLargeScreen = () => useMediaQuery('(min-width: 1201px)');
-
-export const numberPixelToDisplay = () => {
-    let column = 4;
-   if(isMediumScreen()) column = 6;
-    if(isLargeScreen()) column =  4;
-    if(isExtraLargeScreen()) column = 4;
-    if (isSmallScreen()) column = 12;
-    console.log(column)
-    return column;
+export function sortArrayByDate(array) {
+    return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }
-
-

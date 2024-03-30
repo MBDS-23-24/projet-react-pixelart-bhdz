@@ -7,7 +7,7 @@ import "../../../config.js"
 const url = process.env.PRISMA_DB_URL;
 
 // Nom de la base de données
-const dbName = "pixel_art" || process.env.DB_NAME;
+const dbName = process.env.DB_NAME;
 
 // Créer un nouveau client MongoDB
 const client = new MongoClient(url);
