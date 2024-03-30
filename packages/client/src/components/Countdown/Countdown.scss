@@ -20,22 +20,6 @@
   transition: width 1s linear;
 }
 
-.countdown-timer {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #007bff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  text-align: center;
-  position: fixed;
-  bottom: 20px;
-  right: 60px;
-  opacity: 0.8;
-}
-
 :root {
   --color-1: #000000;
   --color-2: #ffffff;

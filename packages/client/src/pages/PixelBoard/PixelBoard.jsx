@@ -47,24 +47,17 @@ export default function PixelBoard() {
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
-    const [countdownProgress, setCountdownProgress] = useState(100);
+    const [countdownProgress, setCountdownProgress] = useState(0);
     const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(15);
     const [delayMs, setDelayMs] = useState(15000);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
-    // Save the drawn pixel in the local storage
-    const saveDrawnPixel = (pixel) => {
-        let drawnPixels = JSON.parse(localStorage.getItem('drawnPixels')) || [];
-        drawnPixels.push(pixel);
-        localStorage.setItem('drawnPixels', JSON.stringify(drawnPixels));
-    };
     const onDrawPixel = (pixel) => {
         if (!hasDrawnDuringCountdown) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
-            saveDrawnPixel(pixel);
             setCountdownProgress(100);
             setRemainingTime(delayMs/1000);
             startCountdown();
@@ -186,7 +179,6 @@ export default function PixelBoard() {
         const savedProgress = localStorage.getItem('countdownProgress');
         const savedRemainingTime = localStorage.getItem('remainingTime');
         const savedDrawn = localStorage.getItem('hasDrawnDuringCountdown');
-        const drawnPixels = JSON.parse(localStorage.getItem('drawnPixels')) || [];
 
         if (savedColor) {
             setSelectedColor(savedColor);
@@ -203,7 +195,6 @@ export default function PixelBoard() {
                 startCountdown();
             }
         }
-        setSavedPixels(drawnPixels);
         fetchPixelBoard();
     }, []);
 
@@ -319,10 +310,8 @@ export default function PixelBoard() {
         return realPosition / pixelSize;
     }
 
-
     return (
         <>
-
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
                 <LoadingOverlay visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED } zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
