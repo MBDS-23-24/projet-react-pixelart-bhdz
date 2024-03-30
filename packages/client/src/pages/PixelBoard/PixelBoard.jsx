@@ -61,29 +61,43 @@ export default function PixelBoard() {
         localStorage.setItem('drawnPixels', JSON.stringify(drawnPixels));
     };
     const onDrawPixel = (pixel) => {
-        setHasDrawnDuringCountdown(false);
         if (!hasDrawnDuringCountdown) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             saveDrawnPixel(pixel);
             setCountdownProgress(100);
-            setRemainingTime(15);
+            setRemainingTime(delayMs/1000);
             startCountdown();
             setHasDrawnDuringCountdown(true);
+            localStorage.setItem('hasDrawnDuringCountdown', true);
         } else {
             console.log('Drawing conditions not met.');
         }
     };
 
+    /**
+     * Start the countdown timer
+     */
     function startCountdown() {
-        setInterval(() => {
+        const interval = setInterval(() => {
             setCountdownProgress(prevProgress => {
                 let decrement = (1000 / delayMs) * 100;
-                console.log(delayMs)
+
+                // If the progress is 0, we stop the countdown and clear the interval for restart the countdown
+                if(prevProgress <= 0){
+                    setHasDrawnDuringCountdown(false);
+                    localStorage.setItem('hasDrawnDuringCountdown', false);
+                    clearInterval(interval);
+                    return;
+                }
+                localStorage.setItem('countdownProgress', prevProgress);
                 return Math.max(prevProgress - decrement, 0);
             });
+
+            // Decrement the remaining time (timer at bottom right)
             setRemainingTime(prevTime => {
                 let decrementInSeconds = 1000;
+                localStorage.setItem('remainingTime', prevTime);
                 return Math.max(prevTime - (decrementInSeconds / 1000), 0);
             });
         }, 1000);
@@ -149,44 +163,24 @@ export default function PixelBoard() {
         }
     }, [id]);
 
-    //useEffect(() => {
-    //    const interval = setInterval(() => {
-    //        setCountdownProgress(prevProgress => {
-    //            let decrement = (1000 / delayMs) * 100;
-    //            return Math.max(prevProgress - decrement, 0);
-    //        });
-    //        setRemainingTime(prevTime => {
-    //            let decrementInSeconds = 1000;
-    //            return Math.max(prevTime - (decrementInSeconds / 1000), 0);
-    //        });
-    //    }, 1000);
-//
-    //    return () => clearInterval(interval);
-    //}, [delayMs]);
-//
-    //useEffect(() => {
-    //    let interval= null;
-    //    if (countdownProgress <= 0) {
-    //        setHasDrawnDuringCountdown(false);
-    //        setRemainingTime(0);
-    //    } else {
-    //        interval = setInterval(() => {
-    //            setCountdownProgress(prevProgress => {
-    //                return prevProgress - (100 / (15000 / 1000));
-    //            });
-    //            setRemainingTime(prevTime => Math.max(prevTime - 1, 0));
-    //        }, 1000);
-    //    }
-    //    return () => clearInterval(interval);
-    //}, [countdownProgress]);
+    function handleBeforeUnload() {
+        localStorage.setItem('lastPixelBoard', id);
+    }
 
     useEffect(() => {
         const initialColor = localStorage.getItem('selectedColor');
         if (initialColor) {
              setSelectedColor(initialColor);
         }
+
+        // Add event listener for beforeunload - To know if the user just reload is page or change pixelboard
+        window.addEventListener('beforeunload', handleBeforeUnload);
     }, []);
 
+    /**
+     * Load the saved data from the local storage
+     * if the user reload the page or change the pixel board
+     */
     useEffect(() => {
         const savedColor = localStorage.getItem('selectedColor');
         const savedProgress = localStorage.getItem('countdownProgress');
@@ -205,20 +199,15 @@ export default function PixelBoard() {
         }
         if (savedDrawn) {
             setHasDrawnDuringCountdown(savedDrawn === 'true');
+            if (savedDrawn === 'true') {
+                startCountdown();
+            }
         }
         setSavedPixels(drawnPixels);
         fetchPixelBoard();
     }, []);
 
-    useEffect(() => {
-        // Save the state in the local storage
-        localStorage.setItem('countdownProgress', countdownProgress.toString());
-        localStorage.setItem('remainingTime', remainingTime.toString());
-        localStorage.setItem('hasDrawnDuringCountdown', hasDrawnDuringCountdown.toString());
-    }, [countdownProgress, hasDrawnDuringCountdown, remainingTime]);
-
-
-    const startCountdownAndSelectColor = (color) => {
+    const changeSelectedColor = (color) => {
         setSelectedColor(color);
         localStorage.setItem('selectedColor', color);
     };
@@ -252,6 +241,10 @@ export default function PixelBoard() {
         getPixelBoardById(id).then((pixelBoard) => {
             setPixelBoard(pixelBoard);
             setDelayMs(pixelBoard.delayMs);
+            let historyPixelBoardId = localStorage.getItem('lastPixelBoard');
+            if(historyPixelBoardId !== null && historyPixelBoardId !== id) {
+                initDataLocalStorage();
+            }
             setFetchPixelBoardStatus(AppStatus.SUCCESS);
         }).catch(() => {
             setFetchPixelBoardStatus(AppStatus.ERROR);
@@ -282,6 +275,15 @@ export default function PixelBoard() {
                 setSavedPixels((prev) => [...prev, ...newPixels]);
             }
         });
+    }
+
+    /**
+     * Initialize the local storage data - Used when the user change the pixel board
+     */
+    function initDataLocalStorage() {
+        localStorage.setItem('countdownProgress', 0);
+        localStorage.setItem('remainingTime', 0);
+        localStorage.setItem('hasDrawnDuringCountdown', false);
     }
 
     /**
@@ -359,7 +361,7 @@ export default function PixelBoard() {
                             <div className="countdown-timer">Time remaining: {remainingTime} seconds
                             </div>
                         </div>
-                        <ColorsRange onSelectColor={startCountdownAndSelectColor}/>
+                        <ColorsRange onSelectColor={changeSelectedColor}/>
 
                     </div>
                 )}
