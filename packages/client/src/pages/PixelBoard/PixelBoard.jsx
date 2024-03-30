@@ -48,7 +48,6 @@ export default function PixelBoard() {
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
     const [countdownProgress, setCountdownProgress] = useState(100);
-    const [, setIsChoosingColor] = useState(true);
     const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(15);
     const [delayMs, setDelayMs] = useState(15000);
@@ -62,18 +61,34 @@ export default function PixelBoard() {
         localStorage.setItem('drawnPixels', JSON.stringify(drawnPixels));
     };
     const onDrawPixel = (pixel) => {
+        setHasDrawnDuringCountdown(false);
         if (!hasDrawnDuringCountdown) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             saveDrawnPixel(pixel);
-            setIsChoosingColor(false);
             setCountdownProgress(100);
             setRemainingTime(15);
+            startCountdown();
             setHasDrawnDuringCountdown(true);
         } else {
             console.log('Drawing conditions not met.');
         }
     };
+
+    function startCountdown() {
+        setInterval(() => {
+            setCountdownProgress(prevProgress => {
+                let decrement = (1000 / delayMs) * 100;
+                console.log(delayMs)
+                return Math.max(prevProgress - decrement, 0);
+            });
+            setRemainingTime(prevTime => {
+                let decrementInSeconds = 1000;
+                return Math.max(prevTime - (decrementInSeconds / 1000), 0);
+            });
+        }, 1000);
+    }
+
     useEffect(() => {
         if (globalPixelBoardStatus === PixelBoardStatus.ALREADY_CONNECTED) {
             notifications.show({
@@ -134,37 +149,36 @@ export default function PixelBoard() {
         }
     }, [id]);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCountdownProgress(prevProgress => {
-                let decrement = (1000 / delayMs) * 100;
-                return Math.max(prevProgress - decrement, 0);
-            });
-            setRemainingTime(prevTime => {
-                let decrementInSeconds = 1000;
-                return Math.max(prevTime - (decrementInSeconds / 1000), 0);
-            });
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [delayMs]);
-
-    useEffect(() => {
-        let interval= null;
-        if (countdownProgress <= 0) {
-            setIsChoosingColor(true);
-            setHasDrawnDuringCountdown(false);
-            setRemainingTime(0);
-        } else {
-            interval = setInterval(() => {
-                setCountdownProgress(prevProgress => {
-                    return prevProgress - (100 / (15000 / 1000));
-                });
-                setRemainingTime(prevTime => Math.max(prevTime - 1, 0));
-            }, 1000);
-        }
-        return () => clearInterval(interval);
-    }, [countdownProgress]);
+    //useEffect(() => {
+    //    const interval = setInterval(() => {
+    //        setCountdownProgress(prevProgress => {
+    //            let decrement = (1000 / delayMs) * 100;
+    //            return Math.max(prevProgress - decrement, 0);
+    //        });
+    //        setRemainingTime(prevTime => {
+    //            let decrementInSeconds = 1000;
+    //            return Math.max(prevTime - (decrementInSeconds / 1000), 0);
+    //        });
+    //    }, 1000);
+//
+    //    return () => clearInterval(interval);
+    //}, [delayMs]);
+//
+    //useEffect(() => {
+    //    let interval= null;
+    //    if (countdownProgress <= 0) {
+    //        setHasDrawnDuringCountdown(false);
+    //        setRemainingTime(0);
+    //    } else {
+    //        interval = setInterval(() => {
+    //            setCountdownProgress(prevProgress => {
+    //                return prevProgress - (100 / (15000 / 1000));
+    //            });
+    //            setRemainingTime(prevTime => Math.max(prevTime - 1, 0));
+    //        }, 1000);
+    //    }
+    //    return () => clearInterval(interval);
+    //}, [countdownProgress]);
 
     useEffect(() => {
         const initialColor = localStorage.getItem('selectedColor');
@@ -182,7 +196,6 @@ export default function PixelBoard() {
 
         if (savedColor) {
             setSelectedColor(savedColor);
-            setIsChoosingColor(false);
         }
         if (savedProgress) {
             setCountdownProgress(parseFloat(savedProgress));
