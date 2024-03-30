@@ -9,7 +9,7 @@ import {
     getPixelBoardById,
     getPixelsByPixelBoardId
 } from "../../functions/backend_functions/pixelboard_backend_functions.js";
-import {ApiStatus} from "../../utils/ApiStatus.js";
+import {AppStatus} from "../../utils/AppStatus.js";
 import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
 import Pixels from "../../components/PixelBoard/Pixels.jsx";
 import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
@@ -17,6 +17,7 @@ import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
 import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
 import {notifications} from "@mantine/notifications";
 import {IconUser} from "@tabler/icons-react";
+import {decryptUser} from "../../provider/UserContext.jsx";
 
 export class Pixel {
     constructor(x, y, color) {
@@ -29,6 +30,7 @@ export class Pixel {
 
 class PixelBoardStatus {
     static INITIAL = "INITIAL";
+    static CONNECTED = "JOINED";
     static ALREADY_CONNECTED = "ALREADY_CONNECTED";
 }
 
@@ -38,7 +40,7 @@ export default function PixelBoard() {
     const pixelsComponentRef = useRef([]);
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [pixelBoard, setPixelBoard] = useState(null);
-    const [fetchPixelBoardStatus, setFetchPixelBoardStatus] = useState(ApiStatus.INITIAL);
+    const [fetchPixelBoardStatus, setFetchPixelBoardStatus] = useState(AppStatus.INITIAL);
     const [savedPixels, setSavedPixels] = useState([]);
     const [lastDrawedPixel, setLastDrawedPixel] = useState(null);
     const [currentHoveredPixel, setCurrentHoveredPixel] = useState(null);
@@ -100,21 +102,31 @@ export default function PixelBoard() {
                 color: "green",
                 icon: <IconUser size={24}/>,
             })
+
+            const user = decryptUser();
+            if(newUserJoined?.id === user.id){
+                setGlobalPixelBoardStatus(PixelBoardStatus.CONNECTED);
+            }
         }
         lastNbUserConnected.current = connectedUsers.length;
     }, [connectedUsers]);
 
     useEffect(() => {
         pixelSocket.connect();
-        listenSocketError();
         listenJoinedUsers();
+        listenSocketError();
         fetchNoPersistedPixel();
-        joinPixelBoard();
         fetchPixelsData();
         fetchPixelBoard();
 
         pixelSocket.onDisconnect(() => {
             navigate("/");
+        });
+
+        pixelSocket.listen(socketEvents.GENERAL.READY, () => {
+            setTimeout(()=>{
+                joinPixelBoard();
+            }, 2000);
         });
 
         return () => {
@@ -223,13 +235,13 @@ export default function PixelBoard() {
     }
 
     function fetchPixelBoard() {
-        setFetchPixelBoardStatus(ApiStatus.LOADING);
+        setFetchPixelBoardStatus(AppStatus.LOADING);
         getPixelBoardById(id).then((pixelBoard) => {
             setPixelBoard(pixelBoard);
             setDelayMs(pixelBoard.delayMs);
-            setFetchPixelBoardStatus(ApiStatus.SUCCESS);
+            setFetchPixelBoardStatus(AppStatus.SUCCESS);
         }).catch(() => {
-            setFetchPixelBoardStatus(ApiStatus.ERROR);
+            setFetchPixelBoardStatus(AppStatus.ERROR);
         });
     }
 
@@ -284,6 +296,7 @@ export default function PixelBoard() {
      * Join the pixel board
      */
     function joinPixelBoard() {
+        console.log("Joining pixel board");
         pixelSocket.emit(socketActions.JOIN_PIXEL_BOARD, {pixelBoardId: id})
     }
 
@@ -296,11 +309,11 @@ export default function PixelBoard() {
         <>
 
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
-                <LoadingOverlay visible={fetchPixelBoardStatus === ApiStatus.LOADING} zIndex={1000}
+                <LoadingOverlay visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED } zIndex={1000}
                                 overlayProps={{radius: "sm", blur: 2}}/>
-                {fetchPixelBoardStatus === ApiStatus.SUCCESS &&
+                {fetchPixelBoardStatus === AppStatus.SUCCESS &&
                     <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>}
-                {fetchPixelBoardStatus === ApiStatus.SUCCESS && (
+                {fetchPixelBoardStatus === AppStatus.SUCCESS && (
                     <div className={"draw-container"}>
                         <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>
 

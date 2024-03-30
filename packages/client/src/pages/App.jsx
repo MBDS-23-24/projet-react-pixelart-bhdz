@@ -1,21 +1,31 @@
 import './App.scss'
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import routes from "./routes.jsx";
 import {useContext} from "react";
 import {UserContext} from "../provider/UserContext.jsx";
 import Login from "./Login/Login.jsx";
-import {AppShell, Flex} from "@mantine/core";
+import {AppShell} from "@mantine/core";
 import {Notifications} from "@mantine/notifications";
 import {NavBar} from "../components/Navbar/Navbar.jsx";
-import {useDisclosure} from "@mantine/hooks";
+import {hasRightToAccess} from "../utils/Utils.js";
+import NotFound from "./NotFound/NotFound.jsx";
 
 function App() {
-    const [opened, { toggle }] = useDisclosure();
     const {user} = useContext(UserContext);
 
     function getActiveLinkByUrl() {
         const url = window.location.pathname;
         return (url === "/" ? "Home" : url.substring(1).charAt(0).toUpperCase() + url.substring(2));
+    }
+
+    function displayRoute() {
+        return routes.map((route, index) => {
+            if (hasRightToAccess(user, route)) {
+                return <Route key={index} path={route.path} element={route.element} />;
+            } else {
+                return <Navigate key={index} to="/" replace />;
+            }
+        });
     }
 
     return (
@@ -28,9 +38,8 @@ function App() {
                     </AppShell.Navbar>
                     <AppShell.Main className={"content"}>
                         <Routes>
-                            {routes.map((route, index) => (
-                                <Route key={index} path={route.path} element={route.element}/>
-                            ))}
+                            {displayRoute()}
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
                     </AppShell.Main>
                 </AppShell>

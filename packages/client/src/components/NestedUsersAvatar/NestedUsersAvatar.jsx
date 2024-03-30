@@ -5,17 +5,15 @@ export default function NestedUsersAvatar({users, maxAvatarDisplayed = 3}) {
     const [displayedUsers, setDisplayedUsers] = useState([]);
 
     useEffect(() => {
-        console.log(users);
         setDisplayedUsers(users?.slice(0, maxAvatarDisplayed));
     }, [users, maxAvatarDisplayed]);
 
-// TODO : Change the static avatar to the users avatar
     return (
         <Tooltip.Group openDelay={300} closeDelay={100}>
             <Avatar.Group spacing="sm">
                 {displayedUsers.map((user, index) => (
                     <Tooltip key={index} label={user.username} withArrow>
-                        <Avatar src={'https://picsum.photos/200/300'} radius="xl">
+                        <Avatar src={user.accountImageUrl} radius="xl">
                             {Array.isArray(user.username) ? '+' + (user.username.length - 1) : ''}
                         </Avatar>
                     </Tooltip>
