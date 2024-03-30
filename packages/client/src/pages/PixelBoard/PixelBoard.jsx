@@ -46,7 +46,7 @@ export default function PixelBoard() {
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
     const [countdownProgress, setCountdownProgress] = useState(100);
-    const [isChoosingColor, setIsChoosingColor] = useState(true);
+    const [, setIsChoosingColor] = useState(true);
     const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
     const [remainingTime, setRemainingTime] = useState(15);
     const [delayMs, setDelayMs] = useState(15000);
@@ -60,15 +60,18 @@ export default function PixelBoard() {
         localStorage.setItem('drawnPixels', JSON.stringify(drawnPixels));
     };
     const onDrawPixel = (pixel) => {
-        if (!hasDrawnDuringCountdown && !isChoosingColor) {
+        if (!hasDrawnDuringCountdown) {
             setLastDrawedPixel(pixel);
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
-            setHasDrawnDuringCountdown(true);
             saveDrawnPixel(pixel);
-        }else {
+            setIsChoosingColor(false);
+            setCountdownProgress(100);
+            setRemainingTime(15);
+            setHasDrawnDuringCountdown(true);
+        } else {
             console.log('Drawing conditions not met.');
         }
-    }
+    };
     useEffect(() => {
         if (globalPixelBoardStatus === PixelBoardStatus.ALREADY_CONNECTED) {
             notifications.show({
@@ -154,10 +157,7 @@ export default function PixelBoard() {
     useEffect(() => {
         const initialColor = localStorage.getItem('selectedColor');
         if (initialColor) {
-            setSelectedColor(initialColor);
-            setIsChoosingColor(false);
-            setCountdownProgress(100);
-            setRemainingTime(15);
+             setSelectedColor(initialColor);
         }
     }, []);
 
@@ -194,13 +194,8 @@ export default function PixelBoard() {
 
 
     const startCountdownAndSelectColor = (color) => {
-        if(!isChoosingColor) return;
         setSelectedColor(color);
-        setIsChoosingColor(false);
-        setCountdownProgress(100);
-        setRemainingTime(15);
         localStorage.setItem('selectedColor', color);
-        setHasDrawnDuringCountdown(false);
     };
 
     /**
@@ -333,8 +328,7 @@ export default function PixelBoard() {
                                 pixelSize={pixelSize}
                                 currentDrawedPixel={lastDrawedPixel}
                             />
-                            <div className="bar"
-                                 style={{backgroundColor: selectedColor, width: `${countdownProgress}%`}}>
+                            <div className={"bar multi-color-bar"} style={{width: `${countdownProgress}%`}}>
                             </div>
                             <div className="countdown-timer">Time remaining: {remainingTime} seconds
                             </div>

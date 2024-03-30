@@ -5,8 +5,21 @@
   left: 0;
   width: 100%;
   height: 12px;
+  background-color: linear-gradient(to right,
+          var(--color-1) 0%,
+          var(--color-2) 10%,
+          var(--color-3) 20%,
+          var(--color-4) 30%,
+          var(--color-5) 40%,
+          var(--color-6) 50%,
+          var(--color-7) 60%,
+          var(--color-8) 70%,
+          var(--color-9) 80%,
+          var(--color-10) 90%,
+          var(--color-11) 100%);
   transition: width 1s linear;
 }
+
 .countdown-timer {
   font-size: 1rem;
   font-weight: bold;
@@ -21,4 +34,36 @@
   bottom: 20px;
   right: 60px;
   opacity: 0.8;
+}
+
+:root {
+  --color-1: #000000;
+  --color-2: #ffffff;
+  --color-3: #ff0000;
+  --color-4: #00ff00;
+  --color-5: #0000ff;
+  --color-6: #ffff00;
+  --color-7: #00ffff;
+  --color-8: #ff00ff;
+  --color-9: #c0c0c0;
+  --color-10: #808080;
+  --color-11: #800000;
+}
+
+@keyframes colorChange {
+  0% { background-color: var(--color-1); }
+  10% { background-color: var(--color-2); }
+  20% { background-color: var(--color-3); }
+  30% { background-color: var(--color-4); }
+  40% { background-color: var(--color-5); }
+  50% { background-color: var(--color-6); }
+  60% { background-color: var(--color-7); }
+  70% { background-color: var(--color-8); }
+  80% { background-color: var(--color-9); }
+  90% { background-color: var(--color-10); }
+  100% { background-color: var(--color-11); }
+}
+
+.multi-color-bar {
+  animation: colorChange 10s linear infinite;
 }
