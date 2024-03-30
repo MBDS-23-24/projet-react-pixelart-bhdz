@@ -84,7 +84,7 @@ export default function PixelBoard() {
             })
 
             const user = decryptUser();
-            if(newUserJoined?.id === user.id){
+            if (newUserJoined?.id === user.id) {
                 setGlobalPixelBoardStatus(PixelBoardStatus.CONNECTED);
             }
         }
@@ -103,10 +103,12 @@ export default function PixelBoard() {
             navigate("/");
         });
 
-        pixelSocket.listen(socketEvents.GENERAL.READY, () => {
-            setTimeout(()=>{
-                joinPixelBoard();
-            }, 2000);
+        setTimeout(() => {
+            joinPixelBoard();
+        }, 2000);
+
+        pixelSocket.listen(socketEvents.GENERAL.SUCCESSFULLY_JOINED, () => {
+
         });
 
         return () => {
@@ -212,8 +214,10 @@ export default function PixelBoard() {
         <>
 
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
-                <LoadingOverlay visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED } zIndex={1000}
-                                overlayProps={{radius: "sm", blur: 2}}/>
+                <LoadingOverlay
+                    visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED}
+                    zIndex={1000}
+                    overlayProps={{radius: "sm", blur: 2}}/>
                 {fetchPixelBoardStatus === AppStatus.SUCCESS &&
                     <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>}
                 {fetchPixelBoardStatus === AppStatus.SUCCESS && (
