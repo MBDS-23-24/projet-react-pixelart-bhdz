@@ -10,7 +10,8 @@ export const userService = {
             {
                 select: {
                     id: true,
-                    username: true
+                    username: true,
+                    accountImageUrl: true
                 }
             }
         );

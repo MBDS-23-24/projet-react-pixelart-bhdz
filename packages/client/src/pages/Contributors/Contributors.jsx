@@ -3,13 +3,13 @@ import {useEffect, useState} from "react";
 import {useMutation} from "react-query";
 import {getContributors} from "../../functions/backend_functions/user_backend_functions.js";
 import {
+    Avatar,
     Button,
-    Card,
     Container,
     Grid,
     Group,
     LoadingOverlay,
-    Paper,
+    Paper, Space,
     Table,
     Title
 } from "@mantine/core";
@@ -34,14 +34,16 @@ export default function Contributors() {
         if (contributors) {
             return contributors.map((contributor) => (
                 <Table.Tr key={contributor.id}>
-                    <Table.Td>{contributor.username}</Table.Td>
-                    <Table.Td style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Table.Td>
+                        <div className={'user-avatar'}>
+                            <Avatar src={contributor.accountImageUrl}/>{contributor.username}
+                        </div>
+                    </Table.Td>
+                    <Table.Td style={{display: 'flex', justifyContent: 'flex-end'}}>
                         <Link to={`/profile/${contributor.id}`}>
-                            <Button endIcon={<IconInfoCircle size={14} />}>Show profile</Button>
+                            <Button endIcon={<IconInfoCircle size={14}/>}>Show profile</Button>
                         </Link>
                     </Table.Td>
-
-
                 </Table.Tr>
             ));
         } else {
@@ -65,34 +67,27 @@ export default function Contributors() {
                                 <Title order={1}>All Contributors</Title>
 
                                 <div className={'contributions'}>
+                                    <Group justify="space-between">
+                                        <div className={'pixelboard-tables'}>
 
-                                    <Card withBorder radius="md">
-                                        <Group justify="space-between">
+                                            <Space h={20}/>
 
-                                            <div className={'pixelboard-tables'}>
-
-
-                                                <Table.ScrollContainer minWidth={500}>
-                                                    <Table striped highlightOnHover withTableBorder
-                                                           withColumnBorders>
-                                                        <Table.Thead>
-                                                            <Table.Tr>
-                                                                <Table.Th>Contributor</Table.Th>
-                                                                <Table.Th></Table.Th>
-                                                            </Table.Tr>
-                                                        </Table.Thead>
-                                                        <Table.Tbody>{rows()}</Table.Tbody>
-                                                    </Table>
-                                                </Table.ScrollContainer>
+                                            <Table.ScrollContainer minWidth={500}>
+                                                <Table striped highlightOnHover withTableBorder
+                                                       withColumnBorders>
+                                                    <Table.Thead>
+                                                        <Table.Tr>
+                                                            <Table.Th>Contributor</Table.Th>
+                                                            <Table.Th></Table.Th>
+                                                        </Table.Tr>
+                                                    </Table.Thead>
+                                                    <Table.Tbody>{rows()}</Table.Tbody>
+                                                </Table>
+                                            </Table.ScrollContainer>
 
 
-                                            </div>
-
-
-                                        </Group>
-
-                                    </Card>
-
+                                        </div>
+                                    </Group>
 
 
                                 </div>
