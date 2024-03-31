@@ -157,7 +157,7 @@ export default function TableUsers() {
     return (
         <>
             <Flex className={"container-title"}>
-                <Title order={3} className={"title-table-users"}>Users table</Title>
+                <Title order={3} className={"title-table-users"}>Users dashboard management</Title>
             </Flex>
             <Space h={20} />
             <TextInput placeholder="Search by username, email, or role"
