@@ -7,19 +7,14 @@ import TablePixelBoard from "../../components/TablePixelBoard/TablePixelBoard.js
 export default function Dashboard() {
 
     return (
-        // <div>
-        //     <h1>Dashboard</h1>
-        //     <Card shadow="sm" padding="md" radius="md" className={"user-table"}>
-        //         <TableUsers />
-        //     </Card>
-        // </div>
         <div style={{margin: 20}}>
             <h1>Dashboard</h1>
-            <Tabs defaultValue="pixelboard" classNames={"tab"}>
+            <Tabs defaultValue="pixelboard" classNames={"tab"} style={{marginLeft: 100, marginRight: 100}}>
                 <Tabs.List grow>
                     <Tabs.Tab
                         value="pixelboard"
                         leftSection={<IconPencil style={{width: rem(16), height: rem(16)}}/>}
+                        style={{width: 80}}
                     >
                         Pixel Board
                     </Tabs.Tab>

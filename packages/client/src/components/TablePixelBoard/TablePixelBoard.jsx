@@ -174,7 +174,6 @@ export default function TablePixelBoard() {
             <Title order={3} className={"title-table-pixels"}>Pixels Board dashboard management</Title>
         </Flex>
         <Space h={20} />
-        <ScrollArea h={400}>
         <div style={{display: 'flex', flexDirection: 'column',}}>
             <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
                 <TextInput
@@ -192,8 +191,9 @@ export default function TablePixelBoard() {
                 })
                 } >Add Pixel Board</Button>
             </div>
+            <ScrollArea h={400}>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: 10}}>
-                <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} >
+                <Table horizontalSpacing="md" verticalSpacing="xs" miw={400} stickyHeader>
                     <Table.Tbody>
                         <Table.Tr>
                             <Th
@@ -240,7 +240,7 @@ export default function TablePixelBoard() {
                     </Table.Tbody>
                 </Table>
             </div>
-        </div>
             </ScrollArea>
+        </div>
     </>
 }

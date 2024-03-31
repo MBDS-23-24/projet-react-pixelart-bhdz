@@ -64,7 +64,6 @@ export const pixelBoardController = {
         }
 
         const receivedPixel = req?.body?.pixelBoard
-        console.log("Received pixel ", receivedPixel)
 
         await catchError(async () => res.send(await pixelBoardService.addPixelBoard(receivedPixel)), next)
     },
@@ -82,7 +81,6 @@ export const pixelBoardController = {
         }
 
         const receivedPixel = req?.body?.pixelBoard
-        console.log("Received pixel ", receivedPixel)
 
         await catchError(async () => res.send(await pixelBoardService.updatePixelBoard(pixelBoardId, receivedPixel)), next)
     },
@@ -92,7 +90,6 @@ export const pixelBoardController = {
     },
 
     async getPixelBoardsByCreator(req, res, next) {
-        console.log("requete received from client")
         const creatorId = req.params.creatorId;
         console.log(creatorId)
         if (!creatorId) {
