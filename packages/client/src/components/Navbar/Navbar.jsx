@@ -4,7 +4,6 @@ import {
     IconHome2,
     IconGauge,
     IconUser,
-    IconSettings,
     IconLogout,
 } from '@tabler/icons-react';
 import "./Navbar.scss";
@@ -33,7 +32,6 @@ const listLinkedRoute = [
     { icon: IconHome2, label: 'Home', link: "/", needRight: false },
     { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
     { icon: IconUser, label: 'Account', link: "/account", needRight: false},
-    { icon: IconSettings, label: 'Settings', link: "/settings", needRight: false },
 ];
 
 export function NavBar() {
