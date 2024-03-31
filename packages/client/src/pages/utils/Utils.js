@@ -51,6 +51,13 @@ export const isPixelBoardComingSoon = (pixelBoard) => {
     return start > current && end > current;
 }
 
+export function getElapsedTime(date) {
+    const now = new Date();
+    const target = new Date(date);
+
+    return Math.floor((now - target) )
+}
+
 export function sortArrayByDate(array) {
     return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }

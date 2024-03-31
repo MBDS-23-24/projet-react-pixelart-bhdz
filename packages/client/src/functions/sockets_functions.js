@@ -25,7 +25,7 @@ export const socketEvents = {
     GENERAL: {
         INFO: 'INFO',
         ERROR: 'ERROR',
-        READY: 'READY',
+        SUCCESSFULLY_JOINED: 'SUCCESSFULLY_JOINED',
     }
 }
 

@@ -1,7 +1,10 @@
-
 const Room = {
     private(userId) {
         return "private_" + userId.toString();
+    },
+
+    pixelBoardPrivate(userId, pixelBoardId) {
+        return this.private(userId) + "_" + this.pixelBoard(pixelBoardId);
     },
 
     pixelBoard(pixelBoardId) {
