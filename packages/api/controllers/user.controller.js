@@ -67,6 +67,18 @@ export const changePassword = async (req, res, next) => {
         , next);
 }
 
+export const registerUser = async (req, res, next) => {
+    await catchError(async () => {
+        const {username, email, password,accountImageUrl} = req.body;
+        if (!username || !email || !password) {
+            throw new BusinessError(400, 'Bad request', 'Missing username, email or password');
+        }
+        const user = await userService.registerUser(username, email, password, accountImageUrl);
+        res.json(user);
+    }, next);
+
+}
+
 export const getAllUsers = async (req, res, next) => {
     await catchError(async () => {
         const users = await userService.getAllUsers();

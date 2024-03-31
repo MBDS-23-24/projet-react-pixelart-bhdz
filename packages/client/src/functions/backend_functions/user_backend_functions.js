@@ -7,6 +7,12 @@ export const loginUser = async (user) => {
     });
 }
 
+export const registerUser = async (user) => {
+    return post(`${USER}/register`, user).then(res => {
+        return res.data.user;
+    });
+}
+
 export const updateUserAccount = async (user) => {
     return put(`${USER}/updateAccount`, user).then(res => {
         return res.data.user;
