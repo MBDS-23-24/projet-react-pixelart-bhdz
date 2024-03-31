@@ -26,6 +26,11 @@ axiosApi.interceptors.response.use((response) => {
         localStorage.removeItem('user_session');
         window.location.reload();
     }
+    if (error.response.status === 403 && error.response.data?.message === "Forbidden") {
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 1000);
+    }
 });
 
 export async function get(url, config = {}) {

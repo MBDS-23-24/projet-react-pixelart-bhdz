@@ -7,9 +7,11 @@ export default function Dashboard() {
   return (
     <div>
         <h1>Dashboard</h1>
-        <Card shadow="sm" padding="md" radius="md" className={"user-table"}>
-            <TableUsers />
-        </Card>
+        <div className={"dashboard"}>
+            <Card shadow="sm" padding="md" radius="md" className={"user-table"}>
+                <TableUsers />
+            </Card>
+        </div>
     </div>
   );
 }
