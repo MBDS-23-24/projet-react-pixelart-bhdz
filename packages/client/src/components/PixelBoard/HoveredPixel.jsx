@@ -1,7 +1,5 @@
-import {useRef, useState, useEffect, forwardRef, useImperativeHandle} from 'react';
+import {forwardRef, useRef, useState, useEffect, useImperativeHandle} from 'react';
 
-
-// eslint-disable-next-line react/display-name
 const HoveredPixel = forwardRef(({
                                      width, height, pixelSize,
                                  }, ref) => {
@@ -22,7 +20,6 @@ const HoveredPixel = forwardRef(({
         }
     }, []);
 
-
     function drawHoveredPixel(currentHoveredPixel) {
         if (ctx && currentHoveredPixel) {
             ctx.clearRect(0, 0, realWidth, realHeight);
@@ -39,5 +36,7 @@ const HoveredPixel = forwardRef(({
         ></canvas>
     );
 });
+
+HoveredPixel.displayName = 'HoveredPixel';
 
 export default HoveredPixel;

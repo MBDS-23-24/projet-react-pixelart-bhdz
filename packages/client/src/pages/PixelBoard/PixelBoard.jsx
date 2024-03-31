@@ -3,7 +3,6 @@ import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router";
-import '../../components/Countdown/Countdown.scss'
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,

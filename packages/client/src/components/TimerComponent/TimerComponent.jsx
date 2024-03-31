@@ -9,7 +9,6 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
     const refresh = () => {
         let remainingTimeResult = remainingTime();
         remainingTimeResult = Math.round(remainingTimeResult * 10) / 10;
-        ;
         setTimeLeft(remainingTimeResult);
         setProgress(calculateProgress());
     }
@@ -23,11 +22,6 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
         return remainingTime;
 
     }
-
-    useEffect(() => {
-        console.log('progress', progress);
-
-    }, [progress]);
 
     useEffect(() => {
 
