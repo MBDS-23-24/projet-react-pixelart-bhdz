@@ -1,16 +1,17 @@
 import {useNavigate} from "react-router-dom";
 
-import {Button, Card, Menu, Text, TextInput, Title} from '@mantine/core';
-import {IconFilter, IconSearch} from '@tabler/icons-react';
+import {Card, Text, TextInput, Title} from '@mantine/core';
+import {IconSearch} from '@tabler/icons-react';
 import {useState} from "react";
-import {getAllPixelBoards} from "../../functions/backend_functions/pixelboard_backend_functions.js"
+import {
+    getAllPixelBoards
+} from "../../functions/backend_functions/pixelboard_backend_functions.js"
 import './Home.scss';
 import ListCardsPixelBoard from "../../components/CardPixelBoard/ListCardsPixelBoard.jsx";
 import {useQuery} from "react-query";
 import {getNumberOfUsers} from "../../functions/backend_functions/user_backend_functions.js";
 
 function Home() {
-    const [nbRegist, setNbRegist] = useState(0);
     const [pixelBoards, setPixelBoards] = useState([]);
     const [pixelBoardsFiltered, setPixelBoardsFiltered] = useState([]);
     const navigate = useNavigate();
@@ -22,11 +23,7 @@ function Home() {
         }
     });
 
-    useQuery('numbers of users', getNumberOfUsers, {
-        onSuccess: (data) => {
-            setNbRegist(data);
-        }
-    });
+    const {data: dataNumberRegist, isLoading: isLoadingNumberRegist} = useQuery('numbers of users', getNumberOfUsers);
 
     const onSearchBoard = (event) => {
         if (event.target.value === "")
@@ -41,10 +38,14 @@ function Home() {
     return (
         <div className={"home-page"}>
             <div className={"card-info"}>
-                <Card shadow="xs" padding="md">
-                    <Text align={"center"}>Number of registrants</Text>
-                    <Title  align={"center"}>{nbRegist}</Title>
-                </Card>
+                {!isLoadingNumberRegist && dataNumberRegist && <Card shadow="xs" padding="md">
+                    <Text align={"center"}>Number of registrant(s)</Text>
+                    <Title  align={"center"}>{dataNumberRegist}</Title>
+                </Card>}
+                {pixelBoards && <Card shadow="xs" padding="md">
+                    <Text align={"center"}>Number of pixelboard(s)</Text>
+                    <Title  align={"center"}>{pixelBoards.length}</Title>
+                </Card>}
             </div>
             <h2>Pixel Board enjoy drawing</h2>
             <div className={"input-sort"}>

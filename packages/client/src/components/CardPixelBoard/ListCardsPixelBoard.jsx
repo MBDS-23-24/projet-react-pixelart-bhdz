@@ -54,12 +54,6 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                     <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Override : </Text></Tooltip><Switch checked={pixelBoard.isPixelOverwrite} disabled/></Group>
                 </Group>
                 <Group justify="flex-around">
-                    <Button
-                        color="green"
-                        mt="md" radius="md"
-                        rightSection={<IconUser size={14} /> }>
-                        Subscribe to this board
-                    </Button>
                     {isPixelBoardComingSoon(pixelBoard) ? "": <Button
                         color="blue"
                         mt="md" radius="md"
@@ -67,7 +61,7 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                         rightSection={<IconLink size={14}/>}
                         onClick={() =>navigateToBoard(`/pixel-board/${pixelBoard.id}`)}
                     >
-                        View the board
+                        Join the board
                     </Button>}
                 </Group>
             </Card>
