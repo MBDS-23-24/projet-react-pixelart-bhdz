@@ -18,6 +18,24 @@ import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
 import {notifications} from "@mantine/notifications";
 import {IconUser} from "@tabler/icons-react";
 import {decryptUser} from "../../provider/UserContext.jsx";
+import TimerComponent from "../../components/TimerComponent/TimerComponent.jsx";
+
+class PixelBoardsStorage {
+    static get pixelBoardsStorage() {
+        const storedData = localStorage.getItem('pixelBoardsStorage');
+        return storedData ? new Map(JSON.parse(storedData)) : new Map();
+    }
+
+    static update(pixelBoardId, props) {
+        const pixelBoardsStorage = this.pixelBoardsStorage;
+        pixelBoardsStorage.set(pixelBoardId, {...PixelBoardsStorage.get(pixelBoardId), ...props});
+        localStorage.setItem('pixelBoardsStorage', JSON.stringify([...pixelBoardsStorage]));
+    }
+
+    static get(pixelBoardId) {
+        return this.pixelBoardsStorage.get(pixelBoardId) || {};
+    }
+}
 
 export class Pixel {
     constructor(x, y, color) {
@@ -25,6 +43,10 @@ export class Pixel {
         this.y = y;
         this.color = color;
         this.lastUpdate = new Date();
+    }
+
+    static getPixelPosition(realPosition, pixelSize) {
+        return realPosition / pixelSize;
     }
 }
 
@@ -43,58 +65,32 @@ export default function PixelBoard() {
     const [fetchPixelBoardStatus, setFetchPixelBoardStatus] = useState(AppStatus.INITIAL);
     const [savedPixels, setSavedPixels] = useState([]);
     const [lastDrawedPixel, setLastDrawedPixel] = useState(null);
-    const [currentHoveredPixel, setCurrentHoveredPixel] = useState(null);
+    const [lastTimeDrawn, setLastTimeDrawn] = useState(null);
     const [connectedUsers, setConnectedUsers] = useState([]);
     const [globalPixelBoardStatus, setGlobalPixelBoardStatus] = useState(PixelBoardStatus.INITIAL);
     const navigate = useNavigate();
-    const [countdownProgress, setCountdownProgress] = useState(0);
-    const [hasDrawnDuringCountdown, setHasDrawnDuringCountdown] = useState(false);
-    const [remainingTime, setRemainingTime] = useState(15);
-    const [delayMs, setDelayMs] = useState(15000);
+    const hoveredPixelRef = useRef();
+    const [canDraw, setCanDraw] = useState(false);
     const pixelSize = 10;
     let lastNbUserConnected = useRef(0);
 
     const onDrawPixel = (pixel) => {
-        if (!hasDrawnDuringCountdown) {
-            setLastDrawedPixel(pixel);
+        if (canDraw) {
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
-            setCountdownProgress(100);
-            setRemainingTime(delayMs/1000);
-            startCountdown();
-            setHasDrawnDuringCountdown(true);
-            localStorage.setItem('hasDrawnDuringCountdown', true);
-        } else {
-            console.log('Drawing conditions not met.');
+            setLastDrawedPixel(pixel);
         }
     };
 
-    /**
-     * Start the countdown timer
-     */
-    function startCountdown() {
-        const interval = setInterval(() => {
-            setCountdownProgress(prevProgress => {
-                let decrement = (1000 / delayMs) * 100;
-
-                // If the progress is 0, we stop the countdown and clear the interval for restart the countdown
-                if(prevProgress <= 0){
-                    setHasDrawnDuringCountdown(false);
-                    localStorage.setItem('hasDrawnDuringCountdown', false);
-                    clearInterval(interval);
-                    return;
-                }
-                localStorage.setItem('countdownProgress', prevProgress);
-                return Math.max(prevProgress - decrement, 0);
+    useEffect(() => {
+        if (lastDrawedPixel) {
+            PixelBoardsStorage.update(id, {
+                lastTimeDrawn: new Date()
             });
+            setLastTimeDrawn(PixelBoardsStorage.get(id)?.lastTimeDrawn || null);
+            setCanDraw(false)
+        }
+    }, [lastDrawedPixel])
 
-            // Decrement the remaining time (timer at bottom right)
-            setRemainingTime(prevTime => {
-                let decrementInSeconds = 1000;
-                localStorage.setItem('remainingTime', prevTime);
-                return Math.max(prevTime - (decrementInSeconds / 1000), 0);
-            });
-        }, 1000);
-    }
 
     useEffect(() => {
         if (globalPixelBoardStatus === PixelBoardStatus.ALREADY_CONNECTED) {
@@ -126,7 +122,7 @@ export default function PixelBoard() {
             })
 
             const user = decryptUser();
-            if(newUserJoined?.id === user.id){
+            if (newUserJoined?.id === user.id) {
                 setGlobalPixelBoardStatus(PixelBoardStatus.CONNECTED);
             }
         }
@@ -134,6 +130,8 @@ export default function PixelBoard() {
     }, [connectedUsers]);
 
     useEffect(() => {
+        setLastTimeDrawn(PixelBoardsStorage.get(id)?.lastTimeDrawn || null);
+        setSelectedColor(PixelBoardsStorage.get(id)?.lastSelectedColor || '#000000');
         pixelSocket.connect();
         listenJoinedUsers();
         listenSocketError();
@@ -145,62 +143,30 @@ export default function PixelBoard() {
             navigate("/");
         });
 
-        pixelSocket.listen(socketEvents.GENERAL.READY, () => {
-            setTimeout(()=>{
-                joinPixelBoard();
-            }, 2000);
-        });
+        setTimeout(() => {
+            joinPixelBoard();
+        }, 2000);
+
 
         return () => {
             pixelSocket.disconnect();
         }
     }, [id]);
 
-    function handleBeforeUnload() {
-        localStorage.setItem('lastPixelBoard', id);
-    }
-
-    useEffect(() => {
-        const initialColor = localStorage.getItem('selectedColor');
-        if (initialColor) {
-             setSelectedColor(initialColor);
-        }
-
-        // Add event listener for beforeunload - To know if the user just reload is page or change pixelboard
-        window.addEventListener('beforeunload', handleBeforeUnload);
-    }, []);
-
     /**
      * Load the saved data from the local storage
      * if the user reload the page or change the pixel board
      */
     useEffect(() => {
-        const savedColor = localStorage.getItem('selectedColor');
-        const savedProgress = localStorage.getItem('countdownProgress');
-        const savedRemainingTime = localStorage.getItem('remainingTime');
-        const savedDrawn = localStorage.getItem('hasDrawnDuringCountdown');
-
-        if (savedColor) {
-            setSelectedColor(savedColor);
-        }
-        if (savedProgress) {
-            setCountdownProgress(parseFloat(savedProgress));
-        }
-        if (savedRemainingTime) {
-            setRemainingTime(parseInt(savedRemainingTime, 10));
-        }
-        if (savedDrawn) {
-            setHasDrawnDuringCountdown(savedDrawn === 'true');
-            if (savedDrawn === 'true') {
-                startCountdown();
-            }
-        }
         fetchPixelBoard();
     }, []);
 
     const changeSelectedColor = (color) => {
         setSelectedColor(color);
-        localStorage.setItem('selectedColor', color);
+        PixelBoardsStorage.update(id, {
+            lastSelectedColor: color
+        });
+
     };
 
     /**
@@ -231,11 +197,6 @@ export default function PixelBoard() {
         setFetchPixelBoardStatus(AppStatus.LOADING);
         getPixelBoardById(id).then((pixelBoard) => {
             setPixelBoard(pixelBoard);
-            setDelayMs(pixelBoard.delayMs);
-            let historyPixelBoardId = localStorage.getItem('lastPixelBoard');
-            if(historyPixelBoardId !== null && historyPixelBoardId !== id) {
-                initDataLocalStorage();
-            }
             setFetchPixelBoardStatus(AppStatus.SUCCESS);
         }).catch(() => {
             setFetchPixelBoardStatus(AppStatus.ERROR);
@@ -269,15 +230,6 @@ export default function PixelBoard() {
     }
 
     /**
-     * Initialize the local storage data - Used when the user change the pixel board
-     */
-    function initDataLocalStorage() {
-        localStorage.setItem('countdownProgress', 0);
-        localStorage.setItem('remainingTime', 0);
-        localStorage.setItem('hasDrawnDuringCountdown', false);
-    }
-
-    /**
      * Gère le clic de la souris sur le canvas
      * @param event
      */
@@ -285,36 +237,32 @@ export default function PixelBoard() {
         const {offsetX, offsetY} = event.nativeEvent;
         const realPoistionX = Math.floor(offsetX / pixelSize) * pixelSize;
         const realPoistionY = Math.floor(offsetY / pixelSize) * pixelSize;
-        const pixel = new Pixel(getPixelPosition(realPoistionX), getPixelPosition(realPoistionY), selectedColor);
+        const pixel = new Pixel(Pixel.getPixelPosition(realPoistionX, pixelSize), Pixel.getPixelPosition(realPoistionY, pixelSize), selectedColor);
         onDrawPixel(pixel)
     }
 
     function handleMouseMove(event) {
         const {offsetX, offsetY} = event.nativeEvent;
-        const pixelPositionX = getPixelPosition(Math.floor(offsetX / pixelSize) * pixelSize);
-        const pixelPositionY = getPixelPosition(Math.floor(offsetY / pixelSize) * pixelSize);
-        if (pixelPositionX !== currentHoveredPixel?.x || pixelPositionY !== currentHoveredPixel?.y) {
-            setCurrentHoveredPixel(new Pixel(pixelPositionX, pixelPositionY, selectedColor));
+        const pixelPositionX = Pixel.getPixelPosition(Math.floor(offsetX / pixelSize) * pixelSize, pixelSize);
+        const pixelPositionY = Pixel.getPixelPosition(Math.floor(offsetY / pixelSize) * pixelSize, pixelSize);
+        if (hoveredPixelRef.current) {
+            hoveredPixelRef.current.drawHoveredPixel(new Pixel(pixelPositionX, pixelPositionY, selectedColor));
         }
+
     }
 
-    /**
-     * Join the pixel board
-     */
     function joinPixelBoard() {
-        console.log("Joining pixel board");
         pixelSocket.emit(socketActions.JOIN_PIXEL_BOARD, {pixelBoardId: id})
     }
 
-    function getPixelPosition(realPosition) {
-        return realPosition / pixelSize;
-    }
 
     return (
         <>
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
-                <LoadingOverlay visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED } zIndex={1000}
-                                overlayProps={{radius: "sm", blur: 2}}/>
+                <LoadingOverlay
+                    visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED}
+                    zIndex={1000}
+                    overlayProps={{radius: "sm", blur: 2}}/>
                 {fetchPixelBoardStatus === AppStatus.SUCCESS &&
                     <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>}
                 {fetchPixelBoardStatus === AppStatus.SUCCESS && (
@@ -329,11 +277,13 @@ export default function PixelBoard() {
                                 pixelSize={pixelSize}
                             />
 
-                            <HoveredPixel
-                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                currentHoveredPixel={currentHoveredPixel}
-                                pixelSize={pixelSize}
-                            />
+                            {canDraw === true && (
+                                <HoveredPixel
+                                    ref={hoveredPixelRef}
+                                    width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                                    pixelSize={pixelSize}
+                                />
+                            )}
 
                             <Grids
                                 width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
@@ -345,19 +295,19 @@ export default function PixelBoard() {
                                 pixelSize={pixelSize}
                                 currentDrawedPixel={lastDrawedPixel}
                             />
-                            <div className={"bar multi-color-bar"} style={{width: `${countdownProgress}%`}}>
-                            </div>
-                            <div className="countdown-timer">Time remaining: {remainingTime} seconds
-                            </div>
+
+                            <TimerComponent callback={() => {
+                                setCanDraw(true);
+                            }} startTimer={lastTimeDrawn}
+                                            thresholdInMs={ pixelBoard.delayMs }></TimerComponent>
+
+
                         </div>
                         <ColorsRange onSelectColor={changeSelectedColor}/>
-
                     </div>
                 )}
 
             </div>
-
         </>
-
     )
 }

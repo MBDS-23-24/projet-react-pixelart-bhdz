@@ -1,10 +1,10 @@
-import {useRef, useState, useEffect} from 'react';
+import {useRef, useState, useEffect, forwardRef, useImperativeHandle} from 'react';
 
 
-
-export default function HoveredPixel({
-                                  width, height, pixelSize, currentHoveredPixel
-                              }) {
+// eslint-disable-next-line react/display-name
+const HoveredPixel = forwardRef(({
+                                     width, height, pixelSize,
+                                 }, ref) => {
 
     const canvasRef = useRef();
     const [ctx, setCtx] = useState(null);
@@ -12,19 +12,18 @@ export default function HoveredPixel({
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
 
+    useImperativeHandle(ref, () => ({
+        drawHoveredPixel: drawHoveredPixel
+    }));
 
     useEffect(() => {
-        if (canvasRef) {
+        if (canvasRef.current) {
             setCtx(canvasRef.current.getContext('2d'));
         }
-    }, [canvasRef]);
-
-    useEffect(() => {
-        drawHoveredPixel();
-    }, [currentHoveredPixel]);
+    }, []);
 
 
-    function drawHoveredPixel() {
+    function drawHoveredPixel(currentHoveredPixel) {
         if (ctx && currentHoveredPixel) {
             ctx.clearRect(0, 0, realWidth, realHeight);
             ctx.fillStyle = currentHoveredPixel.color;
@@ -32,13 +31,13 @@ export default function HoveredPixel({
         }
     }
 
-
     return (
-            <canvas
-                ref={canvasRef}
-                width={realWidth}
-                height={realHeight}
-            ></canvas>
-
+        <canvas
+            ref={canvasRef}
+            width={realWidth}
+            height={realHeight}
+        ></canvas>
     );
-}
+});
+
+export default HoveredPixel;
