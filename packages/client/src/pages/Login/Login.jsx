@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import { useForm } from '@mantine/form';
 import {useMutation} from "react-query";
 import {UserContext} from "../../provider/UserContext.jsx";
@@ -6,13 +6,15 @@ import {loginUser} from "../../functions/backend_functions/user_backend_function
 import BackgroundIllustration from "./BackgroundIllustration.jsx";
 import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
-import {Button, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
+import {Button, Modal, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 import {checkEmail, checkPassword} from "../utils/FormValidation.js";
+import Register from "../Register/Register.jsx";
 
 export default function Login() {
-    const { colorScheme } = useMantineColorScheme();
-    const { setUser } = useContext(UserContext);
+    const {colorScheme} = useMantineColorScheme();
+    const {setUser} = useContext(UserContext);
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
 
     const form = useForm({
         initialValues: {
@@ -25,6 +27,11 @@ export default function Login() {
         }
     });
 
+    const toggleRegisterModal = () => {
+        setShowRegisterModal(!showRegisterModal);
+    };
+
+
     const login = useMutation((user) => loginUser(user), {
         onSuccess: (data) => {
             setTimeout(() => {
@@ -36,7 +43,7 @@ export default function Login() {
                 title: "Successful connection",
                 message: "You are now logged in !",
                 color: "green",
-                icon: <IconCheck size={24} />,
+                icon: <IconCheck size={24}/>,
             });
         },
     });
@@ -62,7 +69,6 @@ export default function Login() {
                                    />
                                }
                                {...form.getInputProps('email')}/>
-
                     <TextInput id="password"
                                type="password"
                                placeholder={"Password"}
@@ -73,9 +79,20 @@ export default function Login() {
                                }
                                {...form.getInputProps('password')}/>
                     <Button fullWidth type="submit">Login</Button>
-                    <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)">Register</Button>
+                    <Button fullWidth variant="filled" color="rgba(29, 104, 184, 1)" onClick={toggleRegisterModal}>
+                        Register
+                    </Button>
                 </div>
             </form>
+            <Modal
+                opened={showRegisterModal}
+                onClose={toggleRegisterModal}
+                title="Register"
+                size={'sm'}
+                className={colorScheme === 'light' ? 'modal-content-light' : ''}
+                centered>
+                <Register onClose={toggleRegisterModal} />
+            </Modal>
         </div>
-    )
+    );
 }
