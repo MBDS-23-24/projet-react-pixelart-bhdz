@@ -18,7 +18,7 @@ const data = () => {
             "_id": new ObjectId('00000000cdc41c32293c296c'),
             "email": "quentin.hoareau@pixelart.com",
             "username": "quentinhro",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$QbRpWUa2CkXsnKpCaZh9mubSO5RgbE9FmbjT2dMWKKrLKqRsxWjj2", // 5f73DeJ7X
             "role_id": "ROLE_ADMIN",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/305357600898285581/36f2f1e07a3b0e47a00880bb689e4d94?size=1024",
         },
@@ -26,7 +26,7 @@ const data = () => {
             "_id": new ObjectId('00000001cdc41c32293c296d'),
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$JSUwInZjYIPqYqONrZc3p.r.mlM8NNh4k2VbVjIlHQbCCwU1h6TGe",// 6c@&ye03
             "role_id": "ROLE_ADMIN",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/244503151921594378/9e0139f4088df4ef4b09dae828743e17?size=1024",
         },
@@ -34,7 +34,7 @@ const data = () => {
             "_id": new ObjectId('00000002cdc41c32293c296e'),
             "email": "mouctar.diallo@pixelart.com",
             "username": "mouctardlo",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$Hb2SrWVAS53DWP.aY2Fz7uN9qEW8Fh6XIhO4jns2RV/U9tvidLO3i",// 2c@eye43
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/689829928593653789/78efa94ac8b7aac9f018d1b30ab546a8?size=1024",
         },
@@ -42,7 +42,7 @@ const data = () => {
             "_id": new ObjectId('00000003cdc41c32293c296f'),
             "email": "yehoudi.vincent@pixelart.com",
             "username": "yehoudivct",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$nc3/FFfsZOPvg7M1pYmYWO3Sk1Vjr9qf8Qs0Kx/9NoyADZANtyG2K",// 62b@ez2F
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/992430319972139149/fe89566425b9db172bdc8b03f9ff45d2?size=1024",
         },
@@ -50,9 +50,25 @@ const data = () => {
             "_id": new ObjectId('00000004cdc41c32293c2970'),
             "email": "dounia.zoubid@pixelart.com",
             "username": "douniazbd",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "password": "$2b$10$e/cGbUMlJrLUd9PiixKJWezTPSv1dJf7iR.otxKRl/DljrpFs7lye", // 26x84f4@
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/1158381399410225163/fce46d6a6a8bb493a0a54f5a27b728d0?size=1024",
+        },
+        {
+            "_id": new ObjectId('00000004cdc41c32293c2971'),
+            "email": "hugo.mallet@univ-cotedazur.fr",
+            "username": "hugomlt",
+            "password": "$2b$10$HSaajBoTUVwRJG4Fjw/PV.nmf3CFvPl3.jcQ1hqww6EkrqzZmamxG", // eRtB@E(9
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "https://support.discord.com/hc/user_images/l12c7vKVRCd-XLIdDkLUDg.png",
+        },
+        {
+            "_id": new ObjectId('00000004cdc41c32293c2972'),
+            "email": "francois.michaudon@univ-cotedazur.fr",
+            "username": "francoism",
+            "password": "$2b$10$hUAsLlH6VmcjGjrhI93LYOhc7rULRn/j0SrzFD3lBcfnNNQbNaK..", // eR2BeE(9
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/1027144593982115900/575b2478373af7fa8d4d6e4d753c1086?size=1024",
         },
     ]
 
@@ -65,7 +81,7 @@ const data = () => {
     const pixel_boards = [
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a1'),
-            "title": "Example Test 1",
+            "title": "Fun Pixel Art",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -2),
             "start_date": adjustDate(new Date(), 0, 0, -1),
@@ -77,26 +93,62 @@ const data = () => {
         },
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a2'),
-            "title": "Example Test 2",
+            "title": "Animals for all",
             "creator_id": users[1]["_id"],
             "date_created": adjustDate(new Date(), -30, 0, 0),
-            "start_date": adjustDate(new Date(), 15, 0, -5),
-            "end_date": adjustDate(new Date(), 0, 0, -3),
-            "delay_ms": 1000,
+            "start_date": adjustDate(new Date(), 15, 0, 1),
+            "end_date": adjustDate(new Date(), 0, 0, 7),
+            "delay_ms": 3000,
             "pixel_width": 300,
             "pixel_height": 200,
             "is_pixel_overwrite": true
         },
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a3'),
-            "title": "Example Test 3",
+            "title": "Pixel wars !",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -3),
             "start_date": adjustDate(new Date(), 0, 0, 2),
             "end_date": adjustDate(new Date(), 0, 0, 5),
-            "delay_ms": 1000,
-            "pixel_width": 500,
+            "delay_ms": 5000,
+            "pixel_width": 400,
+            "pixel_height": 400,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a4'),
+            "title": "Everyone's drawing",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 0, -2),
+            "start_date": adjustDate(new Date(), 30, 0, 0),
+            "end_date": adjustDate(new Date(), 0, 0, 5),
+            "delay_ms": 5000,
+            "pixel_width": 300,
+            "pixel_height": 300,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a5'),
+            "title": "Countries battle !",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 1, -1),
+            "start_date": adjustDate(new Date(), 0, 0, -1),
+            "end_date": adjustDate(new Date(), 0, 0, 5),
+            "delay_ms": 5000,
+            "pixel_width": 200,
             "pixel_height": 500,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a6'),
+            "title": "Countries battle !",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 1, -12),
+            "start_date": adjustDate(new Date(), 0, 0, -10),
+            "end_date": adjustDate(new Date(), 0, 0, -5),
+            "delay_ms": 5000,
+            "pixel_width": 300,
+            "pixel_height": 200,
             "is_pixel_overwrite": false
         },
     ]
@@ -107,8 +159,18 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "hexa_color": "#000000", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 14, "hexa_color": "#b01a1a", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 0,
+                    "hexa_color": "#000000",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 14,
+                    "hexa_color": "#b01a1a",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -116,8 +178,18 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#67218f",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 8,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -125,8 +197,18 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#b7632c", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 10, "hexa_color": "#1f9f9d", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#b7632c",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 10,
+                    "hexa_color": "#1f9f9d",
+                    "owner_id": users[2]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -134,9 +216,24 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
-                {"position": 6, "hexa_color": "#38bb4f", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#67218f",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 8,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
+                {
+                    "position": 6,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[2]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         }
 

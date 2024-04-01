@@ -30,6 +30,7 @@ const HoveredPixel = forwardRef(({
 
     return (
         <canvas
+            id={'hovered-pixel-canvas'}
             ref={canvasRef}
             width={realWidth}
             height={realHeight}

@@ -1,4 +1,4 @@
-import {Button, Card, Title, useMantineColorScheme} from "@mantine/core";
+import {Badge, Button, Card, Title, useMantineColorScheme} from "@mantine/core";
 import {useState} from "react";
 import "./PixelBoardMenu.scss";
 import {IconHistory} from "@tabler/icons-react";
@@ -25,6 +25,16 @@ export default function PixelBoardMenu({pixelBoard, connectedUsers}) {
                     <NestedUsersAvatar users={connectedUsers} maxAvatarDisplayed={2}/>
                 )}
             </Card>
+
+            <div style={{marginTop:'10px', opacity: 0.7}}>
+                <Badge
+                    size="xl"
+                    variant="gradient"
+                    gradient={{from: 'red', to: 'grape', deg: 90}}
+                >
+                    End in 1d 2h 3m
+                </Badge>
+            </div>
         </div>
     )
 }

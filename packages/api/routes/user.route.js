@@ -5,7 +5,7 @@ import {
     updateUserAccount,
     getAllUsers,
     getAllRoles,
-    updateUser, getNumberOfRegisteredUsers
+    updateUser, registerUser, getNumberOfRegisteredUsers
 } from "../controllers/user.controller.js";
 import {authMiddleware} from "../middleware/auth.middleware.js";
 
@@ -17,5 +17,6 @@ router.get('/check-token', authMiddleware.authenticatedUser, checkToken)
 router.get('/all', authMiddleware.authenticatedAdmin, getAllUsers)
 router.get('/roles', authMiddleware.authenticatedAdmin, getAllRoles)
 router.get('/count', authMiddleware.authenticatedUser, getNumberOfRegisteredUsers)
+router.post('/register', registerUser)
 
 export default router
