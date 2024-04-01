@@ -11,6 +11,7 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
         remainingTimeResult = Math.round(remainingTimeResult * 10) / 10;
         setTimeLeft(remainingTimeResult);
         setProgress(calculateProgress());
+        return remainingTimeResult;
     }
 
     const remainingTime = () => {
@@ -28,7 +29,10 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
 
         refresh();
         const interval = setInterval(() => {
-            refresh();
+            const rmTime =  refresh();
+            if(rmTime <= 0){
+                clearInterval(interval);
+            }
         }, 100);
 
 
@@ -51,7 +55,7 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
             {timeLeft <= thresholdInMs && timeLeft > 0 && (
                 <div className="countdown-timer">
                     <Progress.Root size="xl">
-                        <Progress.Section value={100 - progress}>
+                        <Progress.Section value={100 - progress} >
                             <Progress.Label>
                                 <div style={{fontSize:'1rem', padding:'5px'}}>
                                     {timeLeft}s

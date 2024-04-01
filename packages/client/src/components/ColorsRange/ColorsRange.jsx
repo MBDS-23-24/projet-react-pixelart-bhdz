@@ -8,10 +8,6 @@ export default function ColorsRange({onSelectColor}) {
             hexaColor: '#000000'
         },
         {
-            label: 'white',
-            hexaColor: '#ffffff'
-        },
-        {
             label: 'red',
             hexaColor: '#ff0000'
         },
@@ -36,33 +32,9 @@ export default function ColorsRange({onSelectColor}) {
             hexaColor: '#ff00ff'
         },
         {
-            label: 'silver',
-            hexaColor: '#c0c0c0'
+            label: 'white',
+            hexaColor: '#ffffff'
         },
-        {
-            label: 'gray',
-            hexaColor: '#808080'
-        },
-        {
-            label: 'maroon',
-            hexaColor: '#800000'
-        },
-        {
-            label: 'olive',
-            hexaColor: '#808000'
-        },
-        {
-            label: 'purple',
-            hexaColor: '#800080'
-        },
-        {
-            label: 'teal',
-            hexaColor: '#008080'
-        },
-        {
-            label: 'navy',
-            hexaColor: '#000080'
-        }
     ];
 
     const handleColorChange = (color) => {

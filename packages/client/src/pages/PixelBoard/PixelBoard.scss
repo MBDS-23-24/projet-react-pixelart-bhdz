@@ -1,8 +1,7 @@
 .draw-container .color-range{
   position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+  top: 15px;
+  right: 30px;
 }
 
 .draw-grids {
@@ -17,20 +16,15 @@
     margin: 0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     text-align: center;
-    position: absolute;
-    bottom: 30px;
+    bottom: 50px;
     opacity: 0.8;
-
     align-items: center;
     flex-direction: row !important;
-    position: absolute;
+    position: fixed;
     justify-content: center;
-    z-index: 99;
     left: 50%;
     transform: translate(-50%);
-
     width: 80%;
-
     -webkit-user-select: none; /* Pour les navigateurs basés sur WebKit */
     -moz-user-select: none; /* Pour les navigateurs basés sur Gecko (Firefox) */
     -ms-user-select: none; /* Pour Internet Explorer */
@@ -56,4 +50,20 @@ canvas{
   position: absolute;
   left: 0px;
   top: 0;
+}
+
+.extra-info{
+  color: #7a7a7a;
+  position: fixed;
+  bottom: 15px;
+  left: 90px;
+
+  -webkit-user-select: none; /* Pour les navigateurs basés sur WebKit */
+  -moz-user-select: none; /* Pour les navigateurs basés sur Gecko (Firefox) */
+  -ms-user-select: none; /* Pour Internet Explorer */
+  user-select: none; /* Syntaxe standard */
+}
+
+#hovered-pixel-canvas{
+  opacity: 0.3;
 }
