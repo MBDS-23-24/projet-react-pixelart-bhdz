@@ -14,4 +14,4 @@ RUN npm install
 
 EXPOSE 3200
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "start:socket" ]
