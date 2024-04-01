@@ -141,7 +141,7 @@ class PixelBoard {
 
 const app = express();
 const corsOptions = {
-    origin: "http://localhost",
+    origin: process.env.SOCKET_FRONT_URL,
     credentials: true,
 }
 app.use(cors(corsOptions));
