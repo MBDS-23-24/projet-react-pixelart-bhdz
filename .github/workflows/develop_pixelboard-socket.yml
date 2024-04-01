@@ -31,7 +31,7 @@ jobs:
       with:
         push: true
         tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_dfd1a431cf9b4f288119176eccd4bb07 }}/pixelboard-socket:${{ github.sha }}
-        file: socket./Dockerfile
+        file: socket.Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
