@@ -13,6 +13,6 @@ RUN cd packages/api
 RUN npm install
 #RUN yarn workspace api build
 
-EXPOSE 5173
+EXPOSE 5010
 
 CMD [ "npm", "run", "start:api" ]
