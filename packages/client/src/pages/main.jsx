@@ -5,6 +5,7 @@ import {UserProvider} from "../provider/UserContext.jsx";
 import App from './App.jsx';
 import './index.scss';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import {createTheme, MantineProvider} from "@mantine/core";
 import '@mantine/notifications/styles.css';
 import {ModalsProvider} from "@mantine/modals";

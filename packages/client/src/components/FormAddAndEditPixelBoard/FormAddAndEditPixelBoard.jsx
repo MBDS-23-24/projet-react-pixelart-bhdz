@@ -1,26 +1,23 @@
 import {Box, Button, Checkbox, Divider, NumberInput, TextInput} from "@mantine/core";
 import {IconCheck, IconX} from "@tabler/icons-react";
-import React, {useContext} from "react";
 import {useForm} from "@mantine/form";
 import {notifications} from "@mantine/notifications";
 import { DateTimePicker } from '@mantine/dates';
 import {addPixelBoard, updatePixelBoard} from "../../functions/backend_functions/pixelboard_backend_functions.js";
-import {UserContext} from "../../provider/UserContext.jsx";
+import {useMutation} from "react-query";
+import {updateUser} from "../../functions/backend_functions/user_backend_functions.js";
 
-export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType, refreshPixels, formInfo}) {
-
-    const pixelSelected = pixelBoard
-    const {user} = useContext(UserContext);
-    console.log(user)
+export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, formType, refreshPixels, formInfo}) {
+    const pixelSelected = pixelBoard;
 
     const form = useForm({
         initialValues: {
-            title: pixelSelected ? pixelSelected.title : "",
-            startDate:  new Date(),
-            endDate: new Date(),
-            delayMs: pixelSelected ? pixelSelected.pixelHeight : 0,
-            pixelWidth: pixelSelected ? pixelSelected.pixelWidth : 0,
-            pixelHeight: pixelSelected ? pixelSelected.pixelHeight : 0,
+            title: pixelSelected ? pixelSelected.title : null,
+            startDate: pixelSelected ? new Date(pixelSelected.startDate) : null,
+            endDate: pixelSelected ? new Date(pixelSelected.endDate) : null,
+            delayMs: pixelSelected ? pixelSelected.pixelHeight : null,
+            pixelWidth: pixelSelected ? pixelSelected.pixelWidth : null,
+            pixelHeight: pixelSelected ? pixelSelected.pixelHeight : null,
             isPixelOverwrite: pixelSelected ? pixelSelected.isPixelOverwrite : false,
         },
         validate: {
@@ -30,27 +27,16 @@ export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType
                 return undefined;
             },
             startDate: (value) => {
-                const currentDate = new Date()
-                currentDate.setDate(currentDate.getDate() - 1); // Obtenez la date du jour
-                const enteredDate = new Date(value);
-
+                if (pixelSelected) return undefined;
                 if (!value || value === "") return "Start date is required";
-                if (enteredDate < currentDate) return "Start date cannot be in the past"; // Vérifiez si la date est antérieure à la date du jour
+                if (value < new Date()) return "Start date must be in the future";
                 return undefined;
             },
-            endDate: (value, allValues) => {
-                const currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() - 1);
-                const enteredDate = new Date(value);
-
+            endDate: (value) => {
+                if (pixelSelected) return undefined;
                 if (!value || value === "") return "End date is required";
-                if (enteredDate < currentDate) return "End date cannot be in the past";
-                if (allValues.startDate) {
-                    let startDate = new Date(allValues.startDate);
-                    if (startDate > enteredDate) {
-                        return "End date must be later than start date";
-                    }
-                }
+                if (value < new Date()) return "End date must be in the future";
+                if (value < form.values.startDate) return "End date must be after start date";
                 return undefined;
             },
             delayMs: (value) => isNaN(value) || value < 0 || value === "" ? "Please enter a valid delay in milliseconds" : undefined,
@@ -67,11 +53,54 @@ export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType
         },
     });
 
+    const editPixelboard = useMutation(updatePixelBoard, {
+        onSuccess: () => {
+            notifications.show({
+                title: "Update successful",
+                message: "Pixelboard has been updated",
+                color: "green",
+                icon: <IconCheck size={24} />,
+            });
+            refreshPixels();
+            onCancel();
+        },
+        onError: (error) => {
+            console.log(error);
+            notifications.show({
+                title: 'Error',
+                message: 'User has not been updated',
+                color: 'red',
+                icon: null,
+            });
+        }
+    })
+
+    const addPixelboard = useMutation(addPixelBoard, {
+        onSuccess: () => {
+            notifications.show({
+                title: "Creation successful",
+                message: "Pixelboard has been added",
+                color: "green",
+                icon: <IconCheck size={24} />,
+            });
+            refreshPixels();
+            onCancel();
+        },
+        onError: (error) => {
+            console.log(error);
+            notifications.show({
+                title: 'Error',
+                message: 'User has not been updated',
+                color: 'red',
+                icon: null,
+            });
+        }
+    })
+
     const onSubmit = (event) => {
         event.preventDefault();
-        const { errors } = form.validate();
-        if (Object.keys(errors).length === 0) {
-            const pixelToUpdate = {
+        if (form.isValid) {
+            const modelPixel = {
                 title: form.values.title,
                 delayMs : form.values.delayMs,
                 pixelHeight:  form.values.pixelHeight,
@@ -80,43 +109,16 @@ export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType
                 startDate: form.values.startDate.toISOString(),
                 endDate: form.values.endDate.toISOString(),
                 dateCreated: new Date().toISOString(),
-                creatorId: user.id
+                creatorId: user.id,
             }
            if (formType === "update"){
-               updatePixelBoard(pixelSelected.id, pixelToUpdate)
-                   .then(() =>{
-                       notifications.show({
-                           title: formInfo.notifyTitle,
-                           message: formInfo.notifyMessage,
-                           color: "green",
-                           icon: <IconCheck size={24} />,
-                       });
-                       refreshPixels();
-                       onCancel();
-                   })
+               modelPixel.id = pixelSelected.id;
+               editPixelboard.mutate(modelPixel)
            }
 
            if (formType === "add"){
-               addPixelBoard(pixelToUpdate)
-                   .then(() =>{
-                       notifications.show({
-                           title: formInfo.notifyTitle,
-                           message: formInfo.notifyMessage,
-                           color: "green",
-                           icon: <IconCheck size={24} />,
-                       });
-                       refreshPixels();
-                       onCancel();
-                   })
+                addPixelboard.mutate(modelPixel)
            }
-
-        } else {
-            notifications.show({
-                title: "Validation errors",
-                message: "There are some errors try to fix it",
-                color: "red",
-                icon: <IconX size={24} />,
-            });
         }
     }
 
@@ -127,7 +129,7 @@ export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType
                 <NumberInput
                     mt="sm"
                     label="Delay"
-                    placeholder="Delay"
+                    placeholder="Delay in milliseconds"
                     min={0}
                     max={2000}
                     {...form.getInputProps("delayMs")}
@@ -150,10 +152,12 @@ export default function FormAddAndEditPixelBoard({pixelBoard, onCancel, formType
                 />
                 <DateTimePicker
                     label="Start date"
+                    placeholder="Start date"
                     {...form.getInputProps("startDate")}
                 />
                 <DateTimePicker
                     label="endDate"
+                    placeholder="End date"
                     {...form.getInputProps("endDate")}
                 />
                 <Checkbox

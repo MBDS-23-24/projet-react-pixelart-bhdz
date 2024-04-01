@@ -69,20 +69,13 @@ export const pixelBoardController = {
     },
 
     async updatePixelBoard(req, res, next) {
-
-        const pixelBoardId = req?.params?.pixelBoardId;
-
-        if (!pixelBoardId) {
-            throw BusinessError(400, 'Bad request', "Missing pixel board id")
-        }
-
         if (!req.body) {
             throw BusinessError(400, 'Bad request', "Missing pixel data")
         }
 
-        const receivedPixel = req?.body?.pixelBoard
+        const receivedPixel = req.body
 
-        await catchError(async () => res.send(await pixelBoardService.updatePixelBoard(pixelBoardId, receivedPixel)), next)
+        await catchError(async () => res.send(await pixelBoardService.updatePixelBoard(receivedPixel.id, receivedPixel)), next)
     },
 
     async getAllPixelBoards(req, res, next) {

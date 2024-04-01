@@ -25,14 +25,18 @@ export const getPixelBoardsByCreator = async (creatorId) => {
 }
 
 export const delelePixelBoard = async (pixelId) => {
-    return del(`${PIXELBOARD}/${pixelId}`)
+    return del(`${PIXELBOARD}/${pixelId}`).then(res => {
+        return res.data;
+    })
 }
 
 export const addPixelBoard = async (pixelBoardToAdd) => {
     const pixelBoard = {
         pixelBoard: pixelBoardToAdd
     }
-    return post(`${PIXELBOARD}/create`, pixelBoard)
+    return (await post(`${PIXELBOARD}/create`, pixelBoard)).then(res => {
+        return res.data;
+    })
 }
 
 export const getAllPixelBoards = async () => {
@@ -40,9 +44,8 @@ export const getAllPixelBoards = async () => {
         .then(res => res.data);
 }
 
-export const updatePixelBoard = async (pixelBoardId, pixelBoardToUpdate) => {
-    const pixelBoard = {
-        pixelBoard: pixelBoardToUpdate
-    }
-    return put(`${PIXELBOARD}/${pixelBoardId}/update`, pixelBoard)
+export const updatePixelBoard = async (pixelBoard) => {
+    return put(`${PIXELBOARD}/`, pixelBoard).then(res => {
+        return res.data;
+    })
 }

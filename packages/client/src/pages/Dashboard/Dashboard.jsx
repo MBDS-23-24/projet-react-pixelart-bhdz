@@ -1,7 +1,7 @@
 import TableUsers from "../../components/TableUsers/TableUsers.jsx";
 import {Card, rem, Tabs} from "@mantine/core";
 import './Dashboard.scss';
-import {IconMessageCircle, IconPencil, IconPhoto, IconSettings, IconUser} from "@tabler/icons-react";
+import {IconPencil, IconUser} from "@tabler/icons-react";
 import TablePixelBoard from "../../components/TablePixelBoard/TablePixelBoard.jsx";
 
 export default function Dashboard() {
@@ -9,7 +9,7 @@ export default function Dashboard() {
     return (
         <div style={{margin: 20}}>
             <h1>Dashboard</h1>
-            <Tabs defaultValue="pixelboard" classNames={"tab"} style={{marginLeft: 100, marginRight: 100}}>
+            <Tabs defaultValue="pixelboard" className={"tab"}>
                 <Tabs.List grow>
                     <Tabs.Tab
                         value="pixelboard"

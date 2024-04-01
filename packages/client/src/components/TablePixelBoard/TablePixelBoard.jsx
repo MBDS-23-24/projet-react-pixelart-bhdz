@@ -14,18 +14,17 @@ import {
     IconTrash
 } from "@tabler/icons-react";
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
-import React, {useState} from "react";
+import {useContext, useState} from "react";
 import {modals} from "@mantine/modals";
 import './TablePixelBoard.scss';
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import {
     delelePixelBoard,
     getAllPixelBoards,
 } from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {notifications} from "@mantine/notifications";
 import FormAddAndEditPixelBoard from "../FormAddAndEditPixelBoard/FormAddAndEditPixelBoard.jsx";
-// import UpdatePixel from "../../components/updatePixel/UpdatePixel.jsx";
-// import AddPixel from "../../components/addPixel/AddPixel.jsx";
+import {UserContext} from "../../provider/UserContext.jsx";
 
 function Th({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -45,7 +44,8 @@ function Th({ children, reversed, sorted, onSort }) {
     );
 }
 export default function TablePixelBoard() {
-
+    const queryClient = useQueryClient()
+    const {user} = useContext(UserContext);
     const [search, setSearch] = useState('');
     const [sortedData, setSortedData] = useState([]);
     const [sortBy, setSortBy] = useState(null);
@@ -58,16 +58,15 @@ export default function TablePixelBoard() {
             console.log(data)
             setPixels(data);
             setSortedData(data);
+        },
+        onError: error => {
+            console.error("Error fetching pixels:", error);
         }
     })
 
 
     function refreshPixel() {
-        getAllPixelBoards()
-            .then(data => {
-                setPixels(data);
-                setSortedData(data)
-            })
+        queryClient.invalidateQueries('pixels');
     }
 
 
@@ -154,16 +153,16 @@ export default function TablePixelBoard() {
             <Table.Td>{row.pixelWidth}</Table.Td>
             <Table.Td>{row.pixelHeight}</Table.Td>
             <Table.Td>
-                <div style={{display: "flex", alignItems: "center", justifyContent: 'center', padding: 20}}>
-                    <Button  color='red' rightSection={<IconTrash size={20} />} style={{marginRight: 10, paddingLeft: 10, paddingRight: 10}} onClick={() => openDelete(row.id)}> Delete</Button>
-                    <Button rightSection={<IconEdit size={20}  />} onClick={() =>
+                <div style={{display: "flex", alignItems: "center", justifyContent: 'center', padding: 10, gap:'20px'}}>
+                    <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={() =>
                         modals.open({
                             title: "Form to update Pixel Board",
                             labels: { confirm: "Save", cancel: "Cancel" },
-                            children: <FormAddAndEditPixelBoard onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} pixelBoard={row} formType={"update"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel Board updated successfully"}}/>,
+                            children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} pixelBoard={row} formType={"update"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel Board updated successfully"}}/>,
                             withCloseButton: false,
                         })
                     } style={{paddingLeft: 20, paddingRight: 20}} >Update</Button>
+                    <Button size={"sm"} color='red' rightSection={<IconTrash size={20} />} onClick={() => openDelete(row.id)}> Delete</Button>
                 </div>
             </Table.Td>
         </Table.Tr>
@@ -174,27 +173,27 @@ export default function TablePixelBoard() {
             <Title order={3} className={"title-table-pixels"}>Pixels Board dashboard management</Title>
         </Flex>
         <Space h={20} />
-        <div style={{display: 'flex', flexDirection: 'column',}}>
-            <div style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <Group justify="space-between">
                 <TextInput
                     placeholder="Search here by title or start date or end date"
-                    mb="md"
                     leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
                     value={search}
+                    className={"search"}
                     onChange={handleSearchChange}
                 />
-                <Button rightSection={<IconPlus size={20} />} onClick={() => modals.open({
+                <Button className={"btn-add"} rightSection={<IconPlus size={20} />} onClick={() => modals.open({
                     title: "Form to add Pixel Board",
                     labels: { confirm: "Save", cancel: "Cancel" },
-                    children: <FormAddAndEditPixelBoard onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} formType={"add"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel added successfully"}} pixelBoard={undefined}/>,
+                    children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} formType={"add"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel added successfully"}} pixelBoard={undefined}/>,
                     withCloseButton: false,
                 })
                 } >Add Pixel Board</Button>
-            </div>
+            </Group>
             <ScrollArea h={400}>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: 10}}>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', paddingTop: 15}}>
                 <Table horizontalSpacing="md" verticalSpacing="xs" miw={400} stickyHeader>
-                    <Table.Tbody>
+                    <Table.Thead>
                         <Table.Tr>
                             <Th
                                 sorted={sortBy === 'title'}
@@ -223,8 +222,11 @@ export default function TablePixelBoard() {
                             <Table.Th>
                                 Height
                             </Table.Th>
+                            <Table.Th>
+                                Actions
+                            </Table.Th>
                         </Table.Tr>
-                    </Table.Tbody>
+                    </Table.Thead>
                     <Table.Tbody>
                         {rows.length > 0 ? (
                             rows

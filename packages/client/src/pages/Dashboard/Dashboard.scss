@@ -1,12 +1,9 @@
-.user-table{
-  max-width: 1200px;
-  margin: auto;
-}
-
 .tab {
   position: relative;
+  max-width: 1200px;
   border: 1px solid var(--mantine-color-gray-2), var(--mantine-color-dark-4);
   background-color: var(--mantine-color-white), var(--mantine-color-dark-6);
+  margin: auto;
 
   &:first-of-type {
     border-radius: 4px 0 0 4px;

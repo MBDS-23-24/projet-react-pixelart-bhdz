@@ -147,9 +147,7 @@ export default function TableUsers() {
             <Table.Td>{row.email}</Table.Td>
             <Table.Td>{row.role.label}</Table.Td>
             <Table.Td>
-                <ActionIcon size={30} variant="filled" color="blue" aria-label="Edit" onClick={()=>clickEdit(row)}>
-                    <IconEdit width={20} height={20} />
-                </ActionIcon>
+                <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={()=>clickEdit(row)}>Update</Button>
             </Table.Td>
         </Table.Tr>
     ));

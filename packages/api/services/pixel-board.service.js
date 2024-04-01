@@ -170,10 +170,17 @@ const pixelBoardService = {
             }
         });
     },
-    async updatePixelBoard(pixelId, pixelToUpdate) {
+    async updatePixelBoard(pixelBoardId, pixelToUpdate) {
+        pixelToUpdate.creator = {
+            connect: {
+                id: pixelToUpdate.creatorId
+            }
+        }
+        delete pixelToUpdate.id;
+        delete pixelToUpdate.creatorId;
         return prisma.pixelBoard.update({
             where: {
-                id: pixelId
+                id: pixelBoardId
             },
             data: pixelToUpdate
         });
