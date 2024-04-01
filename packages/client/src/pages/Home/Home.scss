@@ -4,11 +4,10 @@
   position: relative;
   
   .card-info{
-    left: 10px;
-    top: 10px;
-    position: absolute;
     display: flex;
+    justify-content: center;
     gap: 20px;
+    margin-bottom: 20px;
   }
 
   .input-sort{
@@ -16,7 +15,7 @@
     align-items: center;
     justify-content: center;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     width: 100%;
 
     .search {

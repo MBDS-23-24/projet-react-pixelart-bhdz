@@ -37,19 +37,20 @@ function Home() {
 
     return (
         <div className={"home-page"}>
+            <h2>Pixel Board enjoy drawing</h2>
             <div className={"card-info"}>
                 {!isLoadingNumberRegist && dataNumberRegist && <Card shadow="xs" padding="md">
                     <Text align={"center"}>Number of registrant(s)</Text>
-                    <Title  align={"center"}>{dataNumberRegist}</Title>
+                    <Title align={"center"}>{dataNumberRegist}</Title>
                 </Card>}
                 {pixelBoards && <Card shadow="xs" padding="md">
                     <Text align={"center"}>Number of pixelboard(s)</Text>
-                    <Title  align={"center"}>{pixelBoards.length}</Title>
+                    <Title align={"center"}>{pixelBoards.length}</Title>
                 </Card>}
             </div>
-            <h2>Pixel Board enjoy drawing</h2>
             <div className={"input-sort"}>
-                <TextInput size="md" className={"search"} placeholder="Search Board Name" rightSection={<IconSearch size={20}/>}
+                <TextInput size="md" className={"search"} placeholder="Search Board Name"
+                           rightSection={<IconSearch size={20}/>}
                            onChange={onSearchBoard}/>
                 <Card shadow="xs" padding="xs">
                     <Text align={"center"}>results : {pixelBoardsFiltered.length}</Text>

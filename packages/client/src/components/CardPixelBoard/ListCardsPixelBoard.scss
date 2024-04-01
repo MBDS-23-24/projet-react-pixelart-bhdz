@@ -10,6 +10,16 @@
   }
 }
 
+.content-card{
+  position: relative;
+  .timer{
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    z-index: 99;
+  }
+}
+
 @media screen and (max-width: 768px){
   .list-pixelboard{
     flex-direction: column;
