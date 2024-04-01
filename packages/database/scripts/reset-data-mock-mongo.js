@@ -18,7 +18,7 @@ const data = () => {
             "_id": new ObjectId('00000000cdc41c32293c296c'),
             "email": "quentin.hoareau@pixelart.com",
             "username": "quentinhro",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",
+            "password": "$2b$10$QbRpWUa2CkXsnKpCaZh9mubSO5RgbE9FmbjT2dMWKKrLKqRsxWjj2", // 5f73DeJ7X
             "role_id": "ROLE_ADMIN",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/305357600898285581/36f2f1e07a3b0e47a00880bb689e4d94?size=1024",
         },
@@ -26,7 +26,7 @@ const data = () => {
             "_id": new ObjectId('00000001cdc41c32293c296d'),
             "email": "pierre.bihannic@pixelart.com",
             "username": "pierrebhc",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$JSUwInZjYIPqYqONrZc3p.r.mlM8NNh4k2VbVjIlHQbCCwU1h6TGe",// 6c@&ye03
             "role_id": "ROLE_ADMIN",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/244503151921594378/9e0139f4088df4ef4b09dae828743e17?size=1024",
         },
@@ -34,7 +34,7 @@ const data = () => {
             "_id": new ObjectId('00000002cdc41c32293c296e'),
             "email": "mouctar.diallo@pixelart.com",
             "username": "mouctardlo",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$Hb2SrWVAS53DWP.aY2Fz7uN9qEW8Fh6XIhO4jns2RV/U9tvidLO3i",// 2c@eye43
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/689829928593653789/78efa94ac8b7aac9f018d1b30ab546a8?size=1024",
         },
@@ -42,7 +42,7 @@ const data = () => {
             "_id": new ObjectId('00000003cdc41c32293c296f'),
             "email": "yehoudi.vincent@pixelart.com",
             "username": "yehoudivct",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6",// PixelPass1!
+            "password": "$2b$10$nc3/FFfsZOPvg7M1pYmYWO3Sk1Vjr9qf8Qs0Kx/9NoyADZANtyG2K",// 62b@ez2F
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/992430319972139149/fe89566425b9db172bdc8b03f9ff45d2?size=1024",
         },
@@ -50,7 +50,7 @@ const data = () => {
             "_id": new ObjectId('00000004cdc41c32293c2970'),
             "email": "dounia.zoubid@pixelart.com",
             "username": "douniazbd",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "password": "$2b$10$e/cGbUMlJrLUd9PiixKJWezTPSv1dJf7iR.otxKRl/DljrpFs7lye", // 26x84f4@
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/1158381399410225163/fce46d6a6a8bb493a0a54f5a27b728d0?size=1024",
         },
@@ -58,17 +58,17 @@ const data = () => {
             "_id": new ObjectId('00000004cdc41c32293c2971'),
             "email": "hugo.mallet@univ-cotedazur.fr",
             "username": "hugomlt",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "password": "$2b$10$HSaajBoTUVwRJG4Fjw/PV.nmf3CFvPl3.jcQ1hqww6EkrqzZmamxG", // eRtB@E(9
             "role_id": "ROLE_USER",
-            "accountImageUrl": "",
+            "accountImageUrl": "https://support.discord.com/hc/user_images/l12c7vKVRCd-XLIdDkLUDg.png",
         },
         {
             "_id": new ObjectId('00000004cdc41c32293c2972'),
             "email": "francois.michaudon@univ-cotedazur.fr",
-            "username": "francoismch",
-            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "username": "francoism",
+            "password": "$2b$10$hUAsLlH6VmcjGjrhI93LYOhc7rULRn/j0SrzFD3lBcfnNNQbNaK..", // eR2BeE(9
             "role_id": "ROLE_USER",
-            "accountImageUrl": "",
+            "accountImageUrl": "https://cdn.discordapp.com/avatars/1027144593982115900/575b2478373af7fa8d4d6e4d753c1086?size=1024",
         },
     ]
 

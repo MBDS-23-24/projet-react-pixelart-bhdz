@@ -16,8 +16,8 @@ export default function Login() {
 
     const form = useForm({
         initialValues: {
-            email: "pierre.bihannic@pixelart.com",
-            password: "PixelPass1!",
+            email: "",
+            password: "",
         },
         validate: {
             email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
