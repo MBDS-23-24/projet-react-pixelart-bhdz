@@ -54,8 +54,6 @@ const TimerComponent = ({startTimer, thresholdInMs, callback}) => {
         <>
             {timeLeft <= thresholdInMs && timeLeft > 0 && (
                 <div className="countdown-timer">
-
-
                     <Progress.Root size="xl">
                         <Progress.Section value={100 - progress} >
                             <Progress.Label>
