@@ -6,7 +6,7 @@ import {loginUser} from "../../functions/backend_functions/user_backend_function
 import BackgroundIllustration from "./BackgroundIllustration.jsx";
 import './Login.scss';
 import {IconCheck, IconLock, IconMailFilled} from "@tabler/icons-react";
-import {Button, Modal, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
+import {Button, LoadingOverlay, Modal, Text, TextInput, Title, useMantineColorScheme} from "@mantine/core";
 import {notifications} from "@mantine/notifications";
 import {checkEmail, checkPassword} from "../utils/FormValidation.js";
 import Register from "../Register/Register.jsx";
@@ -31,8 +31,7 @@ export default function Login() {
         setShowRegisterModal(!showRegisterModal);
     };
 
-
-    const login = useMutation((user) => loginUser(user), {
+    const {isLoading, mutate: login} = useMutation((user) => loginUser(user), {
         onSuccess: (data) => {
             setTimeout(() => {
                     setUser(data);
@@ -49,11 +48,15 @@ export default function Login() {
     });
 
     const onSubmit = (data) => {
-        login.mutate(data);
+        login(data);
     }
 
     return (
         <div className={"login-container"}>
+            {isLoading && <LoadingOverlay
+                visible={true}
+                zIndex={1000}
+                overlayProps={{radius: "sm", blur: 2}}/>}
             <form onSubmit={form.onSubmit(onSubmit)} className="login">
                 <BackgroundIllustration/>
                 <div className={`card ${colorScheme === "light" ? "card-background-light" : "card-background-dark"}`}>
