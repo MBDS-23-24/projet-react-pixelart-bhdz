@@ -1,11 +1,39 @@
 .draw-container .color-range{
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 15px;
+  right: 30px;
 }
 
-.draw-container{
-  position: relative;
+.draw-grids {
+  .countdown-timer {
+    font-size: 1rem;
+    z-index: 99;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    text-align: center;
+    bottom: 50px;
+    opacity: 0.8;
+    align-items: center;
+    flex-direction: row !important;
+    position: fixed;
+    justify-content: center;
+    left: 50%;
+    transform: translate(-50%);
+    width: 80%;
+    -webkit-user-select: none; /* Pour les navigateurs basés sur WebKit */
+    -moz-user-select: none; /* Pour les navigateurs basés sur Gecko (Firefox) */
+    -ms-user-select: none; /* Pour Internet Explorer */
+    user-select: none; /* Syntaxe standard */
+  }
+}
+
+.mantine-Progress-root{
+  height: auto!important;
 }
 
 .draw-container nav {
@@ -15,10 +43,27 @@
 
 .content {
   overflow-x: auto;
+  position: relative;
 }
 
 canvas{
   position: absolute;
   left: 0px;
   top: 0;
+}
+
+.extra-info{
+  color: #7a7a7a;
+  position: fixed;
+  bottom: 15px;
+  left: 90px;
+
+  -webkit-user-select: none; /* Pour les navigateurs basés sur WebKit */
+  -moz-user-select: none; /* Pour les navigateurs basés sur Gecko (Firefox) */
+  -ms-user-select: none; /* Pour Internet Explorer */
+  user-select: none; /* Syntaxe standard */
+}
+
+#hovered-pixel-canvas{
+  opacity: 0.3;
 }

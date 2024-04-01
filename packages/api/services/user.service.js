@@ -26,6 +26,32 @@ export const userService = {
         return {user, accessToken};
     },
 
+    async registerUser(username, email, password, accountImageUrl) {
+        const existingUser = await prisma.user.findUnique({
+            where: { email: email },
+        });
+        if (existingUser) {
+            throw new BusinessError(409, 'User with this email already exists');
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+
+        const newUser = await prisma.user.create({
+            data: {
+                username: username,
+                email: email,
+                password: hash,
+                role: {
+                    connect: {
+                        id: "ROLE_USER"
+                    }
+                },
+                accountImageUrl: accountImageUrl,
+            },
+        });
+        return { user: newUser};
+    },
+
     async updateUserAccount(user, username, email, accountImageUrl) {
         return prisma.user.update({
             where: { email: user.email },

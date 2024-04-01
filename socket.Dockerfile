@@ -9,10 +9,9 @@ RUN yarn install
 COPY . .
 
 
-RUN cd packages/api
+RUN cd packages/socket
 RUN npm install
-#RUN yarn workspace api build
 
-EXPOSE 5010
+EXPOSE 3200
 
-CMD [ "npm", "run", "start:api" ]
+CMD [ "npm", "run", "start:socket" ]

@@ -49,9 +49,8 @@ class PixelBoard {
         const userFind = this.connectedUsers.find(u => u.id === user.id);
         if (userFind) {
             emitEvent(Room.pixelBoardPrivate(user.id, this.pixelBoardId), Event.GENERAL.ERROR, new SocketError(409, "Already in PixelBoard", "You are already connected to this pixel board"));
-            userFind.socket.disconnect();
+            this.leavePixelBoard(userFind);
         }
-
         joinRoom(user.socket, this.getRoom(), user.id);
         joinRoom(user.socket, Room.pixelBoardPrivate(user.id, this.pixelBoardId), user.id);
         this.connectedUsers.push(user);
@@ -86,7 +85,9 @@ class PixelBoard {
                 username,
                 accountImageUrl
             })));
+            user.socket.disconnect();
         }
+
     }
 
     startRecurrencePersitence(delayMs) {
@@ -140,18 +141,17 @@ class PixelBoard {
 
 const app = express();
 const corsOptions = {
-    origin: "http://localhost",
+    origin: true,
     credentials: true,
 }
 app.use(cors(corsOptions));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.SOCKET_FRONT_URL,
+        origin: true,
         credentials: true
     }
 });
-
 
 function emitEvent(room, event, data) {
     logRoom(room, `Emit '${event}' with data: ${JSON.stringify(data)}`);

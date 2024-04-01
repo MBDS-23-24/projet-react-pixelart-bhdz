@@ -1,10 +1,8 @@
-import {useRef, useState, useEffect} from 'react';
+import {forwardRef, useRef, useState, useEffect, useImperativeHandle} from 'react';
 
-
-
-export default function HoveredPixel({
-                                  width, height, pixelSize, currentHoveredPixel
-                              }) {
+const HoveredPixel = forwardRef(({
+                                     width, height, pixelSize,
+                                 }, ref) => {
 
     const canvasRef = useRef();
     const [ctx, setCtx] = useState(null);
@@ -12,19 +10,17 @@ export default function HoveredPixel({
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
 
+    useImperativeHandle(ref, () => ({
+        drawHoveredPixel: drawHoveredPixel
+    }));
 
     useEffect(() => {
-        if (canvasRef) {
+        if (canvasRef.current) {
             setCtx(canvasRef.current.getContext('2d'));
         }
-    }, [canvasRef]);
+    }, []);
 
-    useEffect(() => {
-        drawHoveredPixel();
-    }, [currentHoveredPixel]);
-
-
-    function drawHoveredPixel() {
+    function drawHoveredPixel(currentHoveredPixel) {
         if (ctx && currentHoveredPixel) {
             ctx.clearRect(0, 0, realWidth, realHeight);
             ctx.fillStyle = currentHoveredPixel.color;
@@ -32,13 +28,16 @@ export default function HoveredPixel({
         }
     }
 
-
     return (
-            <canvas
-                ref={canvasRef}
-                width={realWidth}
-                height={realHeight}
-            ></canvas>
-
+        <canvas
+            id={'hovered-pixel-canvas'}
+            ref={canvasRef}
+            width={realWidth}
+            height={realHeight}
+        ></canvas>
     );
-}
+});
+
+HoveredPixel.displayName = 'HoveredPixel';
+
+export default HoveredPixel;
