@@ -5,9 +5,8 @@ import {notifications} from "@mantine/notifications";
 import { DateTimePicker } from '@mantine/dates';
 import {addPixelBoard, updatePixelBoard} from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {useMutation} from "react-query";
-import {updateUser} from "../../functions/backend_functions/user_backend_functions.js";
 
-export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, formType, refreshPixels, formInfo}) {
+export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, formType, refreshPixels}) {
     const pixelSelected = pixelBoard;
 
     const form = useForm({
@@ -27,13 +26,12 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 return undefined;
             },
             startDate: (value) => {
-                if (pixelSelected) return undefined;
                 if (!value || value === "") return "Start date is required";
                 if (value < new Date()) return "Start date must be in the future";
+                if (value > form.values.endDate) return "Start date must be before end date";
                 return undefined;
             },
             endDate: (value) => {
-                if (pixelSelected) return undefined;
                 if (!value || value === "") return "End date is required";
                 if (value < new Date()) return "End date must be in the future";
                 if (value < form.values.startDate) return "End date must be after start date";
@@ -68,7 +66,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
             console.log(error);
             notifications.show({
                 title: 'Error',
-                message: 'User has not been updated',
+                message: 'Pixelboard has not been updated',
                 color: 'red',
                 icon: null,
             });
@@ -90,7 +88,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
             console.log(error);
             notifications.show({
                 title: 'Error',
-                message: 'User has not been updated',
+                message: 'Pixelboard has not been updated',
                 color: 'red',
                 icon: null,
             });
@@ -99,7 +97,8 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
 
     const onSubmit = (event) => {
         event.preventDefault();
-        if (form.isValid) {
+        const {errors} = form.validate();
+        if (Object.keys(errors).length === 0) {
             const modelPixel = {
                 title: form.values.title,
                 delayMs : form.values.delayMs,

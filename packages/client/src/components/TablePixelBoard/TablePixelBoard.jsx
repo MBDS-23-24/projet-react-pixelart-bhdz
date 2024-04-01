@@ -158,7 +158,7 @@ export default function TablePixelBoard() {
                         modals.open({
                             title: "Form to update Pixel Board",
                             labels: { confirm: "Save", cancel: "Cancel" },
-                            children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} pixelBoard={row} formType={"update"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel Board updated successfully"}}/>,
+                            children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} pixelBoard={row} formType={"update"} />,
                             withCloseButton: false,
                         })
                     } style={{paddingLeft: 20, paddingRight: 20}} >Update</Button>
@@ -185,7 +185,7 @@ export default function TablePixelBoard() {
                 <Button className={"btn-add"} rightSection={<IconPlus size={20} />} onClick={() => modals.open({
                     title: "Form to add Pixel Board",
                     labels: { confirm: "Save", cancel: "Cancel" },
-                    children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} formType={"add"} formInfo={{notifyTitle: "Update Pixel Board", notifyMessage: "Pixel added successfully"}} pixelBoard={undefined}/>,
+                    children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} formType={"add"} pixelBoard={undefined}/>,
                     withCloseButton: false,
                 })
                 } >Add Pixel Board</Button>

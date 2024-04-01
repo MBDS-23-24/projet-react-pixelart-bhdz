@@ -186,6 +186,12 @@ const pixelBoardService = {
         });
     },
     async addPixelBoard(receivedPixel) {
+        receivedPixel.creator = {
+            connect: {
+                id: receivedPixel.creatorId
+            }
+        }
+        delete receivedPixel.creatorId;
         return prisma.pixelBoard.create({
             data: receivedPixel
         });

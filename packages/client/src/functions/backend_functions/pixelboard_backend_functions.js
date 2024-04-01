@@ -34,7 +34,7 @@ export const addPixelBoard = async (pixelBoardToAdd) => {
     const pixelBoard = {
         pixelBoard: pixelBoardToAdd
     }
-    return (await post(`${PIXELBOARD}/create`, pixelBoard)).then(res => {
+    return post(`${PIXELBOARD}/create`, pixelBoard).then(res => {
         return res.data;
     })
 }
