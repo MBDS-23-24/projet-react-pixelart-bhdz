@@ -54,6 +54,22 @@ const data = () => {
             "role_id": "ROLE_USER",
             "accountImageUrl": "https://cdn.discordapp.com/avatars/1158381399410225163/fce46d6a6a8bb493a0a54f5a27b728d0?size=1024",
         },
+        {
+            "_id": new ObjectId('00000004cdc41c32293c2971'),
+            "email": "hugo.mallet@univ-cotedazur.fr",
+            "username": "hugomlt",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "",
+        },
+        {
+            "_id": new ObjectId('00000004cdc41c32293c2972'),
+            "email": "francois.michaudon@univ-cotedazur.fr",
+            "username": "francoismch",
+            "password": "$2b$10$svRAD3ySqW1HmTqhS3kxteHaKc3UlmSW5uvlGIIdH6tvntYZdOze6", // PixelPass1!
+            "role_id": "ROLE_USER",
+            "accountImageUrl": "",
+        },
     ]
 
     const roles = [
@@ -65,10 +81,10 @@ const data = () => {
     const pixel_boards = [
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a1'),
-            "title": "Example Test 1",
+            "title": "Fun Pixel Art",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -2),
-            "start_date": adjustDate(new Date(), 0, 0, 1),
+            "start_date": adjustDate(new Date(), 0, 0, -1),
             "end_date": adjustDate(new Date(), 0, 0, 5),
             "delay_ms": 15000,
             "pixel_width": 500,
@@ -77,26 +93,62 @@ const data = () => {
         },
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a2'),
-            "title": "Example Test 2",
+            "title": "Animals for all",
             "creator_id": users[1]["_id"],
             "date_created": adjustDate(new Date(), -30, 0, 0),
             "start_date": adjustDate(new Date(), 15, 0, 1),
             "end_date": adjustDate(new Date(), 0, 0, 7),
-            "delay_ms": 1000,
+            "delay_ms": 3000,
             "pixel_width": 300,
             "pixel_height": 200,
             "is_pixel_overwrite": true
         },
         {
             "_id": new ObjectId('0000000024239c0fe5ab43a3'),
-            "title": "Example Test 3",
+            "title": "Pixel wars !",
             "creator_id": users[0]["_id"],
             "date_created": adjustDate(new Date(), 0, 0, -3),
             "start_date": adjustDate(new Date(), 0, 0, 2),
             "end_date": adjustDate(new Date(), 0, 0, 5),
-            "delay_ms": 1000,
-            "pixel_width": 500,
+            "delay_ms": 5000,
+            "pixel_width": 400,
+            "pixel_height": 400,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a4'),
+            "title": "Everyone's drawing",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 0, -2),
+            "start_date": adjustDate(new Date(), 30, 0, 0),
+            "end_date": adjustDate(new Date(), 0, 0, 5),
+            "delay_ms": 5000,
+            "pixel_width": 300,
+            "pixel_height": 300,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a5'),
+            "title": "Countries battle !",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 1, -1),
+            "start_date": adjustDate(new Date(), 0, 0, -1),
+            "end_date": adjustDate(new Date(), 0, 0, 5),
+            "delay_ms": 5000,
+            "pixel_width": 200,
             "pixel_height": 500,
+            "is_pixel_overwrite": false
+        },
+        {
+            "_id": new ObjectId('0000000024239c0fe5ab43a6'),
+            "title": "Countries battle !",
+            "creator_id": users[0]["_id"],
+            "date_created": adjustDate(new Date(), 0, 1, -12),
+            "start_date": adjustDate(new Date(), 0, 0, -10),
+            "end_date": adjustDate(new Date(), 0, 0, -5),
+            "delay_ms": 5000,
+            "pixel_width": 300,
+            "pixel_height": 200,
             "is_pixel_overwrite": false
         },
     ]
@@ -107,8 +159,18 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 0, "hexa_color": "#000000", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 14, "hexa_color": "#b01a1a", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 0,
+                    "hexa_color": "#000000",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 14,
+                    "hexa_color": "#b01a1a",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -116,8 +178,18 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#67218f",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 8,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -125,8 +197,18 @@ const data = () => {
             "position": 2,
             pixel_board_id: pixel_boards[0]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#b7632c", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 10, "hexa_color": "#1f9f9d", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#b7632c",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 10,
+                    "hexa_color": "#1f9f9d",
+                    "owner_id": users[2]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         },
         {
@@ -134,9 +216,24 @@ const data = () => {
             "position": 0,
             pixel_board_id: pixel_boards[1]["_id"],
             "pixels": [
-                {"position": 2, "hexa_color": "#67218f", "owner_id": users[0]["_id"], "last_update": adjustDate(new Date(), 0, 0, -2)},
-                {"position": 8, "hexa_color": "#38bb4f", "owner_id": users[1]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
-                {"position": 6, "hexa_color": "#38bb4f", "owner_id": users[2]["_id"], "last_update": adjustDate(new Date(), 0, 0, -1)},
+                {
+                    "position": 2,
+                    "hexa_color": "#67218f",
+                    "owner_id": users[0]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -2)
+                },
+                {
+                    "position": 8,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[1]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
+                {
+                    "position": 6,
+                    "hexa_color": "#38bb4f",
+                    "owner_id": users[2]["_id"],
+                    "last_update": adjustDate(new Date(), 0, 0, -1)
+                },
             ]
         }
 

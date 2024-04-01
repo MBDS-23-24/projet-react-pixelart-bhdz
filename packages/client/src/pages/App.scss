@@ -2,7 +2,8 @@
   text-align: center;
 }
 
-.content {
+main.content {
   width: calc(100% - 80px);
   float: right;
+  overflow: auto;
 }

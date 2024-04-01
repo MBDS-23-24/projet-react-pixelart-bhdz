@@ -9,13 +9,13 @@ import {
     getPixelsByPixelBoardId
 } from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {AppStatus} from "../../utils/AppStatus.js";
-import {LoadingOverlay, useMantineColorScheme} from "@mantine/core";
+import {Badge, LoadingOverlay, rem, Title, useMantineColorScheme} from "@mantine/core";
 import Pixels from "../../components/PixelBoard/Pixels.jsx";
 import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
 import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
 import {notifications} from "@mantine/notifications";
-import {IconUser} from "@tabler/icons-react";
+import {IconCloudLock, IconCloudShare, IconUser} from "@tabler/icons-react";
 import {decryptUser} from "../../provider/UserContext.jsx";
 import TimerComponent from "../../components/TimerComponent/TimerComponent.jsx";
 
@@ -51,8 +51,10 @@ export class Pixel {
 
 class PixelBoardStatus {
     static INITIAL = "INITIAL";
-    static CONNECTED = "JOINED";
     static ALREADY_CONNECTED = "ALREADY_CONNECTED";
+    static NOT_OPENED = "NOT_OPENED";
+    static OPENED = "OPENED";
+    static CLOSED = "CLOSED";
 }
 
 export default function PixelBoard() {
@@ -62,6 +64,7 @@ export default function PixelBoard() {
     const [selectedColor, setSelectedColor] = useState('#000000');
     const [pixelBoard, setPixelBoard] = useState(null);
     const [fetchPixelBoardStatus, setFetchPixelBoardStatus] = useState(AppStatus.INITIAL);
+    const [socketStatus, setSocketStatus] = useState(AppStatus.LOADING);
     const [savedPixels, setSavedPixels] = useState([]);
     const [lastDrawedPixel, setLastDrawedPixel] = useState(null);
     const [lastTimeDrawn, setLastTimeDrawn] = useState(null);
@@ -79,6 +82,20 @@ export default function PixelBoard() {
             setLastDrawedPixel(pixel);
         }
     };
+
+
+    useEffect(() => {
+        if (pixelBoard) {
+            const now = new Date();
+            if (now > new Date(pixelBoard.endDate)) {
+                setGlobalPixelBoardStatus(PixelBoardStatus.CLOSED);
+            } else if (now < new Date(pixelBoard.startDate)) {
+                setGlobalPixelBoardStatus(PixelBoardStatus.NOT_OPENED);
+            } else {
+                setGlobalPixelBoardStatus(PixelBoardStatus.OPENED);
+            }
+        }
+    }, [pixelBoard]);
 
     useEffect(() => {
         if (lastDrawedPixel) {
@@ -99,6 +116,24 @@ export default function PixelBoard() {
                 color: "orange",
                 icon: <IconUser size={24}/>,
             })
+        } else if (globalPixelBoardStatus === PixelBoardStatus.OPENED) {
+            setLastTimeDrawn(PixelBoardsStorage.get(id)?.lastTimeDrawn || null);
+            setSelectedColor(PixelBoardsStorage.get(id)?.lastSelectedColor || '#000000');
+            setSocketStatus(AppStatus.LOADING)
+            pixelSocket.connect();
+            listenJoinedUsers();
+            listenSocketError();
+            fetchNoPersistedPixel();
+            fetchPixelsData();
+
+            pixelSocket.onDisconnect(() => {
+                navigate("/");
+            });
+
+            setTimeout(() => {
+                joinPixelBoard();
+            }, 2000);
+
         }
     }, [globalPixelBoardStatus])
 
@@ -122,30 +157,14 @@ export default function PixelBoard() {
 
             const user = decryptUser();
             if (newUserJoined?.id === user.id) {
-                setGlobalPixelBoardStatus(PixelBoardStatus.CONNECTED);
+                setSocketStatus(AppStatus.SUCCESS);
             }
         }
         lastNbUserConnected.current = connectedUsers.length;
     }, [connectedUsers]);
 
     useEffect(() => {
-        setLastTimeDrawn(PixelBoardsStorage.get(id)?.lastTimeDrawn || null);
-        setSelectedColor(PixelBoardsStorage.get(id)?.lastSelectedColor || '#000000');
-        pixelSocket.connect();
-        listenJoinedUsers();
-        listenSocketError();
-        fetchNoPersistedPixel();
-        fetchPixelsData();
         fetchPixelBoard();
-
-        pixelSocket.onDisconnect(() => {
-            navigate("/");
-        });
-
-        setTimeout(() => {
-            joinPixelBoard();
-        }, 2000);
-
 
         return () => {
             pixelSocket.disconnect();
@@ -254,58 +273,114 @@ export default function PixelBoard() {
         pixelSocket.emit(socketActions.JOIN_PIXEL_BOARD, {pixelBoardId: id})
     }
 
+    let body = null
+
+    if (globalPixelBoardStatus === PixelBoardStatus.CLOSED) {
+        body = <>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                <div>
+
+                    <IconCloudLock style={{width: rem(80), height: rem(80)}}
+                                       stroke={1.5}/>
+                    <Title order={1}> {pixelBoard.title} </Title>
+
+                    <Badge
+                        style={{marginTop: rem(20)}}
+                        size="xl"
+                        variant="gradient"
+                        gradient={{from: 'pink', to: 'red', deg: 90}}
+                    >
+
+                        The pixel board is closed until the {new Date(pixelBoard.endDate).toLocaleString()}
+                    </Badge>
+                </div>
+
+            </div>
+
+        </>
+
+    } else if (globalPixelBoardStatus === PixelBoardStatus.NOT_OPENED) {
+        body = <>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh'}}>
+                <div>
+
+                    <IconCloudShare style={{width: rem(80), height: rem(80)}}
+                                       stroke={1.5}/>
+                    <Title order={1}> {pixelBoard.title} </Title>
+
+                    <Badge
+                        style={{marginTop: rem(20)}}
+                        size="xl"
+                        variant="gradient"
+                        gradient={{ from: 'teal', to: 'lime', deg: 90 }}
+                    >
+
+                        The pixel board will be open soon : {new Date(pixelBoard.startDate).toLocaleString()}
+                    </Badge>
+                </div>
+
+            </div>
+        </>
+    } else if (fetchPixelBoardStatus === AppStatus.LOADING || socketStatus === AppStatus.LOADING) {
+        body = <LoadingOverlay
+            visible={true}
+            zIndex={1000}
+            overlayProps={{radius: "sm", blur: 2}}/>
+    } else if (globalPixelBoardStatus === PixelBoardStatus.OPENED) {
+        body = <>
+            <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>
+
+            <div className={"draw-container"}>
+                <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>
+                    <Pixels
+                        ref={pixelsComponentRef}
+                        initPixel={savedPixels} onNewPixelAdded={listenPixelAdded}
+                        width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                        pixelColor={selectedColor}
+                        pixelSize={pixelSize}
+                    />
+
+                    {canDraw === true && (
+                        <HoveredPixel
+                            ref={hoveredPixelRef}
+                            width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                            pixelSize={pixelSize}
+                        />
+                    )}
+
+                    <Grids
+                        width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                        pixelSize={pixelSize}
+                    />
+
+                    <PixelAnimation
+                        width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
+                        pixelSize={pixelSize}
+                        currentDrawedPixel={lastDrawedPixel}
+                    />
+
+                    <TimerComponent callback={() => {
+                        setCanDraw(true);
+                    }} startTimer={lastTimeDrawn}
+                                    thresholdInMs={pixelBoard.delayMs}></TimerComponent>
+
+
+                </div>
+                <ColorsRange onSelectColor={changeSelectedColor}/>
+
+                <div className={'extra-info'}>
+                    <small>
+                        {pixelBoard.pixelWidth}x{pixelBoard.pixelHeight} - {pixelBoard.isPixelOverwrite ? "Overwrite allowed" : "Overwrite not allowed"}
+                    </small>
+                </div>
+            </div>
+        </>
+    }
 
     return (
         <>
             <div className={"pixel-board"} data-theme={(colorScheme === "dark").toString()}>
-                <LoadingOverlay
-                    visible={fetchPixelBoardStatus === AppStatus.LOADING || globalPixelBoardStatus !== PixelBoardStatus.CONNECTED}
-                    zIndex={1000}
-                    overlayProps={{radius: "sm", blur: 2}}/>
-                {fetchPixelBoardStatus === AppStatus.SUCCESS &&
-                    <PixelBoardMenu connectedUsers={connectedUsers} pixelBoard={pixelBoard}/>}
-                {fetchPixelBoardStatus === AppStatus.SUCCESS && (
-                    <div className={"draw-container"}>
-                        <div className={"draw-grids"} onClick={handleMouseClick} onMouseMove={handleMouseMove}>
-
-                            <Pixels
-                                ref={pixelsComponentRef}
-                                initPixel={savedPixels} onNewPixelAdded={listenPixelAdded}
-                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                pixelColor={selectedColor}
-                                pixelSize={pixelSize}
-                            />
-
-                            {canDraw === true && (
-                                <HoveredPixel
-                                    ref={hoveredPixelRef}
-                                    width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                    pixelSize={pixelSize}
-                                />
-                            )}
-
-                            <Grids
-                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                pixelSize={pixelSize}
-                            />
-
-                            <PixelAnimation
-                                width={pixelBoard.pixelWidth} height={pixelBoard.pixelHeight}
-                                pixelSize={pixelSize}
-                                currentDrawedPixel={lastDrawedPixel}
-                            />
-
-                            <TimerComponent callback={() => {
-                                setCanDraw(true);
-                            }} startTimer={lastTimeDrawn}
-                                            thresholdInMs={ pixelBoard.delayMs }></TimerComponent>
-
-
-                        </div>
-                        <ColorsRange onSelectColor={changeSelectedColor}/>
-                    </div>
-                )}
-
+                {body}
             </div>
         </>
     )

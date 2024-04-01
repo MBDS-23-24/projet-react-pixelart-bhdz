@@ -1,17 +1,16 @@
 .menu-pixelboard {
-  top: 20px;
-  display: flex;
+  top: 10px;
   align-items: center;
   flex-direction: row !important;
   padding: 5px 10px;
   background: transparent;
-  position: absolute;
+  position: fixed;
   justify-content: center;
   z-index: 99;
   left: 50%;
   transform: translate(-50%);
 
-  .menu{
+  .menu {
     display: flex;
     align-items: center;
     flex-direction: row;
