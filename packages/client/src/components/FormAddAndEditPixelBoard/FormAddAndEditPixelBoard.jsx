@@ -14,7 +14,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
             title: pixelSelected ? pixelSelected.title : null,
             startDate: pixelSelected ? new Date(pixelSelected.startDate) : null,
             endDate: pixelSelected ? new Date(pixelSelected.endDate) : null,
-            delayMs: pixelSelected ? pixelSelected.pixelHeight : null,
+            delayMs: pixelSelected ? pixelSelected.delayMs : null,
             pixelWidth: pixelSelected ? pixelSelected.pixelWidth : null,
             pixelHeight: pixelSelected ? pixelSelected.pixelHeight : null,
             isPixelOverwrite: pixelSelected ? pixelSelected.isPixelOverwrite : false,
@@ -99,6 +99,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
         event.preventDefault();
         const {errors} = form.validate();
         if (Object.keys(errors).length === 0) {
+
             const modelPixel = {
                 title: form.values.title,
                 delayMs : form.values.delayMs,
@@ -110,6 +111,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 dateCreated: new Date().toISOString(),
                 creatorId: user.id,
             }
+            console.log(modelPixel)
            if (formType === "update"){
                modelPixel.id = pixelSelected.id;
                editPixelboard.mutate(modelPixel)
@@ -127,7 +129,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 <TextInput label="Title" placeholder="Title" {...form.getInputProps("title")} />
                 <NumberInput
                     mt="sm"
-                    label="Delay"
+                    label="Delay (ms) between two participation"
                     placeholder="Delay in milliseconds"
                     min={0}
                     max={2000}
@@ -135,7 +137,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 />
                 <NumberInput
                     mt="sm"
-                    label="Width"
+                    label="Pixel Width"
                     placeholder="Width"
                     min={0}
                     max={500}
@@ -143,7 +145,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 />
                 <NumberInput
                     mt="sm"
-                    label="Height"
+                    label="Pixel Height"
                     placeholder="Height"
                     min={0}
                     max={500}
@@ -155,12 +157,12 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                     {...form.getInputProps("startDate")}
                 />
                 <DateTimePicker
-                    label="endDate"
+                    label="End date"
                     placeholder="End date"
                     {...form.getInputProps("endDate")}
                 />
                 <Checkbox
-                    label="Overwrite"
+                    label="User can override existing pixel ?"
                     {...form.getInputProps("isPixelOverwrite", { type: "checkbox" })}
                     style={{ marginTop: 10, marginBottom: 10 }}
                 />
@@ -170,7 +172,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                         Cancel
                     </Button>
                     <Button rightSection={<IconCheck size={20} />} type="submit">
-                        Save
+                        {formType === "update" ? "Save" : "Add"}
                     </Button>
                 </div>
             </form>
