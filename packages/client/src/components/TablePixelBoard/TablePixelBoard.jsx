@@ -1,4 +1,4 @@
-import {Flex, ScrollArea, Space, Title} from "@mantine/core";
+import {Checkbox, Flex, ScrollArea, Space, Title} from "@mantine/core";
 import {
     Button,
     Center,
@@ -153,6 +153,13 @@ export default function TablePixelBoard() {
             <Table.Td>{row.pixelWidth}</Table.Td>
             <Table.Td>{row.pixelHeight}</Table.Td>
             <Table.Td>
+                <Checkbox
+                    checked={row.isPixelOverwrite}
+                    color={"blue"}
+                    style={{ display: "flex", justifyContent: "center"}}
+                />
+            </Table.Td>
+            <Table.Td>
                 <div style={{display: "flex", alignItems: "center", justifyContent: 'center', padding: 10, gap:'20px'}}>
                     <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={() =>
                         modals.open({
@@ -221,6 +228,9 @@ export default function TablePixelBoard() {
                             </Table.Th>
                             <Table.Th>
                                 Height
+                            </Table.Th>
+                            <Table.Th>
+                                Override pixel
                             </Table.Th>
                             <Table.Th>
                                 Actions
