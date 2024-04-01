@@ -16,7 +16,7 @@ function Register({ onClose }) {
             accountImageUrl: '',
         },
         validate: {
-            username: (value) => (checkUsername(value) ? null : 'Username must be at least 6 characters'),
+            username: (value) => (checkUsername(value) ? null : 'Username must be at least 10 characters'),
             email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
             password: (value) => (checkPassword(value) ? null : 'Password must be at least 4 characters'),
         }
