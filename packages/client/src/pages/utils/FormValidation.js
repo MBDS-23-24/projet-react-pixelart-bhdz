@@ -8,5 +8,5 @@ export function checkPassword(password) {
 }
 
 export function checkUsername(username) {
-    return username.length >= 10;
+    return username.length <= 10;
 }

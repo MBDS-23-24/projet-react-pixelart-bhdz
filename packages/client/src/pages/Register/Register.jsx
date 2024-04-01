@@ -16,9 +16,32 @@ function Register({ onClose }) {
             accountImageUrl: '',
         },
         validate: {
-            username: (value) => (checkUsername(value) ? null : 'Username must be at least 10 characters'),
-            email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
-            password: (value) => (checkPassword(value) ? null : 'Password must be at least 4 characters'),
+            username: (value) => {
+                if (!value.trim()) {
+                    return 'Username cannot be empty';
+                } else if ((!checkUsername(value))) {
+                    return 'Username must be at least 10 characters';
+                } else if (/\s/.test(value)) {
+                    return 'Username cannot contain spaces';
+                }
+                return null;
+            },
+            email: (value) => {
+                if (!value.trim()) {
+                    return 'Email cannot be empty';
+                } else if (!checkEmail(value)) {
+                    return 'Invalid email address';
+                }
+                return null;
+            },
+            password: (value) => {
+                if (!value.trim()) {
+                    return 'Password cannot be empty';
+                } else if (!checkPassword(value)) {
+                    return 'Password must be at least 4 characters';
+                }
+                return null;
+            },
         }
     });
 
