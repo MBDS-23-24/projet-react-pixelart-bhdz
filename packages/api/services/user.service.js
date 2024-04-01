@@ -116,14 +116,11 @@ export const userService = {
 
         return usersMap;
     },
-    async getUsersByListUserId(listUserId) {
+
+    async getAllBasicsUsersInfos() {
         return prisma.user.findMany({
-            where: {
-                id: {
-                    in: listUserId
-                }
-            },
             select: {
+                id: true,
                 username: true,
                 accountImageUrl: true
             }
