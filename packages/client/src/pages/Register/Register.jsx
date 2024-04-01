@@ -16,9 +16,9 @@ function Register({ onClose }) {
             accountImageUrl: '',
         },
         validate: {
-            username: (value) => (checkUsername(value) ? null : 'Username is required'),
+            username: (value) => (checkUsername(value) ? null : 'Username must be at least 6 characters'),
             email: (value) => (checkEmail(value) ? null : 'Invalid email address'),
-            password: (value) => (checkPassword(value) ? null : 'Password is too short'),
+            password: (value) => (checkPassword(value) ? null : 'Password must be at least 4 characters'),
         }
     });
 
@@ -32,14 +32,6 @@ function Register({ onClose }) {
             });
             onClose();
         },
-        onError: (error) => {
-            console.error('Registration failed:', error);
-            notifications.show({
-                title: 'Registration failed',
-                message: 'An error occurred during registration. Please try again later.',
-                color: 'red',
-            });
-        }
     });
 
     const handleRegisterSubmit = (userData) => {
