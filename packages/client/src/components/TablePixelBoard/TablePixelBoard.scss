@@ -31,6 +31,12 @@
   padding: 0;
 }
 
+.table-pixelboard{
+  th {
+    text-align: center;
+  }
+}
+
 .control {
   width: 100%;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);

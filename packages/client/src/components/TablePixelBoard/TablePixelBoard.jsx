@@ -25,6 +25,7 @@ import {
 import {notifications} from "@mantine/notifications";
 import FormAddAndEditPixelBoard from "../FormAddAndEditPixelBoard/FormAddAndEditPixelBoard.jsx";
 import {UserContext} from "../../provider/UserContext.jsx";
+import {formatedDateTime} from "../../pages/utils/Utils.js";
 
 function Th({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -75,7 +76,7 @@ export default function TablePixelBoard() {
         delelePixelBoard(id)
             .then(() => {
                 notifications.show({
-                    title: "Deletion",
+                    title: "Successfully deleted",
                     message: `The pixel board is deleted`,
                     color: "green",
                     icon: <IconCheck size={24} />,
@@ -148,10 +149,10 @@ export default function TablePixelBoard() {
     const rows = sortedData.map((row, index) => (
         <Table.Tr key={index}>
             <Table.Td>{row.title}</Table.Td>
-            <Table.Td>{new Date(row.startDate).toLocaleDateString()}</Table.Td>
-            <Table.Td>{new Date(row.endDate).toLocaleDateString()}</Table.Td>
-            <Table.Td>{row.pixelWidth}</Table.Td>
-            <Table.Td>{row.pixelHeight}</Table.Td>
+            <Table.Td>{formatedDateTime(new Date(row.startDate))}</Table.Td>
+            <Table.Td>{formatedDateTime(new Date(row.endDate))}</Table.Td>
+            <Table.Td>{row.pixelWidth} pixel(s)</Table.Td>
+            <Table.Td>{row.pixelHeight} pixel(s)</Table.Td>
             <Table.Td>
                 <Checkbox
                     checked={row.isPixelOverwrite}
@@ -197,62 +198,63 @@ export default function TablePixelBoard() {
                 })
                 } >Add Pixel Board</Button>
             </Group>
-            <ScrollArea h={400}>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', paddingTop: 15}}>
-                <Table horizontalSpacing="md" verticalSpacing="xs" miw={400} stickyHeader>
-                    <Table.Thead>
-                        <Table.Tr>
-                            <Th
-                                sorted={sortBy === 'title'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('title')}
-                            >
-                                Title
-                            </Th>
-                            <Th
-                                sorted={sortBy === 'startDate'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('startDate')}
-                            >
-                                Start Date
-                            </Th>
-                            <Th
-                                sorted={sortBy === 'endDate'}
-                                reversed={reverseSortDirection}
-                                onSort={() => setSorting('endDate')}
-                            >
-                                End Date
-                            </Th>
-                            <Table.Th>
-                                Width
-                            </Table.Th>
-                            <Table.Th>
-                                Height
-                            </Table.Th>
-                            <Table.Th>
-                                Override pixel
-                            </Table.Th>
-                            <Table.Th>
-                                Actions
-                            </Table.Th>
-                        </Table.Tr>
-                    </Table.Thead>
-                    <Table.Tbody>
-                        {rows.length > 0 ? (
-                            rows
-                        ) : (
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: 15}}>
+                <ScrollArea h={400} w={"100%"}>
+                    <Table horizontalSpacing="md" verticalSpacing="xs" miw={400} stickyHeader className={"table-pixelboard"}>
+                        <Table.Thead>
                             <Table.Tr>
-                                <Table.Td>
-                                    <Text fw={500} ta="center">
-                                        Nothing found
-                                    </Text>
-                                </Table.Td>
+                                <Th
+                                    sorted={sortBy === 'title'}
+                                    reversed={reverseSortDirection}
+                                    onSort={() => setSorting('title')}
+                                >
+                                    Title
+                                </Th>
+                                <Th
+                                    sorted={sortBy === 'startDate'}
+                                    reversed={reverseSortDirection}
+                                    onSort={() => setSorting('startDate')}
+                                >
+                                    Start Date
+                                </Th>
+                                <Th
+                                    sorted={sortBy === 'endDate'}
+                                    reversed={reverseSortDirection}
+                                    onSort={() => setSorting('endDate')}
+                                >
+                                    End Date
+                                </Th>
+                                <Table.Th>
+                                    Width
+                                </Table.Th>
+                                <Table.Th>
+                                    Height
+                                </Table.Th>
+                                <Table.Th>
+                                    Override pixel
+                                </Table.Th>
+                                <Table.Th>
+                                    Actions
+                                </Table.Th>
                             </Table.Tr>
-                        )}
-                    </Table.Tbody>
-                </Table>
+                        </Table.Thead>
+                        <Table.Tbody>
+                            {rows.length > 0 ? (
+                                rows
+                            ) : (
+                                <Table.Tr>
+                                    <Table.Td>
+                                        <Text fw={500} ta="center">
+                                            Nothing found
+                                        </Text>
+                                    </Table.Td>
+                                </Table.Tr>
+                            )}
+                        </Table.Tbody>
+                    </Table>
+                </ScrollArea>
             </div>
-            </ScrollArea>
+
         </div>
     </>
 }

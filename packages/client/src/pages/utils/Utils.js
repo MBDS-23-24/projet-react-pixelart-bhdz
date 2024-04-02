@@ -32,6 +32,11 @@ export function getElapsedTime(date) {
     return Math.floor((now - target) )
 }
 
+export function formatedDateTime(date) {
+    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+    return new Date(date).toLocaleDateString(undefined, options);
+}
+
 export function sortArrayByDate(array) {
     return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }
