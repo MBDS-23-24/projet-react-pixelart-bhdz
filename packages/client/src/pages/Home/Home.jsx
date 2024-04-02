@@ -40,7 +40,7 @@ function Home() {
             <h2>Pixel Board enjoy drawing</h2>
             <div className={"card-info"}>
                 {!isLoadingNumberRegist && dataNumberRegist && <Card shadow="xs" padding="md">
-                    <Text align={"center"}>Number of registrant(s)</Text>
+                    <Text align={"center"}>Number of registrations</Text>
                     <Title align={"center"}>{dataNumberRegist}</Title>
                 </Card>}
                 {pixelBoards && <Card shadow="xs" padding="md">
@@ -52,9 +52,6 @@ function Home() {
                 <TextInput size="md" className={"search"} placeholder="Search Board Name"
                            rightSection={<IconSearch size={20}/>}
                            onChange={onSearchBoard}/>
-                <Card shadow="xs" padding="xs">
-                    <Text align={"center"}>results : {pixelBoardsFiltered.length}</Text>
-                </Card>
             </div>
             <ListCardsPixelBoard pixelboards={pixelBoardsFiltered} navigateToBoard={navigateToBoard}/>
         </div>

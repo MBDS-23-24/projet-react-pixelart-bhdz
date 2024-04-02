@@ -25,7 +25,7 @@ export default function TimerCountDown({ state="Online", endDate }) {
                         countdownText = 'More than 30 days...';
                     } else {
                         if (state === "Coming soon") countdownText += 'Starts in ';
-                        if (state === "Online") countdownText += 'Closed in ';
+                        if (state === "Online") countdownText += 'Will be closed in ';
                         if (days !== 0) countdownText += `${days}d `;
                         if (hours !== 0) countdownText += `${hours}h `;
                         if (minutes !== 0 || countdownText === '') countdownText += `${minutes}m `;
