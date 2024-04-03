@@ -59,14 +59,14 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                     </Group>
                     <Group justify="space-between" mt="md" mb="xs">
                         <Text fw={500}>Participants: </Text>
-                        {pixelBoard.participants.length > 0 ? <NestedUsersAvatar users={pixelBoard.participants} /> : "None"}
+                        {pixelBoard.participants.length > 0 ? <NestedUsersAvatar maxAvatarDisplayed={5} users={pixelBoard.participants} /> : "None"}
                     </Group>
                     <Divider />
                     <Space mt="md" />
                     <Group justify="space-between">
                         <Text>Size : [{pixelBoard.pixelWidth}, {pixelBoard.pixelHeight}]</Text>
                         <Text>Delay : {convertMsToSeconds(pixelBoard.delayMs)}s</Text>
-                        <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Override pixel : </Text></Tooltip><Switch checked={pixelBoard.isPixelOverwrite} disabled/></Group>
+                        <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Overriden pixel : </Text></Tooltip><Switch checked={pixelBoard.isPixelOverwrite} disabled/></Group>
                     </Group>
                     <Group justify="flex-around">
                         {isPixelBoardComingSoon(pixelBoard) ? "": <Button
