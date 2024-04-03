@@ -3,6 +3,21 @@ import {AppLogger} from "../logger/app-logger.js";
 import {userService} from "./user.service.js";
 
 const pixelBoardService = {
+    async getAllPixelBoards(){
+        let list = await prisma.pixelBoard.findMany({
+            include: {
+                lines: true
+            }
+        });
+
+        const users = await userService.getAllUsers();
+
+        for (let i = 0; i < list.length; i++) {
+            list[i].participants = await this.getAllUsersThatHaveDrawnOnPixelBoard(list[i].id, list[i].lines, users);
+        }
+
+        return list;
+    },
 
     async getPixelBoardById(pixelBoardId) {
         return prisma.pixelBoard.findUnique({
@@ -66,6 +81,19 @@ const pixelBoardService = {
             }
         }
         return pixels;
+    },
+
+    async getAllUsersThatHaveDrawnOnPixelBoard(pixelBoardId, lines, users) {
+        const distinctOwnerIds = new Set();
+        for (const line of lines) {
+            for (const pixel of line.pixels) {
+                distinctOwnerIds.add(pixel.ownerId);
+            }
+        }
+
+        const listOfUsers = users.filter(user => distinctOwnerIds.has(user.id));
+
+        return Array.from(listOfUsers);
     },
 
     async insertPixels(boardId, pixels) {

@@ -26,6 +26,10 @@ export const userService = {
         return {user, accessToken};
     },
 
+    async getNumberOfRegisteredUsers() {
+        return prisma.user.count();
+    },
+
     async registerUser(username, email, password, accountImageUrl) {
         const existingUser = await prisma.user.findUnique({
             where: { email: email },
@@ -111,6 +115,16 @@ export const userService = {
         }
 
         return usersMap;
+    },
+
+    async getAllBasicsUsersInfos() {
+        return prisma.user.findMany({
+            select: {
+                id: true,
+                username: true,
+                accountImageUrl: true
+            }
+        });
     },
 
     async getAllUsers() {

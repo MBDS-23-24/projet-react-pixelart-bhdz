@@ -12,6 +12,7 @@ import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixel
 import './HistoryPopup.scss';
 import {formatedDateCountDown, sortArrayByDate} from "../../pages/utils/Utils.js";
 
+
 export function HistoryHeaderCell({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
     return (
