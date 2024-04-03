@@ -42,7 +42,7 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                     className={"timer"}
                     variant="gradient"
                     gradient={{ from: getBadgeColors(getStatePixelBoard(pixelBoard)), to: 'grape', deg: 90 }}>
-                    <TimerCountDown endDate={pixelBoard.endDate} state={getStatePixelBoard(pixelBoard)}/>
+                    <TimerCountDown startDate={pixelBoard.startDate} endDate={pixelBoard.endDate} state={getStatePixelBoard(pixelBoard)}/>
                 </Badge>}
                 <Card key={index} shadow="sm" padding="xs" radius="lg" className={"card-pixelboard"} withBorder>
                     <Title component="h3">
