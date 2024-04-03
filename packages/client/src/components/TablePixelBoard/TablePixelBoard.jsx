@@ -17,7 +17,7 @@ import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@table
 import {useContext, useState} from "react";
 import {modals} from "@mantine/modals";
 import './TablePixelBoard.scss';
-import {useQuery, useQueryClient} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import {
     delelePixelBoard,
     getAllPixelBoards,
@@ -56,7 +56,6 @@ export default function TablePixelBoard() {
     useQuery('pixels', () => getAllPixelBoards(), {
         enabled: true,
         onSuccess: data => {
-            console.log(data)
             setPixels(data);
             setSortedData(data);
         },
@@ -65,29 +64,24 @@ export default function TablePixelBoard() {
         }
     })
 
+    const deletePixelBoard = useMutation(delelePixelBoard, {
+        onSuccess: () => {
+            notifications.show({
+                title: "Successfully deleted",
+                message: `The pixel board is deleted`,
+                color: "green",
+                icon: <IconCheck size={24} />,
+            });
+            modals.closeAll();
+            queryClient.invalidateQueries('pixels');
+        },
+        onError: error => {
+            console.error("Error deleting pixel:", error);
+        }
+    });
 
     function refreshPixel() {
         queryClient.invalidateQueries('pixels');
-    }
-
-
-    function deletePixel(id) {
-        console.log(id)
-        delelePixelBoard(id)
-            .then(() => {
-                notifications.show({
-                    title: "Successfully deleted",
-                    message: `The pixel board is deleted`,
-                    color: "green",
-                    icon: <IconCheck size={24} />,
-                });
-                modals.closeAll();
-                setPixels(pixels.filter(pixel => pixel.id !== id));
-                setSortedData(sortedData.filter(pixel => pixel.id !== id));
-            })
-            .catch(error => {
-                console.error("Error deleting pixel:", error);
-            });
     }
 
     const openDelete = (id) => modals.openConfirmModal({
@@ -101,14 +95,12 @@ export default function TablePixelBoard() {
         labels: {confirm: "Delete", cancel: "Cancel"},
         confirmProps: {color: 'red'},
         onCancel: () => modals.closeAll(),
-        onConfirm: () => deletePixel(id)
+        onConfirm: () => deletePixelBoard.mutate(id)
     })
 
     function filterData(data, search) {
         const query = search.toLowerCase().trim();
-        console.log(data)
         return data.filter((item) =>{
-                console.log(item)
                 return item.title.toString().toLowerCase().includes(query) || item.startDate.toString().toLowerCase().includes(query) || item.endDate.toString().toLowerCase().includes(query)
             }
         );

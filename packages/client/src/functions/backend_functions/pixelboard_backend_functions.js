@@ -23,11 +23,6 @@ export const getHistoryPixelsByBoardId = async (pixelBoardId) => {
     });
 }
 
-export const getPixelBoardsByCreator = async (creatorId) => {
-    console.log(creatorId)
-    return get(`${PIXELBOARD}/${creatorId}/creator`).then(res => res.data);
-}
-
 export const delelePixelBoard = async (pixelId) => {
     return del(`${PIXELBOARD}/${pixelId}`).then(res => {
         return res.data;
@@ -43,7 +38,7 @@ export const addPixelBoard = async (pixelBoardToAdd) => {
     })
 }
 
-export const getAllPixelBoards = async () => {
+export const getAllPixelBoardsWithParticipants = async () => {
     return get(`${PIXELBOARD}/pixels`)
         .then(res => res.data);
 }

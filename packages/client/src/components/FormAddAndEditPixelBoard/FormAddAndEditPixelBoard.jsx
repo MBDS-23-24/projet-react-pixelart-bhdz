@@ -114,7 +114,6 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 dateCreated: new Date().toISOString(),
                 creatorId: user.id,
             }
-            console.log(modelPixel)
            if (formType === "update"){
                modelPixel.id = pixelSelected.id;
                editPixelboard.mutate(modelPixel)
@@ -127,7 +126,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
     }
 
     return (
-        <Box maw={340} mx="auto">
+        <Box mx="auto">
             <form onSubmit={onSubmit}>
                 <TextInput label="Title" placeholder="Title" {...form.getInputProps("title")} />
                 <NumberInput
@@ -171,7 +170,7 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 />
                 <Divider />
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexDirection: "row", marginTop: 10 }}>
-                    <Button rightSection={<IconX size={20} />} style={{ background: "red" }} onClick={onCancel}>
+                    <Button rightSection={<IconX size={20} />} color={"red"} onClick={onCancel}>
                         Cancel
                     </Button>
                     <Button rightSection={<IconCheck size={20} />} type="submit">

@@ -39,8 +39,8 @@ export const pixelBoardController = {
             res.send(await pixelBoardService.getPixelBoardById(pixelBoardId))
         }, next)
     },
-    async getAllPixelBoards(req, res, next){
-        await catchError(async () => res.send(await pixelBoardService.getAllPixelBoards()), next)
+    async getAllPixelBoardsWithParticipants(req, res, next){
+        await catchError(async () => res.send(await pixelBoardService.getAllPixelBoardsWithParticipants()), next)
     },
 
     async getHistoryPixelsByBoardId(req, res, next) {
@@ -59,7 +59,10 @@ export const pixelBoardController = {
             throw BusinessError(400, 'Bad request', "Missing pixel board id")
         }
 
-        await catchError(async () => res.send(await pixelBoardService.deletePixelBoard(pixelBoardId)), next)
+        await catchError(async () => {
+            console.log()
+            res.send(await pixelBoardService.deletePixelBoard(pixelBoardId))
+        }, next)
     },
     async createPixelBoard(req, res, next) {
         if (!req.body) {
@@ -87,7 +90,6 @@ export const pixelBoardController = {
 
     async getPixelBoardsByCreator(req, res, next) {
         const creatorId = req.params.creatorId;
-        console.log(creatorId)
         if (!creatorId) {
             throw BusinessError(400, "Bad request", "Missing creator id")
         }

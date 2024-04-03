@@ -58,16 +58,9 @@ export function getElapsedTime(date) {
     return Math.floor((now - target) )
 }
 
-export function formatedDateTime(date) {
-    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
-    return new Date(date).toLocaleDateString('en', options);
-}
-
 export const compareEqualsDateTime = (a, b) => {
     const dateA = new Date(a);
     const dateB = new Date(b);
-
-    console.log(dateA, dateB)
 
     return dateA.getFullYear() === dateB.getFullYear() && dateA.getMonth() === dateB.getMonth() && dateA.getDate() === dateB.getDate() && dateA.getHours() === dateB.getHours() && dateA.getMinutes() === dateB.getMinutes();
 }

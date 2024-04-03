@@ -12,7 +12,7 @@ import {
     TextInput,
     Title
 } from "@mantine/core";
-import {IconEdit, IconSearch} from "@tabler/icons-react";
+import {IconCheck, IconCross, IconEdit, IconSearch, IconX} from "@tabler/icons-react";
 import {useState} from "react";
 import {HistoryHeaderCell} from "../HistoryPopup/HistoryPopup.jsx";
 import './TableUsers.scss';
@@ -247,8 +247,8 @@ export default function TableUsers() {
                     />
                     <Space h={10}/>
                     <Flex className={"container-title"}>
-                        <Button onClick={() => setOpenedModalEdit(false)} color="red">Cancel</Button>
-                        <Button type="submit" color="teal">Edit</Button>
+                        <Button rightSection={<IconX size={20} />} onClick={() => setOpenedModalEdit(false)} color="red">Cancel</Button>
+                        <Button rightSection={<IconCheck size={20} />} type="submit" color="blue">Save</Button>
                     </Flex>
                 </form>
             </Modal>

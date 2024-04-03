@@ -3,7 +3,7 @@ import {AppLogger} from "../logger/app-logger.js";
 import {userService} from "./user.service.js";
 
 const pixelBoardService = {
-    async getAllPixelBoards(){
+    async getAllPixelBoardsWithParticipants(){
         let list = await prisma.pixelBoard.findMany({
             include: {
                 lines: true
@@ -192,7 +192,13 @@ const pixelBoardService = {
         return result;
     },
     async deletePixelBoard(pixelBoardId) {
-        return prisma.pixelBoard.deleteMany({
+        await prisma.line.deleteMany({
+            where: {
+                pixelBoardId: pixelBoardId
+            }
+        });
+
+        return prisma.pixelBoard.delete({
             where: {
                 id: pixelBoardId
             }
