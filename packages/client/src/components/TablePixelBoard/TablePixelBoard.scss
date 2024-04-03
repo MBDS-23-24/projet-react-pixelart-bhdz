@@ -1,0 +1,53 @@
+.header {
+  position: sticky;
+  top: 0;
+  transition: box-shadow 150ms ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-bottom: 1px solid;
+  }
+}
+
+.container-title{
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-table-pixels{
+  text-align: start;
+}
+
+.search {
+  gap: 20px;
+  flex: 1;
+}
+
+.th {
+  padding: 0;
+}
+
+.table-pixelboard{
+  th {
+    text-align: center;
+  }
+}
+
+.control {
+  width: 100%;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+
+  @mixin hover {
+    background-color: var(--mantine-color-gray-0) var(--mantine-color-dark-6);
+  }
+}
+
+.icon {
+  width: 21px;
+  height: 21px;
+  border-radius: 21px;
+}

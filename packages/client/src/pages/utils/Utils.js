@@ -58,6 +58,13 @@ export function getElapsedTime(date) {
     return Math.floor((now - target) )
 }
 
+export const compareEqualsDateTime = (a, b) => {
+    const dateA = new Date(a);
+    const dateB = new Date(b);
+
+    return dateA.getFullYear() === dateB.getFullYear() && dateA.getMonth() === dateB.getMonth() && dateA.getDate() === dateB.getDate() && dateA.getHours() === dateB.getHours() && dateA.getMinutes() === dateB.getMinutes();
+}
+
 export function sortArrayByDate(array) {
     return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }

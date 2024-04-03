@@ -4,7 +4,7 @@ import {Card, Text, TextInput, Title} from '@mantine/core';
 import {IconSearch} from '@tabler/icons-react';
 import {useState} from "react";
 import {
-    getAllPixelBoards
+    getAllPixelBoardsWithParticipants
 } from "../../functions/backend_functions/pixelboard_backend_functions.js"
 import './Home.scss';
 import ListCardsPixelBoard from "../../components/CardPixelBoard/ListCardsPixelBoard.jsx";
@@ -16,7 +16,7 @@ function Home() {
     const [pixelBoardsFiltered, setPixelBoardsFiltered] = useState([]);
     const navigate = useNavigate();
 
-    useQuery('pixelboards', getAllPixelBoards, {
+    useQuery('pixelboards', getAllPixelBoardsWithParticipants, {
         onSuccess: (data) => {
             setPixelBoards(data);
             setPixelBoardsFiltered(data);

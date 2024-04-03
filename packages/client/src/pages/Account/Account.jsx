@@ -96,7 +96,6 @@ export default function Account() {
     };
 
     const onSubmit = (values) => {
-        console.log(values)
         updateAccount(values);
     };
 
