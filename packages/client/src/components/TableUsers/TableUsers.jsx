@@ -163,7 +163,7 @@ export default function TableUsers() {
                        value={search}
                        onChange={handleSearchChange}/>
             <Space h={10} />
-            <ScrollArea h={400}>
+            <ScrollArea>
                 <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed" stickyHeader>
                     <Table.Thead>
                         <Table.Tr className={"tr-users"}>

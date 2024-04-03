@@ -1,4 +1,4 @@
-import {Checkbox, Flex, ScrollArea, Space, Title} from "@mantine/core";
+import {ActionIcon, Checkbox, Flex, ScrollArea, Space, Title} from "@mantine/core";
 import {
     Button,
     Center,
@@ -155,6 +155,7 @@ export default function TablePixelBoard() {
             <Table.Td>{row.pixelHeight} pixel(s)</Table.Td>
             <Table.Td>
                 <Checkbox
+                    disabled
                     checked={row.isPixelOverwrite}
                     color={"blue"}
                     style={{ display: "flex", justifyContent: "center"}}
@@ -162,15 +163,15 @@ export default function TablePixelBoard() {
             </Table.Td>
             <Table.Td>
                 <div style={{display: "flex", alignItems: "center", justifyContent: 'center', padding: 10, gap:'20px'}}>
-                    <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={() =>
+                    <ActionIcon variant="filled" size={"lg"} onClick={() =>
                         modals.open({
                             title: "Form to update Pixel Board",
                             labels: { confirm: "Save", cancel: "Cancel" },
                             children: <FormAddAndEditPixelBoard user={user} onCancel={() => modals.closeAll()} refreshPixels={refreshPixel} pixelBoard={row} formType={"update"} />,
                             withCloseButton: false,
                         })
-                    } style={{paddingLeft: 20, paddingRight: 20}} >Update</Button>
-                    <Button size={"sm"} color='red' rightSection={<IconTrash size={20} />} onClick={() => openDelete(row.id)}> Delete</Button>
+                    } ><IconEdit size={20}  /></ActionIcon>
+                    <ActionIcon size={"lg"} color='red' onClick={() => openDelete(row.id)}><IconTrash size={20} /></ActionIcon>
                 </div>
             </Table.Td>
         </Table.Tr>
@@ -199,7 +200,7 @@ export default function TablePixelBoard() {
                 } >Add Pixel Board</Button>
             </Group>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginTop: 15}}>
-                <ScrollArea h={400} w={"100%"}>
+                <ScrollArea w={"100%"}>
                     <Table horizontalSpacing="md" verticalSpacing="xs" miw={400} stickyHeader className={"table-pixelboard"}>
                         <Table.Thead>
                             <Table.Tr>

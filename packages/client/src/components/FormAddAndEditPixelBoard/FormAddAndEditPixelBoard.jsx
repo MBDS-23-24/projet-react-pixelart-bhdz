@@ -26,12 +26,14 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 return undefined;
             },
             startDate: (value) => {
+                if (pixelSelected?.startDate && value.getTime() === new Date(pixelSelected.startDate).getTime()) return undefined;
                 if (!value || value === "") return "Start date is required";
                 if (value < new Date()) return "Start date must be in the future";
                 if (value > form.values.endDate) return "Start date must be before end date";
                 return undefined;
             },
             endDate: (value) => {
+                if (pixelSelected?.startDate && value.getTime() === new Date(pixelSelected.endDate).getTime()) return undefined;
                 if (!value || value === "") return "End date is required";
                 if (value < new Date()) return "End date must be in the future";
                 if (value < form.values.startDate) return "End date must be after start date";
