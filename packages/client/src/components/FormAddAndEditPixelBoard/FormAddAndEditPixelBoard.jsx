@@ -5,6 +5,7 @@ import {notifications} from "@mantine/notifications";
 import { DateTimePicker } from '@mantine/dates';
 import {addPixelBoard, updatePixelBoard} from "../../functions/backend_functions/pixelboard_backend_functions.js";
 import {useMutation} from "react-query";
+import {compareEqualsDateTime} from "../../pages/utils/Utils.js";
 
 export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, formType, refreshPixels}) {
     const pixelSelected = pixelBoard;
@@ -26,14 +27,14 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
                 return undefined;
             },
             startDate: (value) => {
-                if (pixelSelected?.startDate && value.getTime() === new Date(pixelSelected.startDate).getTime()) return undefined;
+                if (pixelSelected?.startDate && compareEqualsDateTime(value, pixelSelected.startDate)) return undefined;
                 if (!value || value === "") return "Start date is required";
                 if (value < new Date()) return "Start date must be in the future";
                 if (value > form.values.endDate) return "Start date must be before end date";
                 return undefined;
             },
             endDate: (value) => {
-                if (pixelSelected?.startDate && value.getTime() === new Date(pixelSelected.endDate).getTime()) return undefined;
+                if (pixelSelected?.startDate && compareEqualsDateTime(value, pixelSelected.endDate)) return undefined;
                 if (!value || value === "") return "End date is required";
                 if (value < new Date()) return "End date must be in the future";
                 if (value < form.values.startDate) return "End date must be after start date";
