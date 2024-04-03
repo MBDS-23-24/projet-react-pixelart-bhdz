@@ -39,6 +39,9 @@ export const pixelBoardController = {
             res.send(await pixelBoardService.getPixelBoardById(pixelBoardId))
         }, next)
     },
+    async getAllPixelBoards(req, res, next){
+        await catchError(async () => res.send(await pixelBoardService.getAllPixelBoards()), next)
+    },
 
     async getHistoryPixelsByBoardId(req, res, next) {
         await catchError(async () => {
