@@ -25,6 +25,39 @@ export function formatedDateCountDown(date) {
     return `${timeParts.join('')} ago`;
 }
 
+export function formatedDateTime(date) {
+    const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'};
+    return new Date(date).toLocaleDateString('en', options);
+}
+
+export const getStatePixelBoard = (pixelboard) => {
+    const start = new Date(pixelboard.startDate);
+    const end = new Date(pixelboard.endDate);
+    const current = Date.now();
+
+    if (start <= current && end >= current) {
+        return "Online";
+    } else if (start > current) {
+        return "Coming soon";
+    } else {
+        return "Closed";
+    }
+};
+
+export const isPixelBoardComingSoon = (pixelBoard) => {
+    let start = new Date(pixelBoard.startDate);
+    let end = new Date(pixelBoard.endDate);
+    let current = Date.now()
+    return start > current && end > current;
+}
+
+export function getElapsedTime(date) {
+    const now = new Date();
+    const target = new Date(date);
+
+    return Math.floor((now - target) )
+}
+
 export function sortArrayByDate(array) {
     return array.sort((a, b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
 }

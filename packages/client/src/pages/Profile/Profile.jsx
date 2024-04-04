@@ -76,7 +76,7 @@ export default function Profile() {
 
                                     </div>
 
-                                    <Avatar src={"https://picsum.photos/200/300"} size={120} radius="xl"
+                                    <Avatar src={userContributions.user.accountImageUrl} size={120} radius="xl"
                                             className="account-avatar"/>
                                     <Title>
                                         {userContributions.user.username}

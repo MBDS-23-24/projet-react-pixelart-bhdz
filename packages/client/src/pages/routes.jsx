@@ -9,9 +9,9 @@ const routes = [
     {name: 'Page D\'accueil', path: '/', element: <Home/>, needAccess: false},
     {name: 'Pixel Board', path: '/pixel-board/:id', element: <PixelBoard/>, needAccess: false},
     {name: 'Account', path: '/account', element: <Account/>, needAccess: false},
-    {name: "Dashboard", path: "/dashboard", element: <Dashboard />, needAccess: true},
     {name: 'Profile', path: '/profile/:userId', element: <Profile/>, needAccess: false},
-    {name: 'Contributors', path: 'contributors', element: <Contributors/>, needAccess: false}
+    {name: 'Contributors', path: 'contributors', element: <Contributors/>, needAccess: false},
+    {name: "Dashboard", path: "/dashboard", element: <Dashboard />, needAccess: true},
 ];
 
 export default routes

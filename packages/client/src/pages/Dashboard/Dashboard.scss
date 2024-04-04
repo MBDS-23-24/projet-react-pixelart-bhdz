@@ -1,4 +1,9 @@
-.user-table{
-  max-width: 1200px;
-  margin: auto;
+.dashboard {
+  display: flex;
+  justify-content: center;
+
+  .user-table{
+    max-width: 1200px;
+    margin: 0 20px;
+  }
 }

@@ -13,6 +13,10 @@ export const getPixelBoardById = async (pixelBoardId) => {
     });
 }
 
+export const getAllPixelBoards = async () => {
+    return get(`${PIXELBOARD}`).then(res => res.data)
+}
+
 export const getHistoryPixelsByBoardId = async (pixelBoardId) => {
     return get(`${PIXELBOARD}/${pixelBoardId}/history`).then(res => {
         return res.data;

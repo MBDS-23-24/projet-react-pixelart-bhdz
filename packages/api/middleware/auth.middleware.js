@@ -9,6 +9,9 @@ export const authMiddleware = {
             const token = authHeader.split(' ')[1];
 
             jwt.verify(token, process.env.ACCESS_API_TOKEN_SECRET, (err, user) => {
+                if (err && err?.message === 'jwt expired'){
+                    throw new BusinessError(403, 'Forbidden - JWT Expired', 'You are not authorized to access this resource');
+                }
                 if (err) {
                     return res.sendStatus(403);
                 }
@@ -28,6 +31,9 @@ export const authMiddleware = {
             const token = authHeader.split(' ')[1];
 
             jwt.verify(token, process.env.ACCESS_API_TOKEN_SECRET, (err, user) => {
+                if (err && err?.message === 'jwt expired'){
+                    throw new BusinessError(403, 'Forbidden - JWT Expired', 'You are not authorized to access this resource');
+                }
                 if (err) {
                     return res.sendStatus(403);
                 }
@@ -51,6 +57,9 @@ export const authMiddleware = {
             const token = authHeader.split(' ')[1];
 
             jwt.verify(token, process.env.ACCESS_API_TOKEN_SECRET, (err, result) => {
+                if (err && err?.message === 'jwt expired'){
+                    throw new BusinessError(403, 'Forbidden - JWT Expired', 'You are not authorized to access this resource');
+                }
                 if (err) {
                     return res.sendStatus(403);
                 }

@@ -1,0 +1,9 @@
+#root {
+  text-align: center;
+}
+
+main.content {
+  width: calc(100% - 80px);
+  float: right;
+  overflow: auto;
+}

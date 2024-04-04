@@ -3,8 +3,10 @@ import {Center, Tooltip, UnstyledButton, Stack, rem, useMantineColorScheme, Avat
 import {
     IconHome2,
     IconGauge,
+    IconUser,
     IconSettings,
-    IconLogout, IconUsers,
+    IconLogout,
+    IconUsers
 } from '@tabler/icons-react';
 import "./Navbar.scss";
 import {Link} from "react-router-dom";
@@ -29,9 +31,9 @@ function NavbarLink({ icon: Icon, label, active, onClick, link, isHidden=false})
 }
 
 const listLinkedRoute = [
-    { icon: IconHome2, label: 'Home', link: "/", needRight: false },
     { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
-    { icon: IconSettings, label: 'Account', link: "/account", needRight: true},
+    { icon: IconHome2, label: 'Home', link: "/", needRight: false },
+    { icon: IconSettings, label: 'Account', link: "/account", needRight: false},
     { icon: IconUsers, label: 'Contributors', link: "/contributors", needRight: true},
 ];
 
@@ -42,6 +44,7 @@ export function NavBar() {
     const links = listLinkedRoute.map((link, index) => (
         <NavbarLink
             {...link}
+            style={{ color: "white"}}
             key={link.label}
             active={index === indexActiveLinkRoute}
             onClick={() => setIndexActiveLinkRoute(index)}

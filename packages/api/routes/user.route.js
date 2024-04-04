@@ -5,7 +5,8 @@ import {
     updateUserAccount,
     getAllUsers,
     getAllRoles,
-    updateUser, contributors, getContributedPixelBoardByUserId
+    updateUser, registerUser, getNumberOfRegisteredUsers,
+    contributors, getContributedPixelBoardByUserId
 } from "../controllers/user.controller.js";
 import {authMiddleware} from "../middleware/auth.middleware.js";
 
@@ -16,6 +17,8 @@ router.put('/change-password',authMiddleware.authenticatedUser,changePassword)
 router.get('/check-token', authMiddleware.authenticatedUser, checkToken)
 router.get('/all', authMiddleware.authenticatedAdmin, getAllUsers)
 router.get('/roles', authMiddleware.authenticatedAdmin, getAllRoles)
+router.get('/count', authMiddleware.authenticatedUser, getNumberOfRegisteredUsers)
+router.post('/register', registerUser)
 router.get('/:userId/contribution/pixelboards', authMiddleware.authenticatedUser, getContributedPixelBoardByUserId)
 router.get('/contributors', authMiddleware.authenticatedUser, contributors)
 

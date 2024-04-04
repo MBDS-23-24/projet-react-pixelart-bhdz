@@ -2,8 +2,6 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 import {notifications} from "@mantine/notifications";
 
-const cookies = new Cookies();
-
 export const axiosApi = axios.create({
     baseURL: import.meta.env.VITE_EXPRESS_URL,
     withCredentials: true,
@@ -22,10 +20,16 @@ axiosApi.interceptors.response.use((response) => {
         message: error.response.data.message + (error.response.data.details ? `: ${error.response.data.details}` : ""),
         color: "red",
     });
-    if(error.response.status === 403 || error.response.status === 401){
+    if (error.response.status === 403 && error.response.data?.message === "Forbidden - JWT Expired") {
         const cookies = new Cookies();
         cookies.remove('accessToken');
         localStorage.removeItem('user_session');
+        window.location.reload();
+    }
+    if (error.response.status === 403 && error.response.data?.message === "Forbidden") {
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 1000);
     }
 });
 

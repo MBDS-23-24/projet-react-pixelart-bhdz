@@ -28,6 +28,7 @@ export default function TableUsers() {
     const [search, setSearch] = useState('');
     const [sortBy, setSortBy] = useState(null);
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
+    const [dataUsers, setDataUsers] = useState([]);
     const [dataUsersSorted, setDataUsersSorted] = useState([]);
     const [rolesList, setRolesList] = useState([]);
 
@@ -53,6 +54,7 @@ export default function TableUsers() {
 
     useQuery('users', ()=> getAllUsers(), {
         onSuccess: (data) => {
+            setDataUsers(data);
             setDataUsersSorted(data);
         }
     });
@@ -137,8 +139,13 @@ export default function TableUsers() {
 
     const handleSearchChange = (event) => {
         const { value } = event.currentTarget;
-        setSearch(value);
-        setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
+        if (value === ""){
+            setSearch(value);
+            setDataUsersSorted(dataUsers);
+        } else {
+            setSearch(value);
+            setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
+        }
     };
 
     const rows = dataUsersSorted.map((row, index) => (

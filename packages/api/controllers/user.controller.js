@@ -8,6 +8,12 @@ export const contributors = async (req, res, next) => {
     }, next)
 }
 
+export const getUserProfile = async (req, res, next) => {
+    await catchError(async () => {
+       res.status(200).json(await userService.contributors());
+    }, next)
+}
+
 export const checkToken = async (req, res, next) => {
     await catchError(async () => {
         if(req.user){
@@ -73,6 +79,18 @@ export const changePassword = async (req, res, next) => {
         , next);
 }
 
+export const registerUser = async (req, res, next) => {
+    await catchError(async () => {
+        const {username, email, password,accountImageUrl} = req.body;
+        if (!username || !email || !password) {
+            throw new BusinessError(400, 'Bad request', 'Missing username, email or password');
+        }
+        const user = await userService.registerUser(username, email, password, accountImageUrl);
+        res.json(user);
+    }, next);
+
+}
+
 export const getAllUsers = async (req, res, next) => {
     await catchError(async () => {
         const users = await userService.getAllUsers();
@@ -90,6 +108,13 @@ export const getContributedPixelBoardByUserId = async (req, res, next) => {
     }, next);
 }
 
+
+export const getNumberOfRegisteredUsers = async (req, res, next) => {
+    await catchError(async () => {
+        const numberOfUsers = await userService.getNumberOfRegisteredUsers();
+        res.json(numberOfUsers);
+    }, next);
+}
 
 export const getAllRoles = async (req, res, next) => {
     await catchError(async () => {

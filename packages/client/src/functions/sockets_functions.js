@@ -1,7 +1,4 @@
 import {io} from "socket.io-client";
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
 
 let socket;
 
@@ -9,7 +6,7 @@ export const initializeSocket = () => {
     socket = io(import.meta.env.VITE_SOCKET_URL, {
         withCredentials: true,
         extraHeaders: {
-            "Authorization": cookies.get("accessToken") ? `Bearer ${document.cookie.split("; ").find((row) => row.startsWith("accessToken="))?.split("=")[1]}` : ""
+            "Authorization": localStorage?.getItem('user_session') ? `Bearer ${JSON.parse(localStorage.getItem('user_session')).accessToken}` : "",
         }
     });
 }
@@ -25,7 +22,7 @@ export const socketEvents = {
     GENERAL: {
         INFO: 'INFO',
         ERROR: 'ERROR',
-        READY: 'READY',
+        SUCCESSFULLY_JOINED: 'SUCCESSFULLY_JOINED',
     }
 }
 

@@ -7,7 +7,6 @@ export default function Grids({
     const canvasRef = useRef();
     const [ctx, setCtx] = useState(null);
 
-
     const realWidth = width * pixelSize;
     const realHeight = height * pixelSize;
 
