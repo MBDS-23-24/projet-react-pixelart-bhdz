@@ -6,7 +6,7 @@ name: PixelBoard - Socket
 on:
   push:
     branches:
-      - develop
+      - main
   workflow_dispatch:
 
 jobs:
