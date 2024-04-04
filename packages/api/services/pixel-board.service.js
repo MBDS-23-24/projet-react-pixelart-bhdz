@@ -3,7 +3,7 @@ import {AppLogger} from "../logger/app-logger.js";
 import {userService} from "./user.service.js";
 
 const pixelBoardService = {
-    async getAllPixelBoards(){
+    async getAllPixelBoardsWithParticipants(){
         let list = await prisma.pixelBoard.findMany({
             include: {
                 lines: true
@@ -190,7 +190,58 @@ const pixelBoardService = {
             }
         }
         return result;
+    },
+    async deletePixelBoard(pixelBoardId) {
+        await prisma.line.deleteMany({
+            where: {
+                pixelBoardId: pixelBoardId
+            }
+        });
+
+        return prisma.pixelBoard.delete({
+            where: {
+                id: pixelBoardId
+            }
+        });
+    },
+    async updatePixelBoard(pixelBoardId, pixelToUpdate) {
+        pixelToUpdate.creator = {
+            connect: {
+                id: pixelToUpdate.creatorId
+            }
+        }
+        delete pixelToUpdate.id;
+        delete pixelToUpdate.creatorId;
+        return prisma.pixelBoard.update({
+            where: {
+                id: pixelBoardId
+            },
+            data: pixelToUpdate
+        });
+    },
+    async addPixelBoard(receivedPixel) {
+        receivedPixel.creator = {
+            connect: {
+                id: receivedPixel.creatorId
+            }
+        }
+        delete receivedPixel.creatorId;
+        return prisma.pixelBoard.create({
+            data: receivedPixel
+        });
+    },
+    getAllPixelBoards() {
+        return prisma.pixelBoard.findMany()
     }
+    ,
+    async getPixelBordsByCreator(creatorId) {
+        return prisma.pixelBoard.findMany({
+            where: {
+                creatorId: creatorId
+            }
+        })
+    }
+
 }
 
 export default pixelBoardService;

@@ -1,6 +1,6 @@
 import './Contributors.scss';
 import {useEffect, useState} from "react";
-import {useMutation} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {getContributors} from "../../functions/backend_functions/user_backend_functions.js";
 import {
     Avatar,
@@ -13,21 +13,20 @@ import {
     Table,
     Title
 } from "@mantine/core";
-import {IconInfoCircle} from "@tabler/icons-react";
+import {IconInfoCircle, IconUserCircle} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
+import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixelboard_backend_functions.js";
+import {sortArrayByDate} from "../utils/Utils.js";
 
 export default function Contributors() {
     const [contributors, setContributors] = useState(null);
 
-    const fetchContributors = useMutation(() => getContributors(), {
+    const {data, isLoading } =  useQuery('contributors', ()=> getContributors(), {
+        enabled: true,
         onSuccess: (result) => {
             setContributors(result);
-        },
+        }
     });
-
-    useEffect(() => {
-        fetchContributors.mutate();
-    }, []);
 
 
     const rows = () => {
@@ -41,7 +40,7 @@ export default function Contributors() {
                     </Table.Td>
                     <Table.Td style={{display: 'flex', justifyContent: 'flex-end'}}>
                         <Link to={`/profile/${contributor.id}`}>
-                            <Button endIcon={<IconInfoCircle size={14}/>}>Show profile</Button>
+                            <Button leftSection={<IconUserCircle size={14}/>}>Show profile</Button>
                         </Link>
                     </Table.Td>
                 </Table.Tr>
@@ -54,14 +53,16 @@ export default function Contributors() {
     return (
         <Container size="sm">
             <div className={'profile-container'}>
-                {contributors != null && (
+                <LoadingOverlay
+                    visible={isLoading}
+                    zIndex={1000}
+                    overlayProps={{radius: "sm", blur: 2}}/>
+
+                {!isLoading && (
                     <Grid gutter="md">
                         <Grid.Col span={12}>
                             <Paper padding="lg">
-                                <LoadingOverlay
-                                    visible={contributors === null}
-                                    zIndex={1000}
-                                    overlayProps={{radius: "sm", blur: 2}}/>
+
 
 
                                 <Title order={1}>All Contributors</Title>

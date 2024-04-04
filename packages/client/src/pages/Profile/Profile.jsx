@@ -1,10 +1,10 @@
 import './Profile.scss';
-import {useEffect, useState} from "react";
-import {useMutation} from "react-query";
+import {useState} from "react";
+import {useQuery} from "react-query";
 import {getUserContribution} from "../../functions/backend_functions/user_backend_functions.js";
 import {useParams} from "react-router";
 import {
-    Avatar,
+    Avatar, Button,
     Card,
     Container,
     Grid,
@@ -15,21 +15,19 @@ import {
     Table,
     Title
 } from "@mantine/core";
+import {IconLink} from "@tabler/icons-react";
+import {useNavigate} from "react-router-dom";
 
 export default function Profile() {
     const {userId} = useParams();
     const [userContributions, setUserContributions] = useState(null);
+    const navigate = useNavigate();
 
-    const fetchUserContribution = useMutation(() => getUserContribution(userId), {
+    const {isLoading} = useQuery('userContributions', () => getUserContribution(userId), {
         onSuccess: (result) => {
             setUserContributions(result);
         },
     });
-
-    useEffect(() => {
-        fetchUserContribution.mutate();
-    }, [userId]);
-
 
     const rows = () => {
         if (userContributions && userContributions.pixelBoardsContributed) {
@@ -48,6 +46,20 @@ export default function Profile() {
 
                     </Table.Td>
 
+                    <Table.Td>
+                        <Button
+                            color="blue"
+                            mt="md" radius="md"
+                            variant='light'
+                            fullWidth
+                            rightSection={<IconLink size={14}/>}
+                            onClick={() => navigate(`/pixel-board/${pixelBoard.id}`)}
+                        >
+                            Open
+                        </Button>
+
+                    </Table.Td>
+
                 </Table.Tr>
             ));
         } else {
@@ -58,16 +70,17 @@ export default function Profile() {
     return (
         <Container size="sm">
             <div className={'profile-container'}>
+                <LoadingOverlay
+                    visible={isLoading}
+                    zIndex={1000}
+                    overlayProps={{radius: "sm", blur: 2}}/>
+
 
                 {userContributions != null && (
 
                     <Grid gutter="md">
                         <Grid.Col span={12}>
                             <Paper padding="lg">
-                                <LoadingOverlay
-                                    visible={userContributions === null}
-                                    zIndex={1000}
-                                    overlayProps={{radius: "sm", blur: 2}}/>
 
 
                                 <div className={'header-container'}>
@@ -101,6 +114,7 @@ export default function Profile() {
                                                                     <Table.Th>Size</Table.Th>
                                                                     <Table.Th>Pixels drawn</Table.Th>
                                                                     <Table.Th>Overridden PixelBoard</Table.Th>
+                                                                    <Table.Th></Table.Th>
                                                                 </Table.Tr>
                                                             </Table.Thead>
                                                             <Table.Tbody>{rows()}</Table.Tbody>

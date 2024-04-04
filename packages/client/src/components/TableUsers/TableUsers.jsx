@@ -12,7 +12,7 @@ import {
     TextInput,
     Title
 } from "@mantine/core";
-import {IconEdit, IconSearch} from "@tabler/icons-react";
+import {IconCheck, IconCross, IconEdit, IconSearch, IconX} from "@tabler/icons-react";
 import {useState} from "react";
 import {HistoryHeaderCell} from "../HistoryPopup/HistoryPopup.jsx";
 import './TableUsers.scss';
@@ -154,9 +154,7 @@ export default function TableUsers() {
             <Table.Td>{row.email}</Table.Td>
             <Table.Td>{row.role.label}</Table.Td>
             <Table.Td>
-                <ActionIcon size={30} variant="filled" color="blue" aria-label="Edit" onClick={()=>clickEdit(row)}>
-                    <IconEdit width={20} height={20} />
-                </ActionIcon>
+                <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={()=>clickEdit(row)}>Update</Button>
             </Table.Td>
         </Table.Tr>
     ));
@@ -164,7 +162,7 @@ export default function TableUsers() {
     return (
         <>
             <Flex className={"container-title"}>
-                <Title order={3} className={"title-table-users"}>Users table</Title>
+                <Title order={3} className={"title-table-users"}>Users dashboard management</Title>
             </Flex>
             <Space h={20} />
             <TextInput placeholder="Search by username, email, or role"
@@ -172,7 +170,7 @@ export default function TableUsers() {
                        value={search}
                        onChange={handleSearchChange}/>
             <Space h={10} />
-            <ScrollArea h={400}>
+            <ScrollArea>
                 <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed" stickyHeader>
                     <Table.Thead>
                         <Table.Tr className={"tr-users"}>
@@ -249,8 +247,8 @@ export default function TableUsers() {
                     />
                     <Space h={10}/>
                     <Flex className={"container-title"}>
-                        <Button onClick={() => setOpenedModalEdit(false)} color="red">Cancel</Button>
-                        <Button type="submit" color="teal">Edit</Button>
+                        <Button rightSection={<IconX size={20} />} onClick={() => setOpenedModalEdit(false)} color="red">Cancel</Button>
+                        <Button rightSection={<IconCheck size={20} />} type="submit" color="blue">Save</Button>
                     </Flex>
                 </form>
             </Modal>

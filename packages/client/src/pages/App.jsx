@@ -37,12 +37,10 @@ function App() {
                         <NavBar active={getActiveLinkByUrl()}/>
                     </AppShell.Navbar>
 
-                    <AppShell.Main>
+                    <AppShell.Main className={"content"}>
                         <Routes>
+                            <Route path="*" element={<NotFound />} />
                             {displayRoute()}
-                            {routes.map((route, index) => (
-                                <Route key={index} path={route.path} element={route.element}/>
-                            ))}
                         </Routes>
                     </AppShell.Main>
                 </AppShell>
