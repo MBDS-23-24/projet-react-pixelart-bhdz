@@ -2,6 +2,18 @@ import {catchError} from "../error/error-handler.js";
 import {userService} from "../services/user.service.js";
 import {BusinessError} from "../error/business.error.js";
 
+export const contributors = async (req, res, next) => {
+    await catchError(async () => {
+       res.status(200).json(await userService.contributors());
+    }, next)
+}
+
+export const getUserProfile = async (req, res, next) => {
+    await catchError(async () => {
+       res.status(200).json(await userService.contributors());
+    }, next)
+}
+
 export const checkToken = async (req, res, next) => {
     await catchError(async () => {
         if(req.user){
@@ -85,6 +97,17 @@ export const getAllUsers = async (req, res, next) => {
         res.json(users);
     }, next);
 }
+export const getContributedPixelBoardByUserId = async (req, res, next) => {
+    await catchError(async () => {
+        const userId = req.params.userId;
+        if (!userId) {
+            throw new BusinessError(400, 'Bad request', 'Missing user id');
+        }
+
+        return res.status(200).json(await userService.getContributedPixelBoardByUserId(userId));
+    }, next);
+}
+
 
 export const getNumberOfRegisteredUsers = async (req, res, next) => {
     await catchError(async () => {

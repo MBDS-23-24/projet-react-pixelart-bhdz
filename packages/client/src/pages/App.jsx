@@ -21,9 +21,9 @@ function App() {
     function displayRoute() {
         return routes.map((route, index) => {
             if (hasRightToAccess(user, route)) {
-                return <Route key={index} path={route.path} element={route.element} />;
+                return <Route key={index} path={route.path} element={route.element}/>;
             } else {
-                return <Navigate key={index} to="/" replace />;
+                return <Navigate key={index} to="/" replace/>;
             }
         });
     }
@@ -36,10 +36,11 @@ function App() {
                     <AppShell.Navbar>
                         <NavBar active={getActiveLinkByUrl()}/>
                     </AppShell.Navbar>
+
                     <AppShell.Main className={"content"}>
                         <Routes>
-                            {displayRoute()}
                             <Route path="*" element={<NotFound />} />
+                            {displayRoute()}
                         </Routes>
                     </AppShell.Main>
                 </AppShell>

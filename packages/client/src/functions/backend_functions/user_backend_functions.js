@@ -46,3 +46,15 @@ export const getAllRoles = async () => {
         return res.data;
     });
 }
+
+export const getUserContribution = async (userId) => {
+    return get(`${USER}/${userId}/contribution/pixelboards`).then(res => {
+        return res.data;
+    });
+}
+
+export const getContributors = async () => {
+    return get(`${USER}/contributors`).then(res => {
+        return res.data;
+    });
+}

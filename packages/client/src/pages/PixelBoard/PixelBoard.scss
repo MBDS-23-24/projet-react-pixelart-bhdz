@@ -41,6 +41,10 @@
   left: 50%;
 }
 
+.draw-container {
+  overflow-x: auto;
+}
+
 .content {
   overflow-x: auto;
   position: relative;
