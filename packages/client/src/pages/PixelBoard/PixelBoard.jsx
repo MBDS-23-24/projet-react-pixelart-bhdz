@@ -15,7 +15,7 @@ import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
 import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
 import {notifications} from "@mantine/notifications";
-import {IconCloudLock, IconCloudShare, IconUser} from "@tabler/icons-react";
+import {IconCloudLock, IconCloudShare, IconCross, IconPencilOff, IconPencilX, IconUser} from "@tabler/icons-react";
 import {decryptUser} from "../../provider/UserContext.jsx";
 import TimerComponent from "../../components/TimerComponent/TimerComponent.jsx";
 
@@ -78,6 +78,15 @@ export default function PixelBoard() {
 
     const onDrawPixel = (pixel) => {
         if (canDraw) {
+            if(pixelBoard.isPixelOverwrite === false && pixelsComponentRef.current.isPixelDrawn(pixel.x, pixel.y)){
+                notifications.show({
+                    title: "Overwrite not allowed",
+                    message: `Pixel already drawn at this position !`,
+                    color: "red",
+                    icon: <IconPencilOff size={24}/>,
+                })
+              return; //If the pixel is already drawn and the pixel board does not allow overwrite, we do nothing
+            }
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             setLastDrawedPixel(pixel);
         }

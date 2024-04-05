@@ -35,7 +35,11 @@ export default function Contributors() {
                 <Table.Tr key={contributor.id}>
                     <Table.Td>
                         <div className={'user-avatar'}>
-                            <Avatar src={contributor.accountImageUrl}/>{contributor.username}
+                            <Avatar src={contributor.accountImageUrl}/>
+                            <span className={'username'}>
+                                {contributor.username}
+                            </span>
+
                         </div>
                     </Table.Td>
                     <Table.Td style={{display: 'flex', justifyContent: 'flex-end'}}>

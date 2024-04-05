@@ -4,6 +4,8 @@ import "./PixelBoardMenu.scss";
 import {IconHistory} from "@tabler/icons-react";
 import {HistoryPopup} from "../HistoryPopup/HistoryPopup.jsx";
 import NestedUsersAvatar from "../NestedUsersAvatar/NestedUsersAvatar.jsx";
+import TimerCountDown from "../TimerCountDown/TimerCountDown.jsx";
+import {getStatePixelBoard} from "../../pages/utils/Utils.js";
 
 export default function PixelBoardMenu({pixelBoard, connectedUsers}) {
     const {colorScheme} = useMantineColorScheme();
@@ -32,7 +34,7 @@ export default function PixelBoardMenu({pixelBoard, connectedUsers}) {
                     variant="gradient"
                     gradient={{from: 'red', to: 'grape', deg: 90}}
                 >
-                    End in 1d 2h 3m
+                    <TimerCountDown startDate={pixelBoard.startDate} endDate={pixelBoard.endDate} state={getStatePixelBoard(pixelBoard)}/>
                 </Badge>
             </div>
         </div>

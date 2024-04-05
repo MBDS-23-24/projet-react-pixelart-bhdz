@@ -108,7 +108,6 @@ export default function TablePixelBoard() {
 
     function sortData(data, payload) {
         const { sortBy } = payload;
-
         if (!sortBy) {
             return filterData(data, payload.search);
         }

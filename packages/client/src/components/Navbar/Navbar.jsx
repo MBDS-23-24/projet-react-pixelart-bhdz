@@ -31,7 +31,7 @@ function NavbarLink({ icon: Icon, label, active, onClick, link, isHidden=false})
 }
 
 const listLinkedRoute = [
-    { icon: IconGauge, label: 'Dashboard', link: "/dashboard", needRight: true},
+    { icon: IconGauge, label: 'Admin Dashboard', link: "/admin/dashboard", needRight: true},
     { icon: IconHome2, label: 'Home', link: "/", needRight: false },
     { icon: IconSettings, label: 'Account', link: "/account", needRight: false},
     { icon: IconUsers, label: 'Contributors', link: "/contributors", needRight: true},
@@ -44,7 +44,6 @@ export function NavBar() {
     const links = listLinkedRoute.map((link, index) => (
         <NavbarLink
             {...link}
-            style={{ color: "white"}}
             key={link.label}
             active={index === indexActiveLinkRoute}
             onClick={() => setIndexActiveLinkRoute(index)}

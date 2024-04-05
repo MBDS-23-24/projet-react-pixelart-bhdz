@@ -74,7 +74,7 @@
 - 🔴 Compte à rebours custom sur la page d’accueil
 - 🔴 Recherche de pixelboards
 - 🔴 Historique des informations de pose de pixels
-- 🔴 Architecture Frontend et Backend avec utilisation de librairie UI React (Mantine)
+- 🔵 🔴 🟢 🟣 Architecture Frontend et Backend avec utilisation de librairie UI React (Mantine)
 - 🔴 Menu de navigation
 
 

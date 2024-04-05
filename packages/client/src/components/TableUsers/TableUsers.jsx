@@ -12,7 +12,7 @@ import {
     TextInput,
     Title
 } from "@mantine/core";
-import {IconCheck, IconCross, IconEdit, IconSearch, IconX} from "@tabler/icons-react";
+import {IconCheck, IconEdit, IconSearch, IconX} from "@tabler/icons-react";
 import {useState} from "react";
 import {HistoryHeaderCell} from "../HistoryPopup/HistoryPopup.jsx";
 import './TableUsers.scss';
@@ -83,6 +83,7 @@ export default function TableUsers() {
     })
 
     function filterData(data, search) {
+        console.log(data);
         const query = search.toLowerCase().trim();
         return data.filter((item) => {
             return (
@@ -95,7 +96,6 @@ export default function TableUsers() {
 
     function sortData(data, payload) {
         const { sortBy } = payload;
-
         if (!sortBy) {
             return filterData(data, payload.search);
         }
@@ -139,13 +139,8 @@ export default function TableUsers() {
 
     const handleSearchChange = (event) => {
         const { value } = event.currentTarget;
-        if (value === ""){
-            setSearch(value);
-            setDataUsersSorted(dataUsers);
-        } else {
-            setSearch(value);
-            setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
-        }
+        setSearch(value);
+        setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
     };
 
     const rows = dataUsersSorted.map((row, index) => (

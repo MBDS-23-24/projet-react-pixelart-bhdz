@@ -32,6 +32,13 @@
   }
 }
 
+.pixel-board{
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: absolute;
+}
+
 .mantine-Progress-root{
   height: auto!important;
 }

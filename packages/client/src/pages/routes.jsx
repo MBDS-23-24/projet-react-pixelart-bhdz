@@ -11,7 +11,7 @@ const routes = [
     {name: 'Account', path: '/account', element: <Account/>, needAccess: false},
     {name: 'Profile', path: '/profile/:userId', element: <Profile/>, needAccess: false},
     {name: 'Contributors', path: 'contributors', element: <Contributors/>, needAccess: false},
-    {name: "Dashboard", path: "/dashboard", element: <Dashboard />, needAccess: true},
+    {name: "Admin Dashboard", path: "/admin/dashboard", element: <Dashboard />, needAccess: true},
 ];
 
 export default routes
