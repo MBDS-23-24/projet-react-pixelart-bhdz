@@ -83,9 +83,15 @@
 1. Cloner le projet : `git clone https://github.com/MBDS-23-24/projet-react-pixelart-bhdz.git`
 2. Exécutez la commande `npm install` à la racine du projet
 2. N'oubliez pas de mettre le fichier `.env` à la racine du projet
-4. Initialiser la base de données : `yarn workspace database mongo:init`
+4. Initialiser la base de données : `yarn workspace database mongo:init` (Pensez à démarer Docker)
 5. Démarrez la base de données : `npm run start:database`
-6. Démarrez l'api : `npm run start:api`
-6. Réinitialiser les mocks : `yarn workspace database reset-mock`
-7. Démarrez le socket : `npm run start:socket`
-8. Démarrez le client : `npm run start:client`
+7. Réinitialiser les mocks : `yarn workspace database reset-mock`
+6. Ouvrez 3 terminaux à la racine du projet :
+   -  Démarrez l'api : `npm run start:api`
+   - Démarrez le serveur socket : `npm run start:socket`
+   - Démarrez le client : `npm run start:client`
+8. Ouvrez votre navigateur à l'adresse `http://localhost:5173` :
+   - Connectez-vous avec les identifiants fournis par mail
+   - ✅ Vous pouvez tester les fonctionnalités
+
+Si vous souhaitez tester le dessin en temps réel, pensez à vous connecter avec deux utilisateurs différents en navigation privée.
