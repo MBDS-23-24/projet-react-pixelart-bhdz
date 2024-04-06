@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 
-import {Card, Text, TextInput, Title} from '@mantine/core';
+import {Card, LoadingOverlay, Text, TextInput, Title} from '@mantine/core';
 import {IconSearch} from '@tabler/icons-react';
 import {useState} from "react";
 import {
@@ -16,7 +16,7 @@ function Home() {
     const [pixelBoardsFiltered, setPixelBoardsFiltered] = useState([]);
     const navigate = useNavigate();
 
-    useQuery('pixelboards', getAllPixelBoardsWithParticipants, {
+    const {isLoading} =  useQuery('pixelboards', getAllPixelBoardsWithParticipants, {
         onSuccess: (data) => {
             setPixelBoards(data);
             setPixelBoardsFiltered(data);
@@ -34,6 +34,7 @@ function Home() {
     const navigateToBoard = (endpoint) => {
         navigate(endpoint);
     }
+
 
     return (
         <div className={"home-page"}>
@@ -53,6 +54,12 @@ function Home() {
                            rightSection={<IconSearch size={20}/>}
                            onChange={onSearchBoard}/>
             </div>
+
+            <LoadingOverlay
+                visible={isLoading}
+                zIndex={1000}
+                overlayProps={{radius: "sm", blur: 2}}/>
+
             <ListCardsPixelBoard pixelboards={pixelBoardsFiltered} navigateToBoard={navigateToBoard}/>
         </div>
     );

@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import {
     IconCheck,
-    IconEdit, IconPlus,
+    IconEdit, IconLink, IconPlus,
     IconTrash
 } from "@tabler/icons-react";
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
@@ -26,6 +26,7 @@ import {notifications} from "@mantine/notifications";
 import FormAddAndEditPixelBoard from "../FormAddAndEditPixelBoard/FormAddAndEditPixelBoard.jsx";
 import {UserContext} from "../../provider/UserContext.jsx";
 import {formatedDateTime} from "../../pages/utils/Utils.js";
+import {useNavigate} from "react-router-dom";
 
 function Th({ children, reversed, sorted, onSort }) {
     const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector;
@@ -52,6 +53,7 @@ export default function TablePixelBoard() {
     const [sortBy, setSortBy] = useState(null);
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
     const [ pixels, setPixels] = useState([]);
+    const navigate = useNavigate();
 
     useQuery('pixels', () => getAllPixelBoards(), {
         enabled: true,
@@ -108,7 +110,6 @@ export default function TablePixelBoard() {
 
     function sortData(data, payload) {
         const { sortBy } = payload;
-
         if (!sortBy) {
             return filterData(data, payload.search);
         }
@@ -164,6 +165,7 @@ export default function TablePixelBoard() {
                         })
                     } ><IconEdit size={20}  /></ActionIcon>
                     <ActionIcon size={"lg"} color='red' onClick={() => openDelete(row.id)}><IconTrash size={20} /></ActionIcon>
+                    <ActionIcon size={"lg"} color='green' onClick={() =>navigate(`/pixel-board/${row.id}`)}><IconLink size={20} /></ActionIcon>
                 </div>
             </Table.Td>
         </Table.Tr>

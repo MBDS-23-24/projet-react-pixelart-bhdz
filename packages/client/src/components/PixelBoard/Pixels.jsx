@@ -14,7 +14,8 @@ const Pixels = forwardRef(function MyInput({onNewPixelAdded, initPixel, width, h
     }, [ctx, initPixel]);
 
     useImperativeHandle(ref, () => ({
-        drawPixel
+        drawPixel,
+        isPixelDrawn
     }));
 
 
@@ -41,6 +42,15 @@ const Pixels = forwardRef(function MyInput({onNewPixelAdded, initPixel, width, h
         if (ctx) {
             ctx.fillStyle = pixel.color;
             ctx.fillRect(getRealPosition(pixel.x), getRealPosition(pixel.y), pixelSize, pixelSize);
+        }
+    }
+
+    function isPixelDrawn(xPixel, yPixel) {
+        if (ctx) {
+            const x = getRealPosition(xPixel);
+            const y = getRealPosition(yPixel);
+            var pixelData = ctx.getImageData(x, y, 1, 1).data;
+            return pixelData[3] !== 0
         }
     }
 

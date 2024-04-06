@@ -8,7 +8,7 @@ export default function Dashboard() {
 
     return (
         <div style={{margin: 20}}>
-            <h1>Dashboard</h1>
+            <h1>Admin Dashboard</h1>
             <Tabs defaultValue="pixelboard" className={"tab"}>
                 <Tabs.List grow>
                     <Tabs.Tab

@@ -2,7 +2,7 @@ import './PixelBoard.scss'
 import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useRef, useState} from "react";
-import {useNavigate, useParams} from "react-router";
+import {useLocation, useNavigate, useParams} from "react-router";
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,
@@ -15,7 +15,7 @@ import HoveredPixel from "../../components/PixelBoard/HoveredPixel.jsx";
 import PixelAnimation from "../../components/PixelBoard/PixelAnimation.jsx";
 import PixelBoardMenu from "../../components/PixelBoardMenu/PixelBoardMenu.jsx";
 import {notifications} from "@mantine/notifications";
-import {IconCloudLock, IconCloudShare, IconUser} from "@tabler/icons-react";
+import {IconCloudLock, IconCloudShare, IconCross, IconPencilOff, IconPencilX, IconUser} from "@tabler/icons-react";
 import {decryptUser} from "../../provider/UserContext.jsx";
 import TimerComponent from "../../components/TimerComponent/TimerComponent.jsx";
 
@@ -78,6 +78,15 @@ export default function PixelBoard() {
 
     const onDrawPixel = (pixel) => {
         if (canDraw) {
+            if (pixelBoard.isPixelOverwrite === false && pixelsComponentRef.current.isPixelDrawn(pixel.x, pixel.y)) {
+                notifications.show({
+                    title: "Overwrite not allowed",
+                    message: `Pixel already drawn at this position !`,
+                    color: "red",
+                    icon: <IconPencilOff size={24}/>,
+                })
+                return; //If the pixel is already drawn and the pixel board does not allow overwrite, we do nothing
+            }
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             setLastDrawedPixel(pixel);
         }
@@ -127,7 +136,11 @@ export default function PixelBoard() {
             fetchPixelsData();
 
             pixelSocket.onDisconnect(() => {
-                navigate("/");
+                setTimeout(() => {
+                    if (window.location.pathname === `/pixel-board/${id}`) {
+                        navigate('/')
+                    }
+                }, 300);
             });
 
             setTimeout(() => {
@@ -281,7 +294,7 @@ export default function PixelBoard() {
                 <div>
 
                     <IconCloudLock style={{width: rem(80), height: rem(80)}}
-                                       stroke={1.5}/>
+                                   stroke={1.5}/>
                     <Title order={1}> {pixelBoard.title} </Title>
 
                     <Badge
@@ -291,7 +304,7 @@ export default function PixelBoard() {
                         gradient={{from: 'pink', to: 'red', deg: 90}}
                     >
 
-                        The pixel board is closed until the {new Date(pixelBoard.endDate).toLocaleString()}
+                        The pixel board is closed since the {new Date(pixelBoard.endDate).toLocaleString()}
                     </Badge>
                 </div>
 
@@ -305,14 +318,14 @@ export default function PixelBoard() {
                 <div>
 
                     <IconCloudShare style={{width: rem(80), height: rem(80)}}
-                                       stroke={1.5}/>
+                                    stroke={1.5}/>
                     <Title order={1}> {pixelBoard.title} </Title>
 
                     <Badge
                         style={{marginTop: rem(20)}}
                         size="xl"
                         variant="gradient"
-                        gradient={{ from: 'teal', to: 'lime', deg: 90 }}
+                        gradient={{from: 'teal', to: 'lime', deg: 90}}
                     >
 
                         The pixel board will be open soon : {new Date(pixelBoard.startDate).toLocaleString()}

@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from 'universal-cookie';
 import {notifications} from "@mantine/notifications";
 
 export const axiosApi = axios.create({
@@ -21,8 +20,6 @@ axiosApi.interceptors.response.use((response) => {
         color: "red",
     });
     if (error.response.status === 403 && error.response.data?.message === "Forbidden - JWT Expired") {
-        const cookies = new Cookies();
-        cookies.remove('accessToken');
         localStorage.removeItem('user_session');
         window.location.reload();
     }

@@ -30,11 +30,7 @@ export default function ColorsRange({onSelectColor}) {
         {
             label: 'magenta',
             hexaColor: '#ff00ff'
-        },
-        {
-            label: 'white',
-            hexaColor: '#ffffff'
-        },
+        }
     ];
 
     const handleColorChange = (color) => {

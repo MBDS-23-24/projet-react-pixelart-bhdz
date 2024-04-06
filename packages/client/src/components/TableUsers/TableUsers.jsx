@@ -12,7 +12,7 @@ import {
     TextInput,
     Title
 } from "@mantine/core";
-import {IconCheck, IconCross, IconEdit, IconSearch, IconX} from "@tabler/icons-react";
+import {IconCheck, IconEdit, IconLink, IconSearch, IconUser, IconX} from "@tabler/icons-react";
 import {useState} from "react";
 import {HistoryHeaderCell} from "../HistoryPopup/HistoryPopup.jsx";
 import './TableUsers.scss';
@@ -21,6 +21,7 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import {getAllRoles, getAllUsers, updateUser} from "../../functions/backend_functions/user_backend_functions.js";
 import {notifications} from "@mantine/notifications";
 import {checkEmail} from "../../pages/utils/FormValidation.js";
+import {useNavigate} from "react-router-dom";
 
 export default function TableUsers() {
     const queryClient = useQueryClient()
@@ -31,6 +32,7 @@ export default function TableUsers() {
     const [dataUsers, setDataUsers] = useState([]);
     const [dataUsersSorted, setDataUsersSorted] = useState([]);
     const [rolesList, setRolesList] = useState([]);
+    const navigate = useNavigate();
 
     const form = useForm({
         initialValues: {
@@ -95,7 +97,6 @@ export default function TableUsers() {
 
     function sortData(data, payload) {
         const { sortBy } = payload;
-
         if (!sortBy) {
             return filterData(data, payload.search);
         }
@@ -139,13 +140,8 @@ export default function TableUsers() {
 
     const handleSearchChange = (event) => {
         const { value } = event.currentTarget;
-        if (value === ""){
-            setSearch(value);
-            setDataUsersSorted(dataUsers);
-        } else {
-            setSearch(value);
-            setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
-        }
+        setSearch(value);
+        setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
     };
 
     const rows = dataUsersSorted.map((row, index) => (
@@ -153,8 +149,9 @@ export default function TableUsers() {
             <Table.Td className={"avatar"}><Avatar src={row.accountImageUrl} />{row.username}</Table.Td>
             <Table.Td>{row.email}</Table.Td>
             <Table.Td>{row.role.label}</Table.Td>
-            <Table.Td>
+            <Table.Td className={'actions'} >
                 <Button size={"sm"} rightSection={<IconEdit size={20}  />} onClick={()=>clickEdit(row)}>Update</Button>
+                <ActionIcon size={"lg"} color='green' onClick={() =>navigate(`/profile/${row.id}`)}><IconUser size={20} /></ActionIcon>
             </Table.Td>
         </Table.Tr>
     ));

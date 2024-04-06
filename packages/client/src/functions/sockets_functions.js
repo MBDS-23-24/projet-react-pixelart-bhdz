@@ -45,8 +45,9 @@ const pixelSocket = {
         socket.emit(eventName, data);
     },
     disconnect() {
-        socket.disconnect();
-
+        if (socket) {
+            socket.disconnect();
+        }
     },
     connect() {
         initializeSocket();
