@@ -77,9 +77,18 @@
 - 🔵 🔴 🟢 🟣 Architecture Frontend et Backend avec utilisation de librairie UI React (Mantine)
 - 🔴 Menu de navigation
 
-
-
 # Lancer le projet en local
 ## Pré-requis
 - Avoir installé Docker
-- Avoir installé node >v18 
+- Avoir installé node >18
+- Mettre à la racine du projet un fichier `.env` (fournis par mail)
+
+## Lancement 
+1. Cloner le projet : `git clone https://github.com/MBDS-23-24/projet-react-pixelart-bhdz.git`
+2. Exécutez la commande `npm install` à la racine du projet
+2. N'oubliez pas de mettre le fichier `.env` à la racine du projet
+4. Initialiser la base de données : `yarn workspace database mongo:init`
+5. Démarrez la base de données : `npm run start:database`
+6. Démarrez l'api : `npm run start:api`
+7. Démarrez le socket : `npm run start:socket`
+8. Démarrez le client : `npm run start:client`
