@@ -135,13 +135,13 @@ export default function TableUsers() {
         const reversed = field === sortBy ? !reverseSortDirection : false;
         setReverseSortDirection(reversed);
         setSortBy(field);
-        setDataUsersSorted(sortData(dataUsersSorted, { sortBy: field, reversed, search }));
+        setDataUsersSorted(sortData(dataUsers, { sortBy: field, reversed, search }));
     };
 
     const handleSearchChange = (event) => {
         const { value } = event.currentTarget;
         setSearch(value);
-        setDataUsersSorted(sortData(dataUsersSorted, { sortBy, reversed: reverseSortDirection, search: value }));
+        setDataUsersSorted(sortData(dataUsers, { sortBy, reversed: reverseSortDirection, search: value }));
     };
 
     const rows = dataUsersSorted.map((row, index) => (
