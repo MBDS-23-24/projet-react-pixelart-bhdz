@@ -5,6 +5,7 @@
   - 🔴 Bihannic Pierre  (github: @pierrebihannic)
   - 🟢 Diallo Mamadou Mouctar  (github: @mamadou-mouctar-diallo)
   - 🟣 Vincent Yehoudi (github: @Yehoudi)
+- Vidéo démo : https://youtu.be/UszuF3xMB1c
 
 # Tâches effectuées
 ⚠️ Les couleurs correspondent aux participations (voir la légende en haut)
@@ -58,11 +59,7 @@
 
 
 ## Bonus
-- 🔵 Déploiement en ligne sur le cloud : Azure (les identifiants serons fournis par mail)
-  - Lien Front (React) :
-  - Lien Back (Express.js / NodeJS) :
-  - Lien Socket (Socket.Io / NodeJS ) :
-  - Lien Base de données (MongoDB) :
+- 🔵 Déploiement en ligne sur le cloud : Azure (les accès serons fournis par mail)
 - 🔵 Utilisation des WebSockets pour visualiser en temps réel l'avancement du dessin
 
 
@@ -76,10 +73,19 @@
 - 🔴 Historique des informations de pose de pixels
 - 🔵 🔴 🟢 🟣 Architecture Frontend et Backend avec utilisation de librairie UI React (Mantine)
 - 🔴 Menu de navigation
+- 🔵 Dockerisé toute l'application (Front, Back, Socket, Database)
 
 
 
 # Lancer le projet en local
 ## Pré-requis
 - Avoir installé Docker
-- Avoir installé node >v18
+- Cloner le répo github
+- Ajouter à la racine le ".env" (ce fichier est fournis par mail)
+
+## Lancer le projet
+- Ouvrir un terminal à la racine du projet
+  - Penser à démarer Docker
+  - N'oubliez pas d'avoir le fichier ".env" à la racine
+  - Lancer la commande suivant `docker-compose up --build`
+

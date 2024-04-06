@@ -20,7 +20,7 @@ export default defineConfig({
     host: true,
     origin: "http://0.0.0.0:8080",
     proxy: {
-      '/api': process.env.VITE_EXPRESS_URL,
+      '/api': process.env.VITE_EXPRESS_URL_FOR_FE,
     }
   },
 });

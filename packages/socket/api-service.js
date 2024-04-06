@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = process.env.VITE_EXPRESS_URL;
+const API_URL = process.env.VITE_EXPRESS_URL_FOR_SOCKET;
 
 const ApiService = {
     async getUserByToken(userToken) {

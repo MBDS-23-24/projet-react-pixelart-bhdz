@@ -2,7 +2,7 @@ import axios from "axios";
 import {notifications} from "@mantine/notifications";
 
 export const axiosApi = axios.create({
-    baseURL: import.meta.env.VITE_EXPRESS_URL,
+    baseURL: import.meta.env.VITE_EXPRESS_URL_FOR_FE,
     withCredentials: true,
     headers: {
         'Access-Control-Allow-Origin': '*',
@@ -16,7 +16,7 @@ axiosApi.interceptors.response.use((response) => {
 }, async (error) => {
     notifications.show({
         title: "Error",
-        message: error.response.data.message + (error.response.data.details ? `: ${error.response.data.details}` : ""),
+        message: error?.response?.data?.message + (error?.response?.data?.details ? `: ${error?.response?.data?.details}` : ""),
         color: "red",
     });
     if (error.response.status === 403 && error.response.data?.message === "Forbidden - JWT Expired") {
