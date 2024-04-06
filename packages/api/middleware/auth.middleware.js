@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import {TechnicalError} from "../error/technical.error.js";
+import {BusinessError} from "../error/business.error.js";
 
 export const authMiddleware = {
     authenticatedUser(req, res, next) {

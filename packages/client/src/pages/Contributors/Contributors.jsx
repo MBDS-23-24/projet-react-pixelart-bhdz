@@ -1,6 +1,6 @@
 import './Contributors.scss';
-import {useEffect, useState} from "react";
-import {useMutation, useQuery} from "react-query";
+import {useState} from "react";
+import {useQuery} from "react-query";
 import {getContributors} from "../../functions/backend_functions/user_backend_functions.js";
 import {
     Avatar,
@@ -13,15 +13,13 @@ import {
     Table,
     Title
 } from "@mantine/core";
-import {IconInfoCircle, IconUserCircle} from "@tabler/icons-react";
+import {IconUserCircle} from "@tabler/icons-react";
 import {Link} from "react-router-dom";
-import {getHistoryPixelsByBoardId} from "../../functions/backend_functions/pixelboard_backend_functions.js";
-import {sortArrayByDate} from "../utils/Utils.js";
 
 export default function Contributors() {
     const [contributors, setContributors] = useState(null);
 
-    const {data, isLoading } =  useQuery('contributors', ()=> getContributors(), {
+    const {isLoading} = useQuery('contributors', () => getContributors(), {
         enabled: true,
         onSuccess: (result) => {
             setContributors(result);
@@ -35,10 +33,9 @@ export default function Contributors() {
                 <Table.Tr key={contributor.id}>
                     <Table.Td>
                         <div className={'user-avatar'}>
-                            <Avatar src={contributor.accountImageUrl}/>
-                            <span className={'username'}>
-                                {contributor.username}
-                            </span>
+                            <Avatar src={'contributor.accountImageUrl'}/>
+                            {contributor.username}
+
 
                         </div>
                     </Table.Td>
@@ -66,7 +63,6 @@ export default function Contributors() {
                     <Grid gutter="md">
                         <Grid.Col span={12}>
                             <Paper padding="lg">
-
 
 
                                 <Title order={1}>All Contributors</Title>

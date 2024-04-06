@@ -85,7 +85,6 @@ export default function TableUsers() {
     })
 
     function filterData(data, search) {
-        console.log(data);
         const query = search.toLowerCase().trim();
         return data.filter((item) => {
             return (

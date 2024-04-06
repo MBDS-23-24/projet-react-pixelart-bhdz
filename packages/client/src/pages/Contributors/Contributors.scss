@@ -1,8 +1,5 @@
 .user-avatar {
-  display: flex;
   align-items: center;
-
-  span.username {
-    padding-left: 10px;
-  }
+  display: flex;
+  gap: 10px;
 }
