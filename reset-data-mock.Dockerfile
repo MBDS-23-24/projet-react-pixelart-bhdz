@@ -2,7 +2,7 @@ FROM node:18-alpine
 
 COPY config.js /data/
 COPY package.json /data/
-COPY .env /data/
+COPY docker.env /app/.env
 WORKDIR /data
 RUN npm install
 

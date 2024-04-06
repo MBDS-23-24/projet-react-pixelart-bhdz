@@ -41,6 +41,5 @@ services:
       dockerfile: reset-data-mock.Dockerfile
     networks:
       - my_network
-
 networks:
   my_network:

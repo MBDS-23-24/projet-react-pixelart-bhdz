@@ -3,7 +3,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 COPY package.json .
-
+COPY docker.env /app/.env
 RUN yarn install
 
 COPY . .

@@ -2,16 +2,20 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json .
-
+COPY config.js /app/
+COPY package.json /app/
+COPY docker.env /app/.env
+WORKDIR /app
 RUN npm install
 
-COPY . .
+RUN mkdir -p /app/packages/client
+COPY ./packages/client /app/packages/client/
 
-RUN cd packages/client
+
+WORKDIR /app/packages/client
 RUN npm install
-RUN yarn workspace client build
 
 EXPOSE 5173
 
+WORKDIR /app/
 CMD [ "npm", "run", "start:client" ]
