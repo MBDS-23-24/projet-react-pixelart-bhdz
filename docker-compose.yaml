@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      dockerfile: api.Dockerfile
+    ports:
+      - "5010:5010"
+    depends_on:
+      - database
+    networks:
+      - my_network
+  socket:
+    build:
+      dockerfile: socket.Dockerfile
+    ports:
+      - "3200:3200"
+    depends_on:
+      - api
+    networks:
+      - my_network
+  client:
+    build:
+      dockerfile: client.Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+      - socket
+    networks:
+      - my_network
+  database:
+    build:
+      dockerfile: database.Dockerfile
+    ports:
+      - "27018:27017"
+    networks:
+      - my_network
+  reset_data_mock:
+    depends_on:
+      - database
+    build:
+      dockerfile: reset-data-mock.Dockerfile
+    networks:
+      - my_network
+
+networks:
+  my_network:

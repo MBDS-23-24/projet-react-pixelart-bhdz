@@ -4,7 +4,7 @@ FROM mongo:latest
 # Créez le répertoire d'initialisation s'il n'existe pas
 RUN mkdir -p /docker-entrypoint-initdb.d/
 
-COPY scripts/init-mongo.js /scripts/
+COPY ./packages/database/scripts/init-mongo.js /scripts/
 
 # Créez un script shell adapter pour initialiser le Replica Set et init la structure de mongodb
 RUN echo '#!/bin/bash' > /docker-entrypoint-initdb.d/init-script.sh && \

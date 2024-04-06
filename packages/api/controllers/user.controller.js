@@ -29,7 +29,7 @@ export const login = async (req, res, next) => {
         const {email, password} = req.body;
 
         if (!email || !password) {
-            throw BusinessError(400, 'Bad request', 'Missing email or password');
+            throw new BusinessError(400, 'Bad request', 'Missing email or password');
         }
 
         const info = await userService.login(email, password);
