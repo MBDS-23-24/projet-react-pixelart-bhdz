@@ -1,7 +1,7 @@
 import { useState} from "react";
 import {
     Avatar, Center, ColorSwatch,
-    Divider, Group,
+    Divider, Group, LoadingOverlay,
     Modal, ScrollArea, Space,
     Table, Text,
     TextInput, UnstyledButton,
@@ -38,7 +38,7 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
     const [reverseSortDirection, setReverseSortDirection] = useState(false);
     const [dataHistory, setDataHistory] = useState([]);
 
-    useQuery('history', ()=> getHistoryPixelsByBoardId(pixelBoard.id), {
+    const {isLoading} = useQuery('history', ()=> getHistoryPixelsByBoardId(pixelBoard.id), {
         enabled: open,
         onSuccess: (data) => {
             const arraySorted = sortArrayByDate(data);
@@ -110,6 +110,11 @@ export function HistoryPopup({pixelBoard, open, onClose}) {
             <Space h={10} />
             <Divider />
             <Space h={10} />
+            <LoadingOverlay
+                visible={isLoading}
+                zIndex={1000}
+                overlayProps={{radius: "sm", blur: 2}}/>
+
             <ScrollArea h={400}>
                 <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed" stickyHeader>
                     <Table.Thead>
