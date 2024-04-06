@@ -58,11 +58,7 @@
 
 
 ## Bonus
-- 🔵 Déploiement en ligne sur le cloud : Azure (les identifiants serons fournis par mail)
-  - Lien Front (React) :
-  - Lien Back (Express.js / NodeJS) :
-  - Lien Socket (Socket.Io / NodeJS ) :
-  - Lien Base de données (MongoDB) :
+- 🔵 Déploiement en ligne sur le cloud : Azure (les accès serons fournis par mail)
 - 🔵 Utilisation des WebSockets pour visualiser en temps réel l'avancement du dessin
 
 
