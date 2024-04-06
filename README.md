@@ -82,4 +82,4 @@
 # Lancer le projet en local
 ## Pré-requis
 - Avoir installé Docker
-- Avoir installé node >v18
+- Avoir installé node >v18 
