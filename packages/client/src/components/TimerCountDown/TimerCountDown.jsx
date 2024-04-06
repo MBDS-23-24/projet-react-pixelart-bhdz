@@ -10,7 +10,7 @@ export default function TimerCountDown({ state="Online", endDate, startDate, ref
             const now = new Date().getTime();
             let endDate2 = new Date(state === "Coming soon" ? startDate : endDate).getTime();
             const distance = endDate2 - now;
-            if (distance === 0) {
+            if (distance <= 0) {
                 if(refresh){
                     window.location.reload();
                 }
@@ -24,7 +24,8 @@ export default function TimerCountDown({ state="Online", endDate, startDate, ref
                 let countdownText = '';
 
                 if (days > 30) {
-                    countdownText = 'More than 30 days...';
+                    if (state === "Coming soon") countdownText = 'Starts in more than 30 days...';
+                    if (state === "Online") countdownText = 'Will be closed in more than 30 days...';
                 } else {
                     if (state === "Coming soon") countdownText += 'Starts in ';
                     if (state === "Online") countdownText += 'Will be closed in ';

@@ -42,12 +42,12 @@ export default function FormAddAndEditPixelBoard({user, pixelBoard, onCancel, fo
             },
             delayMs: (value) => isNaN(value) || value < 0 || value === "" ? "Please enter a valid delay in milliseconds" : undefined,
             pixelWidth: (value) => {
-                if (isNaN(value) || value < 0 || value === "") return "Please enter a valid pixel width";
+                if (isNaN(value) || value < 0 || value === "" || value === null) return "Please enter a valid pixel width";
                 if (value > 500) return "Please enter a pixel width less than or equal to 500";
                 return undefined;
             },
             pixelHeight: (value) => {
-                if (isNaN(value) || value < 0 || value === "") return "Please enter a valid pixel height";
+                if (isNaN(value) || value < 0 || value === "" || value === null) return "Please enter a valid pixel height";
                 if (value > 500) return "Please enter a pixel height less than or equal to 500";
                 return undefined;
             },
