@@ -33,7 +33,7 @@ export default function Contributors() {
                 <Table.Tr key={contributor.id}>
                     <Table.Td>
                         <div className={'user-avatar'}>
-                            <Avatar src={'contributor.accountImageUrl'}/>
+                            <Avatar src={contributor.accountImageUrl}/>
                             {contributor.username}
 
 
