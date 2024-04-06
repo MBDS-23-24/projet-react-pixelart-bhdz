@@ -2,7 +2,7 @@ import './PixelBoard.scss'
 import Grids from "../../components/PixelBoard/Grids.jsx";
 import ColorsRange from "../../components/ColorsRange/ColorsRange.jsx";
 import {useEffect, useRef, useState} from "react";
-import {useNavigate, useParams} from "react-router";
+import {useLocation, useNavigate, useParams} from "react-router";
 import pixelSocket, {socketActions, socketEvents} from "../../functions/sockets_functions.js";
 import {
     getPixelBoardById,
@@ -136,7 +136,11 @@ export default function PixelBoard() {
             fetchPixelsData();
 
             pixelSocket.onDisconnect(() => {
-                navigate("/");
+                setTimeout(() => {
+                    if(window.location.pathname=== `/pixel-board/${id}`){
+                        navigate('/')
+                    }
+                }, 300);
             });
 
             setTimeout(() => {
@@ -300,7 +304,7 @@ export default function PixelBoard() {
                         gradient={{from: 'pink', to: 'red', deg: 90}}
                     >
 
-                        The pixel board is closed until the {new Date(pixelBoard.endDate).toLocaleString()}
+                        The pixel board is closed since the {new Date(pixelBoard.endDate).toLocaleString()}
                     </Badge>
                 </div>
 
