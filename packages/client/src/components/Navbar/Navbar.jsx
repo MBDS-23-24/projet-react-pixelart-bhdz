@@ -34,7 +34,7 @@ const listLinkedRoute = [
     { icon: IconGauge, label: 'Admin Dashboard', link: "/admin/dashboard", needRight: true},
     { icon: IconHome2, label: 'Home', link: "/", needRight: false },
     { icon: IconSettings, label: 'Account', link: "/account", needRight: false},
-    { icon: IconUsers, label: 'Contributors', link: "/contributors", needRight: true},
+    { icon: IconUsers, label: 'Contributors', link: "/contributors", needRight: false},
 ];
 
 export function NavBar() {
