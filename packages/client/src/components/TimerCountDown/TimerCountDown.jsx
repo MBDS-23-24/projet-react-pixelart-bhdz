@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Text} from "@mantine/core";
 import './TimerCountDown.scss';
 
-export default function TimerCountDown({ state="Online", endDate, startDate }) {
+export default function TimerCountDown({ state="Online", endDate, startDate, refresh=false }) {
   const [textCountdown, setTextCountdown] = useState("...");
 
     useEffect(() => {
@@ -10,7 +10,10 @@ export default function TimerCountDown({ state="Online", endDate, startDate }) {
             const now = new Date().getTime();
             let endDate2 = new Date(state === "Coming soon" ? startDate : endDate).getTime();
             const distance = endDate2 - now;
-            if (distance < 0) {
+            if (distance === 0) {
+                if(refresh){
+                    window.location.reload();
+                }
                 clearInterval(interval);
             } else {
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));

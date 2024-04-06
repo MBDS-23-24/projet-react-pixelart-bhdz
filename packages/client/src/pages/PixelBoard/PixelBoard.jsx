@@ -78,14 +78,14 @@ export default function PixelBoard() {
 
     const onDrawPixel = (pixel) => {
         if (canDraw) {
-            if(pixelBoard.isPixelOverwrite === false && pixelsComponentRef.current.isPixelDrawn(pixel.x, pixel.y)){
+            if (pixelBoard.isPixelOverwrite === false && pixelsComponentRef.current.isPixelDrawn(pixel.x, pixel.y)) {
                 notifications.show({
                     title: "Overwrite not allowed",
                     message: `Pixel already drawn at this position !`,
                     color: "red",
                     icon: <IconPencilOff size={24}/>,
                 })
-              return; //If the pixel is already drawn and the pixel board does not allow overwrite, we do nothing
+                return; //If the pixel is already drawn and the pixel board does not allow overwrite, we do nothing
             }
             pixelSocket.emit(socketActions.DRAW_PIXEL, {x: pixel.x, y: pixel.y, color: pixel.color});
             setLastDrawedPixel(pixel);
@@ -137,7 +137,7 @@ export default function PixelBoard() {
 
             pixelSocket.onDisconnect(() => {
                 setTimeout(() => {
-                    if(window.location.pathname=== `/pixel-board/${id}`){
+                    if (window.location.pathname === `/pixel-board/${id}`) {
                         navigate('/')
                     }
                 }, 300);
@@ -294,7 +294,7 @@ export default function PixelBoard() {
                 <div>
 
                     <IconCloudLock style={{width: rem(80), height: rem(80)}}
-                                       stroke={1.5}/>
+                                   stroke={1.5}/>
                     <Title order={1}> {pixelBoard.title} </Title>
 
                     <Badge
@@ -318,14 +318,14 @@ export default function PixelBoard() {
                 <div>
 
                     <IconCloudShare style={{width: rem(80), height: rem(80)}}
-                                       stroke={1.5}/>
+                                    stroke={1.5}/>
                     <Title order={1}> {pixelBoard.title} </Title>
 
                     <Badge
                         style={{marginTop: rem(20)}}
                         size="xl"
                         variant="gradient"
-                        gradient={{ from: 'teal', to: 'lime', deg: 90 }}
+                        gradient={{from: 'teal', to: 'lime', deg: 90}}
                     >
 
                         The pixel board will be open soon : {new Date(pixelBoard.startDate).toLocaleString()}

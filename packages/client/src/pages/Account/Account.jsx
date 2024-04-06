@@ -146,9 +146,7 @@ export default function Account() {
                                 <Title order={4} mb="md" className="accoun-title">Modify your account information</Title>
                                 <TextInput label="Username" {...form.getInputProps('username')} className="account-text-input" placeholder="New Username" />
                                 <TextInput label="Email" {...form.getInputProps('email')} className="account-text-input" mt="md" placeholder="New E-mail" />
-                                <Group position="right" mt="md">
-                                    <Button type="submit" color="green" className="account-update-button">Update Account</Button>
-                                </Group>
+                                 <Button mt={20} type="submit" color="green" className="account-update-button">Update Account</Button>
                                 <Title order={5} mt="lg" className="account-subtitle">Advanced Options</Title>
                                 <Button onClick={open} mt="md">Change Password</Button>
                             </Card>

@@ -64,9 +64,9 @@ export default function ListCardsPixelBoard ({pixelboards,navigateToBoard}) {
                     <Divider />
                     <Space mt="md" />
                     <Group justify="space-between">
-                        <Text>Size : [{pixelBoard.pixelWidth}, {pixelBoard.pixelHeight}]</Text>
+                        <Text>[{pixelBoard.pixelWidth}x{pixelBoard.pixelHeight}]</Text>
                         <Text>Delay : {convertMsToSeconds(pixelBoard.delayMs)}s</Text>
-                        <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Overriden pixel : </Text></Tooltip><Switch checked={pixelBoard.isPixelOverwrite} disabled/></Group>
+                        <Group><Tooltip label={"If this parameter is active, then you can place a pixel on top of another pixel that has already been placed."}><Text>Overriden pixel : </Text></Tooltip><Switch color={pixelBoard.isPixelOverwrite === true ? 'green' : 'red'} checked={true} /></Group>
                     </Group>
                     <Group justify="flex-around">
                         {isPixelBoardComingSoon(pixelBoard) ? "": <Button

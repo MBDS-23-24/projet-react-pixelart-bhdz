@@ -34,7 +34,7 @@ export default function PixelBoardMenu({pixelBoard, connectedUsers}) {
                     variant="gradient"
                     gradient={{from: 'red', to: 'grape', deg: 90}}
                 >
-                    <TimerCountDown startDate={pixelBoard.startDate} endDate={pixelBoard.endDate} state={getStatePixelBoard(pixelBoard)}/>
+                    <TimerCountDown refresh={true} startDate={pixelBoard.startDate} endDate={pixelBoard.endDate} state={getStatePixelBoard(pixelBoard)}/>
                 </Badge>
             </div>
         </div>
