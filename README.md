@@ -86,5 +86,6 @@
 4. Initialiser la base de données : `yarn workspace database mongo:init`
 5. Démarrez la base de données : `npm run start:database`
 6. Démarrez l'api : `npm run start:api`
+6. Réinitialiser les mocks : `yarn workspace database reset-mock`
 7. Démarrez le socket : `npm run start:socket`
 8. Démarrez le client : `npm run start:client`
